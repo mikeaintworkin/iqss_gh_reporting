@@ -1,14 +1,3 @@
-/scratch/
-/gh/scratch/
-/gh/input
-/main/scratch/
-/api/scratch/
-/api/input
-/process_flat_file/input
-/process_flat_file/input
-/transform/scratch/
-/transform/input
-/transform/saxon-he-11.5/
 **/wrk
 **/output
 **/run
