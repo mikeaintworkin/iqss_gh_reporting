@@ -31,7 +31,8 @@ if __name__ == "__main__":
     parser.add_argument('--out_dir', dest='out_dir', default='/home/perftest/DevCode/github-com-mreekie/iqss_gh_reporting/run/wrk/', type=str, help='Name of the query file')
     parser.add_argument('--org_name', dest='organization_name', default="IQSS", type=str, help='XXX')
     # parser.add_argument('--org_name', dest='organization_name', default="HMDC", type=str, help='XXX')
-    parser.add_argument('--proj_name', dest='proj_name', default="OdumInstitute", type=str, help='XXX')
+    # parser.add_argument('--proj_name', dest='proj_name', default="OdumInstitute", type=str, help='XXX')
+    parser.add_argument('--proj_name', dest='proj_name', default="IQSS/dataverse", type=str, help='XXX')
     args = parser.parse_args()
 
     # get OAUTH token

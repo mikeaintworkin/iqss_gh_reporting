@@ -19,11 +19,13 @@ class GithubProjectCards:
         self.out_dir = out_dir
         self.outputfile = self.out_dir + '/' + self.date_stamp + "-" + self.clean_text(project_name)  + "-legacy"
 
+    # clean file name so that it has no special characters in it.
+    # This is a hack and should be replaced with a better solution
     def clean_text(self, text):
         text = text.replace("\\", "_")
         text = text.replace("\n", "")
         text = text.replace(",", "")
-        text = text.replace("//", "/")
+        text = text.replace("/", "_")
         return text
 
     def get_project_cards(self):
@@ -45,37 +47,35 @@ class GithubProjectCards:
                 print(f"start: {self.card_count} cards processed: {project.name}, Column {column.name}")
                 for card in cards:
                     self.card_count += 1
-
                     card_content = card.get_content()
+                    #
+                    if card_content is not None:
+                        regex1 = re.compile(r"(/issues/|/pull/)")
+                        regex2 = re.compile(r"(issues|pull)")
+                        card_type = regex1.search(card_content.html_url).group(0)
+                        card_type = regex2.search(card_type).group(0)
+                        if self.card_count % 50 == 0:
+                            print(f">>>>>> {self.card_count} cards processed: {project.name}: Column {column.name} ,{card_type} ,{card_content.number} ,{card_content.repository.name} ,{card_content.title}")
 
-                    card_type = 'unknown'
-                    regex = re.compile(r"(/issues/|/pull/)")
-                    card_type = regex.search(card_content.html_url).group(0)
-                    regex = re.compile(r"(issues|pull)")
-                    card_type = regex.search(card_type).group(0)
 
-                    if self.card_count % 50 == 0:
-                        print(f">>>>>> {self.card_count} cards processed: {project.name}: Column {column.name} ,{card_type} ,{card_content.number} ,{card_content.repository.name} ,{card_content.title}")
+                        # do I care about the actual type returned?
+                        # if card_content.type in [Literal"Issue", Literal"PullRequest"]:
 
+                        self.project_cards.append({
+                            "project": project.name,
+                            "column": column_name,
+                            "card": card_content.title,
+                            "card_url": card_content.html_url,
+                            "card_type": card_type,
+                            "number": card_content.number,
+                            "labels": card_content.labels,
+                            "repo": card_content.repository.name,
+                            "state": card_content.state,
+                            "created_at": card_content.created_at,
+                            "updated_at": card_content.updated_at,
+                            "closed_at": card_content.closed_at
 
-                    # do I care about the actual type returned?
-                    # if card_content.type in [Literal"Issue", Literal"PullRequest"]:
-
-                    self.project_cards.append({
-                        "project": project.name,
-                        "column": column_name,
-                        "card": card_content.title,
-                        "card_url": card_content.html_url,
-                        "card_type": card_type,
-                        "number": card_content.number,
-                        "labels": card_content.labels,
-                        "repo": card_content.repository.name,
-                        "state": card_content.state,
-                        "created_at": card_content.created_at,
-                        "updated_at": card_content.updated_at,
-                        "closed_at": card_content.closed_at
-
-                    })
+                        })
                 print(f"  end: {self.card_count} cards processed: {project.name}, Column {column.name}")
         return
 
