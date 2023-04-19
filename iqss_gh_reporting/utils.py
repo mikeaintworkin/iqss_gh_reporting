@@ -10,14 +10,19 @@ import re
 
 class GithubProjectCards:
     def __init__(self, access_token: str, organization_name: str, project_name: str, out_dir: str):
+        #external init
         self.client = Github(access_token, per_page=100)
         self.organization = self.client.get_organization(organization_name)
         self.project_name = project_name
+        self.out_dir = out_dir
+
+        #internal init
         self.card_count = 0
         self.project_cards = []
         self.date_stamp = datetime.datetime.now().strftime("%Y_%m_%d-%H_%M_%S")
+        # prereq: out_dir and outputfile are assumed to be valid
         self.out_dir = out_dir
-        self.outputfile = self.out_dir + '/' + self.date_stamp + "-" + self.clean_text(project_name)  + "-legacy"
+        self.outputfile =  self.date_stamp + "-" + self.clean_text(project_name)  + "-legacy"
 
     # clean file name so that it has no special characters in it.
     # This is a hack and should be replaced with a better solution
@@ -85,17 +90,19 @@ class GithubProjectCards:
 
         for card in self.project_cards:
             row = [card['project'], card['column'], card['card'], card['card_url'], card['card_type'], str(card['number']), card['repo']]
-            print("\t".join(row))
+            lineout = "'" + "'\t'".join(row) + "'\n"
+            print(lineout)
 
     def save_project_cards(self):
         print(f"Saving result to file.")
-        with open(self.clean_text(self.outputfile + ".csv"), "w") as output_file:
+        print(f" {self.outputfile}.csv")
+        with open(self.outputfile + ".csv", "w") as output_file:
             header = ["Project", "Column", "Card", "Card URL", "Card Type", "Number", "Repo"]
             headerline = "\t".join(header) + "\n"
             output_file.write(headerline)
             for card in self.project_cards:
                 row = [card['project'], card['column'], card['card'], card['card_url'], card['card_type'], str(card['number']), card['repo']]
-                lineout = "'" + "\t'".join(row) + "'\n"
+                lineout = "'" + "'\t'".join(row) + "'\n"
                 output_file.write(lineout)
 
 
