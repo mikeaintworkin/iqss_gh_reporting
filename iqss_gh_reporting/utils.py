@@ -6,6 +6,7 @@ import json
 from github import Github
 from typing import Literal
 import re
+from pathvalidate import sanitize_filename
 
 
 class GithubProjectCards:
@@ -22,16 +23,8 @@ class GithubProjectCards:
         self.date_stamp = datetime.datetime.now().strftime("%Y_%m_%d-%H_%M_%S")
         # prereq: out_dir and outputfile are assumed to be valid
         self.out_dir = out_dir
-        self.outputfile =  self.date_stamp + "-" + self.clean_text(project_name)  + "-legacy"
+        self.outputfile =  self.date_stamp + "-" + sanitize_filename(project_name)  + "-legacy"
 
-    # clean file name so that it has no special characters in it.
-    # This is a hack and should be replaced with a better solution
-    def clean_text(self, text):
-        text = text.replace("\\", "_")
-        text = text.replace("\n", "")
-        text = text.replace(",", "")
-        text = text.replace("/", "_")
-        return text
 
     def get_project_cards(self):
         projects = self.organization.get_projects()

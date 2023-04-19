@@ -35,12 +35,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='query related information')
     parser.add_argument('--org_name', dest='organization_name', default="IQSS", type=str, help='XXX')
     parser.add_argument('--out_dir', dest='out_dir', default='/home/perftest/DevCode/github-com-mreekie/iqss_gh_reporting/run/wrk/', type=validate_filepath_arg)
-    parser.add_argument('--out_file', dest='out_file', type=sanitize_filename_arg)
     parser.add_argument('--proj_name', dest='proj_name', default="IQSS/dataverse", type=str, help='XXX')
     args = parser.parse_args()
     print(f" --org_name {args.organization_name}")
     print(f"  --out_dir {args.out_dir}")
-    print(f" --out_file {args.out_file}")
     print(f"--proj_name {args.proj_name}")
 
     # input:
