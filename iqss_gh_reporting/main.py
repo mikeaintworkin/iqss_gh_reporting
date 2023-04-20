@@ -46,7 +46,7 @@ if __name__ == "__main__":
     key = 'GITHUB_TOKEN'
     auth_token_val = os.getenv(key, "novalue")
 
-github_project_cards = utils.GithubProjectCards(
+github_project_cards = utils.GithubProjectCardsPandas(
     access_token=auth_token_val,
     organization_name=args.organization_name,
     project_name=args.proj_name,
@@ -56,3 +56,4 @@ github_project_cards = utils.GithubProjectCards(
 github_project_cards.get_project_cards()
 github_project_cards.print_project_cards()
 github_project_cards.save_project_cards()
+
