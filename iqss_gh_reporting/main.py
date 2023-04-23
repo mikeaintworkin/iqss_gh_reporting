@@ -46,14 +46,18 @@ if __name__ == "__main__":
     key = 'GITHUB_TOKEN'
     auth_token_val = os.getenv(key, "novalue")
 
-github_project_cards = utils.GithubProjectCardsPandas(
-    access_token=auth_token_val,
-    organization_name=args.organization_name,
-    project_name=args.proj_name,
-    out_dir=args.out_dir
-)
 
-github_project_cards.get_project_cards()
-github_project_cards.print_project_cards()
-github_project_cards.save_project_cards()
+rpt = utils.SprintSummaryFrame(in_dir='/home/perftest/DevCode/github-com-mreekie/iqss_gh_reporting/run/wrk/',
+                               file_name='2023_04_20-15_54_44-IQSSdataverse-legacy.tsv'
+                               )
+
+# github_project_cards = utils.GithubLegacyProjectCardsPandas(
+#     access_token=auth_token_val,
+#     organization_name=args.organization_name,
+#     project_name=args.proj_name,
+#     out_dir=args.out_dir
+# )
+# github_project_cards.get_project_cards()
+# github_project_cards.print_project_cards()
+# github_project_cards.save_project_cards()
 
