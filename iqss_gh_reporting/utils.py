@@ -92,7 +92,9 @@ class SprintSummaryFrame:
             else:
                 self.df_orig = df
 
+        # Get a list of all the values of the column that we want to summarize
         self.orig_data_hcolumn_values = list(self.df_orig[self.desired_headers['hcolumn']].unique())
+        # create a list of the
         self.sprint_col = [hcol_val_eq_thissprint, hcol_val_eq_wip, hcol_val_eq_readyforreview, hcol_val_eq_inreview]
 
         if not self._headers_exist():
@@ -105,16 +107,22 @@ class SprintSummaryFrame:
 
         # create the output dataframe
         self.df_summary = pd.DataFrame(columns=["Column", "Size"])
-        self.df_summary.out_dir = out_dir
+        self.out_dir = out_dir
         if out_dir is None:
-            self.df_summary.out_dir = in_dir
-        if self.df_summary.out_dir is None:
-            self.df_summary.out_dir = "."
-        print(f"Summary Output directory: {self.df_summary.out_dir}")
+            self.out_dir = in_dir
+        if self.out_dir is None:
+            self.out_dir = "."
+
+        self.date_stamp = pd.Timestamp.now().strftime("%Y_%m_%d-%H_%M_%S")
+        self.outputfile = self.date_stamp + "-" + "sprint_summary"
+
+        print(f"Summary Output directory: {self.out_dir}")
         self._clean_labels()
         self._add_size_column()
         self._summarize_size_column()
         self._summarize_size_in_sprint_cols()
+        self._print_summary()
+        self._write_summary()
 
     # was the df that was passed in to initialize the object missing any of the columns that we need?
     # check for existence of specific columns
@@ -191,18 +199,32 @@ class SprintSummaryFrame:
         self.df_summary = pd.concat([self.df_summary, pd.DataFrame([new_row])], ignore_index=True)
         print(f"{sumnum}\tActiveSprint")
 
+    def _print_summary(self):
+        print('\t'.join(map(str, list(self.df_summary.columns))))
+        for index, row in self.df_summary.iterrows():
+            print('\t'.join(map(str, list(row))))
 
+    # def _write_summary(self):
+    #     output_file = self.out_dir + '/' + self.outputfile + '.tsv'
+    #     with open(output_file, 'w') as f:
+    #         f.write('\t'.join(map(str, list(self.df_summary.columns))) + '\n')
+    #         for index, row in self.df_summary.iterrows():
+    #             f.write('\t'.join(map(str, list(row))) + '\n')
 
+    def _write_summary(self):
+        df_out = self.df_summary.transpose()
+        new_header = df_out.iloc[0]
+        df_out = df_out[1:]
+        df_out.columns = new_header
+        output_file = self.out_dir + '/' + self.outputfile + '.tsv'
+        df_out.to_csv(output_file, sep='\t', index=False)
+        #with open(output_file, 'w') as f:
+        #    f.print(df_out)
 
-    def print_issues_by_columns(self):
-        self._clean_labels()
-        self._add_size_column()
-        unique_names = list(self.df['column'].unique())
-        for col_name in unique_names:
-            filtered_df = self.df[self.df['column'] == col_name]
-            print(filtered_df)
-
-
+        print(df_out)
+        # print('\t'.join(map(str, list(df_out.columns))))
+        # for index, row in df_out.iterrows():
+        #     print('\t'.join(map(str, list(row))))
 
 # ===================================================================================================================
 # represents a query of data of all the cards from a legacy GitHub project
