@@ -16,60 +16,66 @@ import datetime
 import os
 import pandas as pd
 import re
+import copy
 
 
 class RequiredDfColumnHeaderNames:
+    # ===================================================================================================================
+    # This is used when writing data collected from the API out to a flat file.
+    # It's a way (albeit clunky) to that the data gets consistent data headers.
+    # .
+    # ===================================================================================================================
+
     # This dictionary should be edited to to be what is expected.
     # prolly in a real app this would be a config file.
     def __init__(self):
+        # These are required mappings
         self.names = {
             "project": "Project",
             "column": "Column",
-            "type": "CardType",
+            "type": "Type",
             "number": "Number",
             "labels": "Labels",
             "repo": "Repo",
-            "state": "State"
+            "state": "State",
+        }
+        # These are additional mappings
+        # These are headers that are not required as part of the input data we are processing but that
+        # we would like to standardize
+        self.map = {
+            "size": "Size"
         }
 
-    def col(self, name: str = None):
-        return str(self.names[name])
+    def value(self, name: str = None):
+        # return a names or map value
+        if name in self.names:
+            return str(self.names[name])
+        if name in self.map:
+            return str(self.map[name])
+        return "RequiredDfColumnHeaderNames:NO_VALUE_DEFINED for " + name
 
-    def col_names(self):
+    def names(self):
+        # col names
         return list(self.names.keys())
 
-    def col_values(self):
+    def values(self):
+        # col values
         return list(self.names.values())
 
     def print(self):
         print(f"Column names: {self.names}")
 
-# ===================================================================================================================
-# .
-# .
-# .
-# ===================================================================================================================
-#
-#    input:
-#         :
-#   output:
-#  precond: required_list is defined.
-# postcond:
-#    descr:
-#
-#
-#         if not list_contains_at_least_required_entries(
-#                 required_list=RequiredDfColumnHeaderNames().col_names(),
-#                 submitted_list=[column.name for column in columns]
-#
-#         ):
-#             print(f"required column_head_names not present")
-#
-#
-# --------------------------------------------------------------------------------------------------------------------
 
-
-def list_contains_at_least_required_entries(required_list: list = None, submitted_list: list = None):
+def list_contains_at_least(required_list: list = None, submitted_list: list = None):
+    # ===================================================================================================================
+    # This takes a required list of strings and a submitted list of strings.
+    # It checks to see if the submitted list contains at least the required list.
+    #
+    # It is used to check that the column names in a dataframe are what is expected.
+    # It is used to check that the subset of sprint column values that we use to define what is active in a sprint
+    #  are actually present in the sprint column data. e.g. The code compares teh contents of:
+    #  RequiredSprintColumnValues with the unique list of values extracted from the sprint column data.
+    # ===================================================================================================================
     print(f" required list entries: {required_list}")
     print(f" submitted list entries: {submitted_list}")
 
@@ -88,23 +94,24 @@ def list_contains_at_least_required_entries(required_list: list = None, submitte
         return True
 
 
-def WriteDf(df: pd.DataFrame = None,
-            out_dir: str = '/home/perftest/DevCode/github-com-mreekie/iqss_gh_reporting/run/wrk',
-            out_name: str = 'output'):
-    out_file = out_dir + '/' + pd.Timestamp.now().strftime("%Y_%m_%d-%H_%M_%S")+ "-" + sanitize_filename(out_name) + ".tsv"
+def write_dataframe(df: pd.DataFrame = None,
+                    out_dir: str = '/home/perftest/DevCode/github-com-mreekie/iqss_gh_reporting/run/wrk',
+                    out_name: str = 'output'):
+    # ===================================================================================================================
+    # This writes the contents of a dataframe to a tab delimited file.
+    # ===================================================================================================================
+    out_file = out_dir + '/' + pd.Timestamp.now().strftime("%Y_%m_%d-%H_%M_%S") + \
+               "-" + sanitize_filename(out_name) + ".tsv"
     print(f"Saving result to file.")
     print(f" {out_file}")
     df.to_csv(out_file, sep='\t', index=False)
 
 
-# this should not be run until you have verified that the column names are correct.
-# e.g. if there is no column that is expected to contain these values in the input
-# then it's not worth even running this.
-
-
-
-
-class RequiredExactSprintColumnValues:
+class RequiredSprintColumnValues:
+    # ===================================================================================================================
+    # This defines a list of the sprint column values that we include as part of an active sprint.
+    # ===================================================================================================================
+    # Notes:
     # This list should be edited to to be what is expected.
     # prolly in a real app this would be a config file.
 
@@ -113,10 +120,10 @@ class RequiredExactSprintColumnValues:
             "This Sprint 🏃‍♀️ 🏃",
             "IQSS Team - In Progress  💻",
             "Ready for Review ⏩",
-            "Review 🔎"
+            "In Review 🔎"
         ]
 
-    def all(self):
+    def list(self):
         return self.names
 
     def print(self):
@@ -124,6 +131,10 @@ class RequiredExactSprintColumnValues:
 
 
 class DFFromFile:
+    # ===================================================================================================================
+    # This reads a previously collected set of sprint data from a file.
+    # no validation is done on the file contents.
+    # ===================================================================================================================
     def __init__(self, in_dir: str = None, file_name: str = None):
         self.df = None
         print(" Reading in data from a file.")
@@ -131,10 +142,14 @@ class DFFromFile:
         input_file = in_dir + '/' + file_name
         print(f" input_file: {input_file}")
 
+        # there's a library I can use to do this.  I'll do it later.
         if (file_name is None) or (in_dir is None) or (not os.path.isdir(in_dir)):
             print("Attempt to read input from file. No valid initialization data.  Exiting.")
         else:
             self.df = pd.read_csv(input_file, sep='\t')
+
+    def dataframe(self):
+        return self.df
 
 
 class LegacyProjectCards:
@@ -183,15 +198,15 @@ class LegacyProjectCards:
         self.rhn = RequiredDfColumnHeaderNames()
         self.project_cards = pd.DataFrame(
             columns=[
-                self.rhn.col("project"),
-                self.rhn.col("column"),
+                self.rhn.value("project"),
+                self.rhn.value("column"),
                 "Card",
                 "CardURL",
-                self.rhn.col("type"),
-                self.rhn.col("number"),
-                self.rhn.col("labels"),
-                self.rhn.col("repo"),
-                self.rhn.col("state"),
+                self.rhn.value("type"),
+                self.rhn.value("number"),
+                self.rhn.value("labels"),
+                self.rhn.value("repo"),
+                self.rhn.value("state"),
                 "CreatedAt",
                 "UpdatedAt",
                 "ClosedAt"
@@ -248,28 +263,26 @@ class LegacyProjectCards:
             cards = column.get_cards(archived_state='not_archived')
             print(f"start: {self.card_count} cards processed: {self.project_object.name}, Column {column.name}")
             for card in cards:
+                self.card_count += 1
                 card_content = card.get_content()
                 if card_content is not None and card.updated_at >= three_months_ago:
-                    self.card_count += 1
                     regex1 = re.compile(r"(/issues/|/pull/)")
                     regex2 = re.compile(r"(issues|pull)")
                     card_type = regex1.search(card_content.html_url).group(0)
                     card_type = regex2.search(card_type).group(0)
                     if self.card_count % 50 == 0:
                         print(f">>>>>> {self.card_count} # cards {self.project_object.name}: {column.name} \
-                        ,{card_type} ,{card_content.number} \
-                        ,{card_content.repository.name} ,{card_content.title}")
-
+                        ,{card_type} ,{card_content.number},{card_content.repository.name} ,{card_content.title}")
                     new_row = {
-                        self.rhn.col("project"): self.project_object.name,
-                        self.rhn.col("column"): column_name,
+                        self.rhn.value("project"): self.project_object.name,
+                        self.rhn.value("column"): column_name,
                         "Card": card_content.title,
                         "CardURL": card_content.html_url,
-                        self.rhn.col("type"): card_type,
-                        self.rhn.col("number"): card_content.number,
-                        self.rhn.col("labels"): card_content.labels,
-                        self.rhn.col("repo"): card_content.repository.name,
-                        self.rhn.col("state"): card_content.state,
+                        self.rhn.value("type"): card_type,
+                        self.rhn.value("number"): card_content.number,
+                        self.rhn.value("labels"): card_content.labels,
+                        self.rhn.value("repo"): card_content.repository.name,
+                        self.rhn.value("state"): card_content.state,
                         "CreatedAt": card_content.created_at,
                         "UpdatedAt": card_content.updated_at,
                         "ClosedAt": card_content.closed_at
@@ -280,6 +293,7 @@ class LegacyProjectCards:
 
     def get_dataframe_copy(self):
         return self.project_cards.copy()
+
     def dataframe(self):
         return self.project_cards
 
@@ -287,7 +301,113 @@ class LegacyProjectCards:
         print(self.project_cards.to_string(index=False))
 
 
+class SprintSummaryFrame:
+    # ===================================================================================================================
+    # This takes a dataframe containing raw information from a sprint
+    # It makes a copy of the the dataframe that is passed in and changes that.
+    # It creates a new dataframe that contains the summarized information for the sprint.
+    #  - In the copied dataframe
+    #     - If no column called size exists, it creates one and extracts the size from the labels.
+    #  - It creates a new dataframe based on the copied dataframe
+    #     - This new dataframe contains the summarized information for the sprint.
+    #  You can:
+    #    - get the new copied dataframe
+    #    - get the newlye created dataframe
+    # ===================================================================================================================
+    def __init__(self,
+                 df_in: pd.DataFrame = None):
+        self.rhn = RequiredDfColumnHeaderNames()
+        self.rcv = RequiredSprintColumnValues()
+        self.df = None
+        if df_in is None:
+            print(f"Failed to pass in a dataframe")
+            return
 
+        self.df = pd.DataFrame(columns=df_in.columns, data=copy.deepcopy(df_in.values))
+        self.sprint_col_values = list(self.df[self.rhn.value('column')].unique())
+        self.sprint_active_col_values = self.rcv.list()
+        # verify that the minimum df headers exist
+        # verify that the minimum sprint column names exist
+        if list_contains_at_least(self.rhn.values(), self.df.columns) and \
+           list_contains_at_least(self.sprint_active_col_values, self.sprint_col_values):
+            print(f"Passes header name and sprint column values checks")
+        else:
+            print(f"Failed header name or sprint column values check")
+            return
 
-# #################################################################################################################
+        # missing an else statement that exits here
+        # create the output dataframe
+        self.df_summary = pd.DataFrame(columns=["Column", "Size"])
 
+        self._clean_labels()
+        self._add_size_column()
+        self._summarize_size_column()
+        self._summarize_size_in_sprint_cols()
+        self._print_summary()
+
+    def print_issues(self):
+        print(self.df.to_string(index=False))
+
+    def _clean_labels(self):
+        # Make sure there is at least an empty string in the labels column
+        for index, row in self.df.iterrows():
+            if not isinstance(row[self.rhn.value('labels')], str):
+                self.df.at[index, self.rhn.value('labels')] = ""
+
+    def _add_size_column(self):
+        # -----------------------------------------------------------------------------------------------------------------
+        # This function adds a column to the dataframe to store the size as extracted from the "Size: X"
+        # It is careful to use the predefined column name for the size column.
+        # -----------------------------------------------------------------------------------------------------------------
+        if self.rhn.value('size') not in self.df.Column:
+            self.df[self.rhn.value('size')] = 0
+        for index, row in self.df.iterrows():
+            size_num = 0
+            label_list = row[self.rhn.value('labels')].split(',')
+            lower_list = [label.lower() for label in label_list]
+            size_label = [label.strip() for label in lower_list if 'size:' in label]
+            if len(size_label) > 0:
+                size_label_str = ' '.join(size_label)
+                search_result = re.search(r'[0-9]+', size_label_str)
+                if search_result is not None:
+                    search_result = re.search(r'[0-9]+', size_label_str).group()
+                    size_num = int(search_result)
+                self.df.at[index, self.rhn.value('size')] = size_num
+                print(f" num:{row[self.rhn.value('number')]} state:{row[self.rhn.value('column')]} \
+                    s:{size_num}  labels:{row[self.rhn.value('labels')]}")
+
+    def _summarize_size_column(self):
+        for col_val in self.sprint_col_values:
+            # I have no idea what this next line does
+            sumnum = self.df[self.df[self.rhn.value('column')] == col_val][self.rhn.value('size')].sum()
+            new_row = {
+                self.rhn.value('column'): col_val,
+                self.rhn.value('size'): sumnum
+            }
+            self.df_summary = pd.concat([self.df_summary, pd.DataFrame([new_row])], ignore_index=True)
+            print(f"{sumnum}\t{col_val}")
+
+    def _summarize_size_in_sprint_cols(self):
+        # now create a list of the columns we consider to be active sprint columns
+        sumnum = 0
+        for name in self.sprint_active_col_values:
+            sumnum = sumnum + self.df[self.df[self.rhn.value('column')] == name][self.rhn.value('size')].sum()
+
+        new_row = {
+            self.rhn.value('column'): "ActiveSprint",
+            self.rhn.value('size'): sumnum
+        }
+        self.df_summary = pd.concat([self.df_summary, pd.DataFrame([new_row])], ignore_index=True)
+        print(f"{sumnum}\tInTheSprint")
+
+    def _add_additional_columns(self):
+        new_row = {
+            "Date": "DATEHERE",
+            "SprintName": "SPRINTNAMEHERE"
+        }
+        self.df_summary = pd.concat([self.df_summary, pd.DataFrame([new_row])], ignore_index=True)
+
+    def _print_summary(self):
+        print('\t'.join(map(str, list(self.df_summary.columns))))
+        for index, row in self.df_summary.iterrows():
+            print('\t'.join(map(str, list(row))))
