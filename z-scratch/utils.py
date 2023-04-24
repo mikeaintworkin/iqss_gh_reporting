@@ -260,7 +260,7 @@ class SprintSummaryFrame:
 #
 #
 # --------------------------------------------------------------------------------------------------------------------
-class GithubLegacyProjectCardsPandas:
+class GithubLegacyProjectCardsPandasXX:
     def __init__(self, access_token: str, organization_name: str, project_name: str, out_dir: str, headers: list):
         # external init
         self.client = Github(access_token, per_page=100)
