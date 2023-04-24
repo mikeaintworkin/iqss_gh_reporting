@@ -20,7 +20,7 @@ if __name__ == "__main__":
         access_token=auth_token_val,
         organization_name=args.organization_name,
         project_name=args.proj_name)
-    #df.fetch_data()
+    df.fetch_data()
     df.print_project_cards()
     newdf = df.get_dataframe_copy()
     WriteDf(df=df.dataframe())

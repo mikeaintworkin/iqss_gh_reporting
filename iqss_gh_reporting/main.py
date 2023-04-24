@@ -8,7 +8,8 @@ import json
 import argparse
 from json2xml import json2xml
 from dict2xml import dict2xml
-import utils
+
+import project_data_io
 from argparse import ArgumentParser
 
 from pathvalidate.argparse import validate_filename_arg, validate_filepath_arg,  sanitize_filename_arg, sanitize_filepath_arg
@@ -47,7 +48,7 @@ if __name__ == "__main__":
     auth_token_val = os.getenv(key, "novalue")
 
 
-rpt = utils.SprintSummaryFrame(in_dir='/home/perftest/DevCode/github-com-mreekie/iqss_gh_reporting/run/wrk/',
+rpt = SprintSummaryFrame(in_dir='/home/perftest/DevCode/github-com-mreekie/iqss_gh_reporting/run/wrk/',
                                file_name='2023_04_20-15_54_44-IQSSdataverse-legacy.tsv'
                                )
 
