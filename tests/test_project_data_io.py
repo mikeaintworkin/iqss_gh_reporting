@@ -3,7 +3,7 @@ from unittest import TestCase
 import pandas as pd
 import os
 
-from iqss_gh_reporting.project_data_io import list_contains_at_least_required_entries
+from iqss_gh_reporting.project_data_io import list_contains_at_least
 from iqss_gh_reporting.project_data_io import DFFromFile
 from iqss_gh_reporting.project_data_io import GithubLegacyProjectCardsPandas
 
@@ -14,36 +14,36 @@ class RequiredDfColumnHeaderNamesPresent(TestCase):
         print(f">> start list_contains_at_least_required_entries_names_missing")
         required_sprint_column_names = ['Name', 'Status', 'Start Date', 'End Date']
         submitted_sprint_column_names = ['Name', 'Status', 'End Date']
-        assert list_contains_at_least_required_entries(required_sprint_column_names,
-                                                       submitted_sprint_column_names) is False
+        assert list_contains_at_least(required_sprint_column_names,
+                                      submitted_sprint_column_names) is False
 
     def list_contains_at_least_required_entries_names_all_present(self):
         print(f">> start list_contains_at_least_required_entries_names_all_present")
         required_sprint_column_names = ['Name', 'Status', 'Start Date', 'End Date']
         submitted_sprint_column_names = ['Name', 'Status', 'Start Date', 'End Date']
-        assert list_contains_at_least_required_entries(required_sprint_column_names,
-                                                       submitted_sprint_column_names) is True
+        assert list_contains_at_least(required_sprint_column_names,
+                                      submitted_sprint_column_names) is True
 
     def list_contains_at_least_required_entries_names_none_submitted(self):
         print(f">> start list_contains_at_least_required_entries_names_none_submitted")
         required_sprint_column_names = ['Name', 'Status', 'Start Date', 'End Date']
         submitted_sprint_column_names = None
-        assert list_contains_at_least_required_entries(required_sprint_column_names,
-                                                       submitted_sprint_column_names) is False
+        assert list_contains_at_least(required_sprint_column_names,
+                                      submitted_sprint_column_names) is False
 
     def list_contains_at_least_required_entries_names_empty_submitted(self):
         print(f">> start list_contains_at_least_required_entries_names_empty_submitted")
         required_sprint_column_names = ['Name', 'Status', 'Start Date', 'End Date']
         submitted_sprint_column_names = []
-        assert list_contains_at_least_required_entries(required_sprint_column_names,
-                                                       submitted_sprint_column_names) is False
+        assert list_contains_at_least(required_sprint_column_names,
+                                      submitted_sprint_column_names) is False
 
     def list_contains_at_least_required_entries_names_duplicate_submitted(self):
         print(f">> start list_contains_at_least_required_entries_names_duplicate_submitted")
         required_sprint_column_names = ['Name', 'Status', 'Start Date', 'End Date']
         submitted_sprint_column_names = ['Name', 'Status', 'Start Date', 'End Date', 'Start Date']
-        assert list_contains_at_least_required_entries(required_sprint_column_names,
-                                                       submitted_sprint_column_names) is False
+        assert list_contains_at_least(required_sprint_column_names,
+                                      submitted_sprint_column_names) is False
 
 
 class TestDFFromFile(TestCase):
