@@ -31,11 +31,14 @@ if __name__ == "__main__":
     if auth_token_val == "novalue":
         print("You must set the GITHUB_TOKEN environment variable to run this program")
         exit(1)
-    df = pdio.LegacyProjectCards(
+    lpr = pdio.LegacyProjectCards(
         access_token=auth_token_val,
         organization_name=args.organization_name,
         project_name=args.proj_name)
-    df.fetch_data()
-    df.print_project_cards()
-    pdio.write_dataframe(df=df.dataframe()) # raw data
-    dfsum = pdio.SprintSummaryFrame(df_in=df.dataframe())
+    lpr.print_project_cards()
+    pdio.write_dataframe(df=lpr.dataframe()) # raw data
+    dfSzer = pdio.SprintCardSizer(df_in=lpr.dataframe())
+
+    pdio.write_dataframe(dfSzer.dataframe())
+    spsumrzr = pdio.SprintSizeSummarizer(df_in=dfSzer.dataframe())
+    print(spsumrzr.sprint_summary_line())

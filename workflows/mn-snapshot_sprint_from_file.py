@@ -25,15 +25,11 @@ if __name__ == "__main__":
                         type=str, help='XXX')
     args = parser.parse_args()
 
-    # input:
-    # get OAUTH token
-    auth_token_val = os.getenv('GITHUB_TOKEN', "novalue")
-    if auth_token_val == "novalue":
-        print("You must set the GITHUB_TOKEN environment variable to run this program")
-        exit(1)
-
-
-    df = pdio.DFFromFile(
+    dfff = pdio.DFFromFile(
         in_dir=args.dir_name,
-        file_name=args.filename)
-    dfsum = pdio.SprintSummaryFrame(df_in=df.dataframe())
+        file_name=args.file_name)
+    dfSzer = pdio.SprintCardSizer(df_in=dfff.dataframe())
+    pdio.write_dataframe(dfSzer.dataframe())
+    spsumrzr = pdio.SprintSizeSummarizer(df_in=dfSzer.dataframe())
+    print(spsumrzr.sprint_summary_line())
+
