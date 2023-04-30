@@ -11,7 +11,7 @@ from iqss_gh_reporting import utils as utils
 from iqss_gh_reporting import transformer as transformer
 
 
-if __name__ == "__main__":
+def main():
     # ===================================================================================================================
     # workflow
     #  - Query the legacy dataverse project API.

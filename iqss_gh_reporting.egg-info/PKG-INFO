@@ -2,12 +2,13 @@ Metadata-Version: 2.1
 Name: iqss-gh-reporting
 Version: 0.1
 Summary: collects raw data from github and transforms it into a format that can be used for reporting
-Home-page: http://localhost/
+Home-page: https://github.com/thisaintwork/iqss_gh_reporting/tree/master/workflows
 Author: Mike Reekie
 Author-email: mike@reekie.us
 License: MIT
 Platform: UNKNOWN
 Description-Content-Type: text/markdown
+License-File: LICENSE.txt
 
 
 

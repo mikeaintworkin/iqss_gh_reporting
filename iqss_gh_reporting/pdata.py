@@ -151,6 +151,7 @@ class GHProjectData:
         # - 20230426_153822-output.tsv
         # -------------------------------------------------------------------------------------------
 
+        # if source is a file, then assume the prefix of the file name is the date/time that the data was collected.
         if self._v['src_type'] == "file":
             if self._v['data_collected_time'] is None:
                 regex1 = re.compile(r"(^[0-9_-]+)")

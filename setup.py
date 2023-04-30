@@ -24,7 +24,9 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'fetch_from_legacy_proj = workflows.main:main'
+            'create_iq_snapshot-api = workflows.create_iq_snapshot-api:main'
+            'create_iq_snapshot-file = workflows.create_iq_snapshot-file:main'
+            'create_iq_snapshot-init_sprint = workflows.create_iq_snapshot-init_sprint:main'
         ]
 }
 )

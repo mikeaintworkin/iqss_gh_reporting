@@ -8,7 +8,7 @@ from iqss_gh_reporting import pdata as ghpdata
 from iqss_gh_reporting import utils as utils
 from iqss_gh_reporting import transformer as transformer
 
-if __name__ == "__main__":
+def main():
     print(f"Running {__file__} as the main program")
 
     # set workflow specific variables
