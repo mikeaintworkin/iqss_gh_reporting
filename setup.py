@@ -21,12 +21,12 @@ setup(
         'json2xml',
         'pathvalidate',
         'pandas',
+        'pyyaml'
     ],
-    entry_points={
-        'console_scripts': [
-            'create_iq_snapshot-api = workflows.create_iq_snapshot-api:main'
-            'create_iq_snapshot-file = workflows.create_iq_snapshot-file:main'
-            'create_iq_snapshot-init_sprint = workflows.create_iq_snapshot-init_sprint:main'
-        ]
-}
+    scripts=['workflows/create_iq_snapshot_init_sprint.py',
+             'workflows/create_iq_snapshot_api.py',
+             'workflows/create_iq_snapshot_file.py']
+
+
+
 )

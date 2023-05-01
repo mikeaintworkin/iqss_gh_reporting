@@ -3,3 +3,4 @@ gql
 json2xml
 pandas
 pathvalidate
+pyyaml

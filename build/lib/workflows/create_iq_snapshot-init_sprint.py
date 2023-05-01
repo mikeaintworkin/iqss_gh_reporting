@@ -76,7 +76,7 @@ def main():
 
 
     parser = argparse.ArgumentParser(
-        prog='create_iq_snapshot-init_sprint.py',
+        prog='create_iq_snapshot_init_sprint.py',
         description='run this at the beginning of the sprint to set the defaults for the sprint',
         epilog='<>')
     parser.add_argument('--dest_dir_name', dest='dest_dir_name', default=data['any']['dest_dir_name'], type=str, help='XXX')

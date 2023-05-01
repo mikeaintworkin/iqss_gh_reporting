@@ -9,13 +9,10 @@ iqss_gh_reporting/utils.py
 iqss_gh_reporting.egg-info/PKG-INFO
 iqss_gh_reporting.egg-info/SOURCES.txt
 iqss_gh_reporting.egg-info/dependency_links.txt
-iqss_gh_reporting.egg-info/entry_points.txt
 iqss_gh_reporting.egg-info/requires.txt
 iqss_gh_reporting.egg-info/top_level.txt
 tests/__init__.py
 tests/test_project_data_io.py
-workflows/__init__.py
-workflows/dev-capture_pr_points_from_issues.py
-workflows/main.py
-workflows/mn-snapshot_sprint_from_api.py
-workflows/mn-snapshot_sprint_from_file.py
+workflows/create_iq_snapshot_api.py
+workflows/create_iq_snapshot_file.py
+workflows/create_iq_snapshot_init_sprint.py

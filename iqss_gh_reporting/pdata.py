@@ -72,7 +72,7 @@ class GHProjectData:
         if collection_flag not in ["start", "snapshot", "end", "unknown"]:
             raise ValueError(f"Error: sprint_snap_status must be one of: 'start', 'snapshot', 'end', 'unknown'")
 
-        if src_type not in ["file", "api", "unknown"]:
+        if src_type not in ["file", "api"]:
             raise ValueError(f"Error: src_type: must be one of 'file', 'api', 'unknown'")
 
         self._v = {}
@@ -84,7 +84,7 @@ class GHProjectData:
         self._v['in_dir'] = sanitize_filepath(src_dir_name, platform="auto")
         self._v['in_file'] = sanitize_filename(src_file_name, platform="auto")
         self._v['out_dir'] = sanitize_filepath(dest_dir_name, platform="auto")
-        self._v['workflow_name'] =  os.path.splitext(os.path.basename(workflow_name))[0]
+        self._v['workflow_name'] = os.path.splitext(os.path.basename(workflow_name))[0]
 
         self._v['src_type'] = src_type
         self._v['data_collected_time'] = data_collected_time
