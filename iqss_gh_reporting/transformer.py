@@ -355,3 +355,30 @@ class SprintCardSizer:
         self._clean_labels()
         self._add_size_column()
 
+class PrPointsFetcher:
+    def __init__(self, sp_data: pdata = None):
+        self._sprint_col_values = []
+        if not isinstance(sp_data.df, pd.DataFrame):
+            raise TypeError("df must be a Pandas DataFrame")
+        self._df_prs = sp_data.df.copy()
+
+    def _initialize_log(self):
+        col_headers = [
+            "PR",
+            "Repo",
+            "Issue",
+            "Flag"
+        ]
+        self._df_prs = pd.DataFrame(columns=col_headers)
+        new_row = {
+            "PR": "dummy",
+            "Repo:": "dummy",
+            "Issue": "dummy",
+            "Flag": "dummy"
+        }
+        self._df_prs = pd.concat([self._df_prs, pd.DataFrame([new_row])], ignore_index=True)
+
+
+    def df_zero_rows(self):
+        filtered_df = self._df_prs[self._df_prs['Size'] == 0]
+        return filtered_df

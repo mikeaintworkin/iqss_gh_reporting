@@ -22,7 +22,7 @@ import copy
 
 def write_dataframe(df: pd.DataFrame = None,
                     comments: str = "",
-                    out_dir: str = '/home/perftest/DevCode/github-com-mreekie/iqss_gh_reporting/run/wrk',
+                    out_dir: str = "~/iqss_gh_reporting/run/wrk",
                     out_name: str = 'output'):
     # ===================================================================================================================
     # This writes the contents of a dataframe to a tab delimited file.

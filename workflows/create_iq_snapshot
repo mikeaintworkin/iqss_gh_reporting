@@ -92,6 +92,8 @@ def main():
     sprint_data.df = xfmrd_df
     sprint_data.write(postfix="sized")
 
+    prs = transformer.PrPointsFetcher(sprint_data)
+    utils.write_dataframe(df=prs.df_zero_rows())
 
     # SprintSizeSummarizer creates a new dataframe so I need create a variable that I can reference to get the results
     summarized_data = xfmr.SprintSizeSummarizer(sprint_data)
