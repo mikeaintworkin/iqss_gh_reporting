@@ -74,6 +74,7 @@ def main():
     parser.add_argument('--project_name', dest='project_name', default=ydata['api']['project_name'], type=str, help='XXX')
     parser.add_argument('--src_file_name', dest='src_file_name', default=os.path.expanduser(ydata['file']['src_file_name']), type=str, help='XXX')
     parser.add_argument('--src_dir_name', dest='src_dir_name', default=os.path.expanduser(ydata['file']['src_dir_name']), type=str, help='XXX')
+    parser.add_argument('--src_from', dest='src_type', type=str, help='XXX')
     args = parser.parse_args()
 
     # identify where we are sourcing the data from

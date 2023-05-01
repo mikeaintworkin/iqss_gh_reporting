@@ -47,6 +47,7 @@ def main():
               # collection_flag: 'other'
               dest_dir_name: '~/iqss_gh_reporting/run/out'
               collection_timestamp: None 
+              src_type: 'file'
     
             api:
               organization_name: 'IQSS'
@@ -110,14 +111,16 @@ def main():
         description='run this at the beginning of the sprint to set the defaults for the sprint',
         epilog=long_text)
     # don't allow the dest-dir_name to be set from the command line
-    # parser.add_argument('--dest_dir_name', dest='dest_dir_name', default=os.path.expanduser(data['any']['dest_dir_name']), type=str, help='XXX')
-    parser.add_argument('--sprint_name', dest='sprint_name', default=data['any']['sprint_name'], type=str, help='XXX')
-    parser.add_argument('--collection_flag', dest='collection_flag', default=data['any']['collection_flag'], type=str, help='XXX')
-    parser.add_argument('--collection_timestamp', dest='collection_timestamp', default=data['any']['collection_timestamp'], type=str, help='XXX')
+    # parser.add_argument('--dest_dir_name', dest='dest_dir_name', default=os.path.expanduser(data['dest_dir_name']), type=str, help='XXX')
+    parser.add_argument('--sprint_name', dest='sprint_name', default=data['sprint_name'], type=str, help='XXX')
+    parser.add_argument('--collection_flag', dest='collection_flag', default=data['collection_flag'], type=str, help='XXX')
+    parser.add_argument('--collection_timestamp', dest='collection_timestamp', default=data['collection_timestamp'], type=str, help='XXX')
     parser.add_argument('--organization_name', dest='organization_name', default=data['api']['organization_name'], type=str, help='XXX')
     parser.add_argument('--project_name', dest='project_name', default=data['api']['project_name'], type=str, help='XXX')
     parser.add_argument('--src_file_name', dest='src_file_name', default=os.path.expanduser(data['file']['src_file_name']), type=str, help='XXX')
     parser.add_argument('--src_dir_name', dest='src_dir_name', default=os.path.expanduser(data['file']['src_dir_name']), type=str, help='XXX')
+    parser.add_argument('--src_type', dest='src_type',default=data['src_type'], type=str, help='XXX')
+
     args = parser.parse_args()
 
     print("------------------------------")
@@ -128,9 +131,11 @@ def main():
     yaml_string = yaml.dump(args_dict, default_flow_style=False)
     print(yaml_string)
 
-    data['any']['sprint_name'] = args.sprint_name
-    data['any']['collection_flag'] = args.collection_flag
-    data['any']['collection_timestamp'] = args.collection_timestamp
+
+    data['src_type'] = args.src_type
+    data['sprint_name'] = args.sprint_name
+    data['collection_flag'] = args.collection_flag
+    data['collection_timestamp'] = args.collection_timestamp
     data['api']['organization_name'] = args.organization_name
     data['api']['project_name'] = args.project_name
     data['file']['src_file_name'] = args.src_file_name

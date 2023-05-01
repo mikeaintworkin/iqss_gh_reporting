@@ -18,7 +18,7 @@ import os
 import pandas as pd
 import re
 import copy
-
+from iqss_gh_reporting import pdata
 
 
 class RequiredSprintColumnValues:
@@ -172,14 +172,18 @@ class SprintSizeSummarizer:
     #  You can:
     #    - get the modified dataframe
     # ===================================================================================================================
-    def __init__(self, sprint_name: str = None, timestamp: str = None):
-        self._sprint_name = sprint_name
-        self._timestamp = timestamp
+    def __init__(self, sp_data: pdata = None):
+        self._sprint_name = sp_data.sprint_name
+        self._timestamp = sp_data.data_collected_time
         self._df = None
         self._df_summary = None
         self._row_values = []
         self._row_counts = []
         self._sprint_col_values = []
+        if not isinstance(sp_data.df, pd.DataFrame):
+            raise TypeError("df must be a Pandas DataFrame")
+        self._df = sp_data.df.copy()
+        self._transform()
 
     def _create_summary_dataframe(self):
         self._summarize_size_column()
@@ -238,7 +242,6 @@ class SprintSizeSummarizer:
         # print(f"{self._row_values}")
         # print(f"{self._row_counts}")
 
-
     @property
     def type(self):
         return type(self).__name__
@@ -251,12 +254,7 @@ class SprintSizeSummarizer:
     def df(self):
         return self._df
 
-    @df.setter
-    def df(self, df: pd.DataFrame = None):
-        if not isinstance(df, pd.DataFrame) and not isinstance(df, pd.DataFrame):
-            raise TypeError("df must be a Pandas DataFrame")
-        self._df = df
-
+    def _transform(self):
         if not list_contains_at_least(RequiredDfColumnHeaderNames().values(), self._df.columns):
             raise ValueError("Failed data header name check")
 
@@ -264,8 +262,6 @@ class SprintSizeSummarizer:
         if not list_contains_at_least(RequiredSprintColumnValues.list(), self._sprint_col_values):
             raise ValueError("Failed  sprint column value check")
         self._create_summary_dataframe()
-
-
 
 
 class SprintCardSizer:
@@ -278,9 +274,12 @@ class SprintCardSizer:
     #  You can:
     #    - get the modified dataframe
     # ===================================================================================================================
-    def __init__(self):
-        self._df = None
+    def __init__(self, sp_data: pdata = None):
         self._sprint_col_values = []
+        if not isinstance(sp_data.df, pd.DataFrame):
+            raise TypeError("df must be a Pandas DataFrame")
+        self._df = sp_data.df.copy()
+        self._transform()
         return
 
     def print_issues(self):
@@ -326,20 +325,12 @@ class SprintCardSizer:
     def df(self):
         return self._df
 
-    @df.setter
-    def df(self, df: pd.DataFrame = None):
-        if not isinstance(df, pd.DataFrame) and not isinstance(df, pd.DataFrame):
-            raise TypeError("df must be a Pandas DataFrame")
-        self._df = df
-        if not isinstance(df, pd.DataFrame):
-            raise TypeError("df must be a Pandas DataFrame")
-
-        self._df = df
-        if self._df.empty:
-            return
+    def _transform(self):
+        # This class is only usable with the data from a sprint
+        # Come back later and add a way to validate the data type
 
         if not list_contains_at_least(RequiredDfColumnHeaderNames().values(), self._df.columns):
-            raise ValueError("Failed data header name check")
+            raise ValueError(f"{self.__class__.__name__} Failed data header name check")
 
         self._sprint_col_values = list(self._df[RequiredDfColumnHeaderNames.value('column')].unique())
         if not list_contains_at_least(RequiredSprintColumnValues.list(), self._sprint_col_values):

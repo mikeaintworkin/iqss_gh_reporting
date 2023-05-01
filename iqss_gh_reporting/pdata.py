@@ -85,25 +85,25 @@ class GHProjectData:
         self._v['in_file'] = sanitize_filename(src_file_name, platform="auto")
         self._v['out_dir'] = sanitize_filepath(dest_dir_name, platform="auto")
         self._v['workflow_name'] = os.path.splitext(os.path.basename(workflow_name))[0]
-
         self._v['src_type'] = src_type
-        self._v['data_collected_time'] = data_collected_time
-        self._set_data_collection_time()
 
-        self._v['out_file'] = \
-             self._v['data_collected_time'] \
-             + "-" + self._v['sprint_name'] \
-             + "-" + self._v['snapshot_type'] \
-             + "-" + self._v['workflow_name'] \
-             + "-" + self._v['src_type']  \
-             + "-" + self._v['this_run_time']
-
-        f = sanitize_filename(self._v['out_file'], platform="auto")
-        f = f.replace(' ', '')
-        f = f.replace(',', '')
-        self._v['out_file'] = f
+        self._v['data_collected_time'] = self._set_data_collection_time(data_collected_time)
+        self._v['out_file'] = self._set_out_file_name()
         self._log = None
         self._initialize_log()
+
+    def _set_out_file_name(self):
+        f = \
+            self._v['data_collected_time'] \
+            + "-" + self._v['sprint_name'] \
+            + "-" + self._v['snapshot_type'] \
+            + "-" + self._v['workflow_name'] \
+            + "-" + self._v['src_type'] \
+            + "-" + self._v['this_run_time']
+        f = sanitize_filename(f, platform="auto")
+        f = f.replace(' ', '')
+        f = f.replace(',', '')
+        return f
 
     def _initialize_log(self):
         col_headers = [
@@ -139,7 +139,7 @@ class GHProjectData:
         print(f" {out_file}")
         self._log.to_csv(out_file, sep='\t', index=False)
 
-    def _set_data_collection_time(self):
+    def _set_data_collection_time(self, dct: str):
         # -------------------------------------------------------------------------------------------
         # "file","api", "unknown" - indicates the source of the data.
         #
@@ -150,17 +150,16 @@ class GHProjectData:
         # - 2023_04_26-153822-output.tsv
         # - 20230426_153822-output.tsv
         # -------------------------------------------------------------------------------------------
-
         # if source is a file, then assume the prefix of the file name is the date/time that the data was collected.
         if self._v['src_type'] == "file":
-            if self._v['data_collected_time'] is None:
+            if dct is None:
                 regex1 = re.compile(r"(^[0-9_-]+)")
-                self._v['data_collected_time'] = regex1.search(os.path.basename(self._v['in_file'])).group(0)
+                return regex1.search(os.path.basename(self._v['in_file'])).group(0)
         elif self._v['src_type'] == "api":
-            self._v['data_collected_time'] = datetime.now().strftime("%Y_%m_%d-%H_%M_%S")
-        elif self._v['data_collected_time'] is None:
-            self._v['data_collected_time'] = "undefined"
-
+            return datetime.now().strftime("%Y_%m_%d-%H_%M_%S")
+        elif dct is None:
+            return "data_collected_time_not_specified"
+        return dct
 
     @property
     def this_run_time(self):
@@ -180,7 +179,7 @@ class GHProjectData:
 
     @df.setter
     def df(self, df: pd.DataFrame = None):
-        if not isinstance(df, pd.DataFrame) and not isinstance(df, pd.DataFrame):
+        if not isinstance(df, pd.DataFrame):
             raise TypeError("df must be a Pandas DataFrame")
         self._df = df
 
@@ -208,10 +207,6 @@ class GHProjectData:
     def out_dir(self):
         return self._v['out_dir']
 
-    def transform(self, xobject: object):
-        xobject.df = self._df
-        return
-
     @property
     def organization_name(self):
         return self._v['organization_name']
@@ -219,3 +214,22 @@ class GHProjectData:
     @property
     def project_name(self):
         return self._v['project_name']
+
+    def write(self, postfix: str = ""):
+        # ===================================================================================================================
+        # This writes the contents of a dataframe to a tab delimited file.
+        # ===================================================================================================================
+        out_file = sanitize_filepath(self._v['out_dir'], platform="auto") \
+                   + '/' + sanitize_filename(self._v['out_file'], platform="auto") \
+                   + '-' \
+                   + postfix \
+                   + ".tsv"
+        print(f"Saving result to file.")
+        print(f" {out_file}")
+        self._df.to_csv(out_file, sep='\t', index=False)
+
+    def validate_metadata(self):
+        # ===================================================================================================================
+        # This validates the metadata for the data object.
+        # ===================================================================================================================
+        return True

@@ -9,7 +9,7 @@ import yaml
 from iqss_gh_reporting import legacy_project_cards as pdio
 from iqss_gh_reporting import pdata as ghpdata
 from iqss_gh_reporting import utils as utils
-from iqss_gh_reporting import transformer as transformer
+from iqss_gh_reporting import transformer as xfmr
 
 def main():
     print(f"Running {__file__} as the main program")
@@ -52,28 +52,32 @@ def main():
     src_type = "file"
 
     sprint_data = ghpdata.GHProjectData(
-                                        src_type=src_type,
-                                        workflow_name=os.path.basename(__file__),
-                                        sprint_name=args.sprint_name,
-                                        collection_flag=args.collection_flag,
-                                        src_dir_name=args.src_dir_name,
-                                        src_file_name=args.src_file_name,
-                                        dest_dir_name=os.path.expanduser(ydata['any']['dest_dir_name']),
-                                        data_collected_time=args.collection_timestamp
-                                        )
-    sprint_data.df = utils.read_dataframe_file(in_dir=args.src_dir_name, file_name=args.src_file_name)
+        src_type=src_type,
+        workflow_name=os.path.basename(__file__),
+        sprint_name=args.sprint_name,
+        collection_flag=args.collection_flag,
+        src_dir_name=args.src_dir_name,
+        src_file_name=args.src_file_name,
+        dest_dir_name=os.path.expanduser(ydata['any']['dest_dir_name']),
+        data_collected_time=args.collection_timestamp
+        )
+    sprint_data.df = utils.read_dataframe_file(
+        in_dir=args.src_dir_name,
+        file_name=args.src_file_name
+        )
     sprint_data.add_log_entry(context="utils", comment=summary_of_this_run)
     sprint_data.write_log()
 
     utils.write_dataframe(df=sprint_data.df, out_dir=sprint_data.dest_dir, out_name=sprint_data.dest_file + "-orig")
 
-    sprint_data.transform(transformer.SprintCardSizer())
-    utils.write_dataframe(df=sprint_data.df, out_dir=sprint_data.dest_dir, out_name=sprint_data.dest_file + "-sized")
+    xfmrd_df = xfmr.SprintCardSizer(sprint_data).df
+    utils.write_dataframe(df=xfmrd_df, out_dir=sprint_data.dest_dir, out_name=sprint_data.dest_file + "-sized")
+
+    sprint_data.df = xfmrd_df
 
     # SprintSizeSummarizer creates a new dataframe so I need create a variable that I can reference to get the results
-    summarize = transformer.SprintSizeSummarizer(sprint_name=sprint_data.sprint_name, timestamp=sprint_data.data_collected_time)
-    sprint_data.transform(summarize)
-    utils.write_dataframe(df=summarize.df_summary, out_dir=sprint_data.dest_dir, out_name=sprint_data.dest_file + "-summary")
+    summarized_df = xfmr.SprintSizeSummarizer(sprint_data).df_summary
+    utils.write_dataframe(df=summarized_df, out_dir=sprint_data.dest_dir, out_name=sprint_data.dest_file + "-summary")
 
 
 if __name__ == "__main__":
