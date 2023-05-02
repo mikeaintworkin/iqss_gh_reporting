@@ -18,7 +18,6 @@ setup(
     install_requires=[
         'PyGithub',
         'gql',
-        'json2xml',
         'pathvalidate',
         'pandas',
         'pyyaml'
