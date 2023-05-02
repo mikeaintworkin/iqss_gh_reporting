@@ -1,4 +1,4 @@
-#!python
+#!/usr/bin/env python3
 import argparse
 import os
 import re
@@ -107,7 +107,7 @@ def main():
     '''
 
     parser = argparse.ArgumentParser(
-        prog='create_iq_snapshot_init_sprint.py',
+        prog='create_iq_snapshot_init',
         description='run this at the beginning of the sprint to set the defaults for the sprint',
         epilog=long_text)
     # don't allow the dest-dir_name to be set from the command line
@@ -120,6 +120,9 @@ def main():
     parser.add_argument('--src_file_name', dest='src_file_name', default=os.path.expanduser(data['file']['src_file_name']), type=str, help='XXX')
     parser.add_argument('--src_dir_name', dest='src_dir_name', default=os.path.expanduser(data['file']['src_dir_name']), type=str, help='XXX')
     parser.add_argument('--src_type', dest='src_type',default=data['src_type'], type=str, help='XXX')
+
+
+
 
     args = parser.parse_args()
 

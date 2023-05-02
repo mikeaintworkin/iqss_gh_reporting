@@ -17,7 +17,7 @@ def main():
     with open(yaml_file) as file:
         ydata = yaml.load(file, Loader=yaml.FullLoader)
     parser = argparse.ArgumentParser(
-        prog='create_iq_snapshot_init_sprint.py',
+        prog='create_iq_snapshot_init',
         description='run this at the beginning of the sprint to set the defaults for the sprint',
         epilog='<>')
 
@@ -59,7 +59,10 @@ def main():
         src_dir_name=args.src_dir_name,
         src_file_name=args.src_file_name,
         dest_dir_name=os.path.expanduser(ydata['dest_dir_name']),
-        data_collected_time=args.collection_timestamp
+        data_collected_time=args.collection_timestamp,
+        organization_name=args.organization_name,
+        project_name=args.project_name
+
         )
     sprint_data.validate_metadata()
 

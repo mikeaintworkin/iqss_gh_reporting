@@ -380,5 +380,6 @@ class PrPointsFetcher:
 
 
     def df_zero_rows(self):
-        filtered_df = self._df_prs[self._df_prs['Size'] == 0]
-        return filtered_df
+        fdf = self._df_prs[self._df_prs['Column'] != "Done 🚀"]
+        fdf = fdf[fdf['Size'] == 0]
+        return fdf

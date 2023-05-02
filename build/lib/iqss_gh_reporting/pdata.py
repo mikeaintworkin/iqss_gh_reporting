@@ -220,7 +220,7 @@ class GHProjectData:
         # This writes the contents of a dataframe to a tab delimited file.
         # ===================================================================================================================
         out_file = sanitize_filepath(self._v['out_dir'], platform="auto") \
-                   + '/' + sanitize_filename(self._v['out_name'], platform="auto") \
+                   + '/' + sanitize_filename(self._v['out_file'], platform="auto") \
                    + '-' \
                    + postfix \
                    + ".tsv"

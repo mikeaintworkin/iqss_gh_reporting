@@ -63,7 +63,8 @@ class LegacyProjectCards:
                 RequiredDfColumnHeaderNames.value("state"),
                 RequiredDfColumnHeaderNames.value("CreatedAt"),
                 RequiredDfColumnHeaderNames.value("UpdatedAt"),
-                RequiredDfColumnHeaderNames.value("ClosedAt")
+                RequiredDfColumnHeaderNames.value("ClosedAt"),
+                RequiredDfColumnHeaderNames.value("LinkedPRIssues")
                 ]
             )
         # external init
@@ -130,10 +131,12 @@ class LegacyProjectCards:
                     if self._card_count % 50 == 0:
                         print(f">>>>>> {self._card_count} # cards {self._project_object.name}: {column.name} \
                         ,{card_type} ,{card_content.number},{card_content.repository.name} ,{card_content.title}")
+                    # If the card is associated with a pull request, include the associated issues
+
                     new_row = {
                         RequiredDfColumnHeaderNames.value("project"): self._project_object.name,
                         RequiredDfColumnHeaderNames.value("column"): column_name,
-                        RequiredDfColumnHeaderNames.value("Card"): card_content.title,
+                        RequiredDfColumnHeaderNames.value("card"): card_content.title,
                         RequiredDfColumnHeaderNames.value("CardURL"): card_content.html_url,
                         RequiredDfColumnHeaderNames.value("type"): card_type,
                         RequiredDfColumnHeaderNames.value("number"): card_content.number,
@@ -142,7 +145,9 @@ class LegacyProjectCards:
                         RequiredDfColumnHeaderNames.value("state"): card_content.state,
                         RequiredDfColumnHeaderNames.value("CreatedAt"): card_content.created_at,
                         RequiredDfColumnHeaderNames.value("UpdatedAt"): card_content.updated_at,
-                        RequiredDfColumnHeaderNames.value("ClosedAt"): card_content.closed_at
+                        RequiredDfColumnHeaderNames.value("ClosedAt"): card_content.closed_at,
+                        RequiredDfColumnHeaderNames.value("LinkedPRIssues"): ""
+
                     }
                     self._project_cards = pd.concat([self._project_cards, pd.DataFrame([new_row])], ignore_index=True)
             print(f"  end: {self._card_count} cards processed: {self._project_object.name}, Column {column.name}")

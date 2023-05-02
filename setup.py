@@ -23,10 +23,7 @@ setup(
         'pandas',
         'pyyaml'
     ],
-    scripts=['workflows/create_iq_snapshot_init_sprint.py',
-             'workflows/create_iq_snapshot_api.py',
-             'workflows/create_iq_snapshot_file.py']
-
-
-
+    scripts=['workflows/create_iq_snapshot_init',
+             'workflows/create_iq_snapshot'
+             ],
 )

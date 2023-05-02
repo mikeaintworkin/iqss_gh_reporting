@@ -183,22 +183,9 @@ class SprintSizeSummarizer:
         if not isinstance(sp_data.df, pd.DataFrame):
             raise TypeError("df must be a Pandas DataFrame")
         self._df = sp_data.df.copy()
+        self._dest_dir = sp_data.dest_dir
+        self._dest_file = sp_data.dest_file
         self._transform()
-
-    def _create_summary_dataframe(self):
-        self._summarize_size_column()
-        self._summarize_size_in_sprint_column_group()
-
-        init_columns = ["DateTimeStamp", "SprintName"]
-        init_columns.extend(AllSprintColumnValues.list())
-        init_columns.append("SprintActiveCards")
-        init_columns.extend([i + "_" for i in AllSprintColumnValues.list()])
-        init_columns.append("SprintActiveCards_")
-
-        new_row = [self._timestamp, self._sprint_name]
-        new_row.extend(self._row_values)
-        new_row.extend(self._row_counts)
-        self._df_summary = pd.concat([self._df_summary, pd.DataFrame([new_row], columns=init_columns)], ignore_index=True)
 
     def _summarize_size_column(self):
         for col_val in AllSprintColumnValues.list():
@@ -257,11 +244,38 @@ class SprintSizeSummarizer:
     def _transform(self):
         if not list_contains_at_least(RequiredDfColumnHeaderNames().values(), self._df.columns):
             raise ValueError("Failed data header name check")
-
         self._sprint_col_values = list(self._df[RequiredDfColumnHeaderNames.value('column')].unique())
         if not list_contains_at_least(RequiredSprintColumnValues.list(), self._sprint_col_values):
             raise ValueError("Failed  sprint column value check")
         self._create_summary_dataframe()
+
+    def write(self, postfix: str = ""):
+        # ===================================================================================================================
+        # This writes the contents of a dataframe to a tab delimited file.
+        # ===================================================================================================================
+        out_file = sanitize_filepath(self._dest_dir, platform="auto") \
+                   + '/' + sanitize_filename(self._dest_file, platform="auto") \
+                   + '-' \
+                   + postfix \
+                   + ".tsv"
+        print(f"Saving result to file.")
+        print(f" {out_file}")
+        self._df_summary.to_csv(out_file, sep='\t', index=False)
+
+    def _create_summary_dataframe(self):
+        self._summarize_size_column()
+        self._summarize_size_in_sprint_column_group()
+
+        init_columns = ["DateTimeStamp", "SprintName"]
+        init_columns.extend(AllSprintColumnValues.list())
+        init_columns.append("SprintActiveCards")
+        init_columns.extend([i + "_" for i in AllSprintColumnValues.list()])
+        init_columns.append("SprintActiveCards_")
+
+        new_row = [self._timestamp, self._sprint_name]
+        new_row.extend(self._row_values)
+        new_row.extend(self._row_counts)
+        self._df_summary = pd.concat([self._df_summary, pd.DataFrame([new_row], columns=init_columns)], ignore_index=True)
 
 
 class SprintCardSizer:
@@ -341,3 +355,31 @@ class SprintCardSizer:
         self._clean_labels()
         self._add_size_column()
 
+class PrPointsFetcher:
+    def __init__(self, sp_data: pdata = None):
+        self._sprint_col_values = []
+        if not isinstance(sp_data.df, pd.DataFrame):
+            raise TypeError("df must be a Pandas DataFrame")
+        self._df_prs = sp_data.df.copy()
+
+    def _initialize_log(self):
+        col_headers = [
+            "PR",
+            "Repo",
+            "Issue",
+            "Flag"
+        ]
+        self._df_prs = pd.DataFrame(columns=col_headers)
+        new_row = {
+            "PR": "dummy",
+            "Repo:": "dummy",
+            "Issue": "dummy",
+            "Flag": "dummy"
+        }
+        self._df_prs = pd.concat([self._df_prs, pd.DataFrame([new_row])], ignore_index=True)
+
+
+    def df_zero_rows(self):
+        fdf = self._df_prs[self._df_prs['Column'] != "Done 🚀"]
+        fdf = fdf[fdf['Size'] == 0]
+        return fdf
