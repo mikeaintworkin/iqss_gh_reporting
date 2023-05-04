@@ -7,7 +7,6 @@ output of the `create_iq_snapshot` process
 import re
 import os
 import pandas as pd
-import pprint
 
 def read_sized_snapshot(filename, sep='\t'):
     """
