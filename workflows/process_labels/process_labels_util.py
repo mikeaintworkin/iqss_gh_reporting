@@ -39,6 +39,8 @@ def read_sized_snapshot(filename, sep='\t'):
     if (not(os.path.isfile(filename))):
         msg = '{} is not a file'.format(filename)
         raise TypeError(msg)
+        
+    # TODO perform additional validation of file, if needed
 
     return pd.read_csv(filename, sep=sep)
 
