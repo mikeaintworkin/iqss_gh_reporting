@@ -245,8 +245,9 @@ class SprintSizeSummarizer:
         if not list_contains_at_least(RequiredDfColumnHeaderNames().values(), self._df.columns):
             raise ValueError("Failed data header name check")
         self._sprint_col_values = list(self._df[RequiredDfColumnHeaderNames.value('column')].unique())
-        if not list_contains_at_least(RequiredSprintColumnValues.list(), self._sprint_col_values):
-            raise ValueError("Failed  sprint column value check")
+        # See #19
+        # if not list_contains_at_least(RequiredSprintColumnValues.list(), self._sprint_col_values):
+        #     raise ValueError("Failed  sprint column value check")
         self._create_summary_dataframe()
 
     def write(self, postfix: str = ""):
@@ -347,39 +348,49 @@ class SprintCardSizer:
             raise ValueError(f"{self.__class__.__name__} Failed data header name check")
 
         self._sprint_col_values = list(self._df[RequiredDfColumnHeaderNames.value('column')].unique())
-        if not list_contains_at_least(RequiredSprintColumnValues.list(), self._sprint_col_values):
-            raise ValueError("Failed  sprint column value check")
+        # See #19
+        #if not list_contains_at_least(RequiredSprintColumnValues.list(), self._sprint_col_values):
+        #    raise ValueError("Failed  sprint column value check")
 
         # missing an else statement that exits here
         # create the output dataframe
         self._clean_labels()
         self._add_size_column()
 
+
 class PrPointsFetcher:
+    # ===================================================================================================================
+    # This takes a dataframe containing information from a sprint
+    # precond: it must contain the size column
+    #
+    # The   barebones is completed.
+    # - Assuming the  value for pullrequest is "pull"
+    # - doesn't flag issues with zero points - should it?
+    # ===================================================================================================================
     def __init__(self, sp_data: pdata = None):
+        # ----------------------------------------------------------------------------------------------------------
+        # - It creates an internal dataframe with rows where
+        # - the column is in one of the columns that make up an Active Sprint item
+        # - the size is 0
+        # - the type is a PullRequest
+        # ----------------------------------------------------------------------------------------------------------
         self._sprint_col_values = []
         if not isinstance(sp_data.df, pd.DataFrame):
             raise TypeError("df must be a Pandas DataFrame")
-        self._df_prs = sp_data.df.copy()
 
-    def _initialize_log(self):
-        col_headers = [
-            "PR",
-            "Repo",
-            "Issue",
-            "Flag"
-        ]
-        self._df_prs = pd.DataFrame(columns=col_headers)
-        new_row = {
-            "PR": "dummy",
-            "Repo:": "dummy",
-            "Issue": "dummy",
-            "Flag": "dummy"
-        }
-        self._df_prs = pd.concat([self._df_prs, pd.DataFrame([new_row])], ignore_index=True)
-
-
-    def df_zero_rows(self):
-        fdf = self._df_prs[self._df_prs['Column'] != "Done 🚀"]
+        fdf = sp_data.df[sp_data.df['Column'].isin(RequiredSprintColumnValues.NAMES)]
         fdf = fdf[fdf['Size'] == 0]
-        return fdf
+        fdf = fdf[fdf['Type'] == "pull"]
+        # RequiredSprintColumnValues.NAMES
+        self._df = fdf
+
+    # def get(self, sprint_start_data: pdata = None):
+    # ----------------------------------------------------------------------------------------------------------
+    # - It creates an internal dataframe with rows where
+    # - the column is in one of the columns that make up an Active Sprint item
+    # - the size is 0
+    # - the type is a PullRequest
+    # ----------------------------------------------------------------------------------------------------------
+    #     self._df, = pd.merge(self._df, sprint_start_data, on=['Number' "Repo"], how='left')
+    #     # Select the 'Attached Issue' column from the merged data frame
+    #     attached_issues = merged['Attached Issue']

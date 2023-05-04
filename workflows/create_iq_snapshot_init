@@ -40,14 +40,13 @@ def main():
         print(f"Creating file: {yaml_file}")
         default_yaml_contents = \
             '''
-            any:
-              sprint_name: 'April 12, 2023' 
-              collection_flag: 'start' 
-              # collection_flag: 'end'
-              # collection_flag: 'other'
-              dest_dir_name: '~/iqss_gh_reporting/run/out'
-              collection_timestamp: None 
-              src_type: 'file'
+            sprint_name: 'April 12, 2023' 
+            collection_flag: 'start' 
+            # collection_flag: 'end'
+            # collection_flag: 'other'
+            dest_dir_name: '~/iqss_gh_reporting/run/out'
+            collection_timestamp: None 
+            src_type: 'file'
     
             api:
               organization_name: 'IQSS'

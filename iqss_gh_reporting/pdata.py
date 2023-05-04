@@ -161,6 +161,14 @@ class GHProjectData:
             return "data_collected_time_not_specified"
         return dct
 
+    # def get_issue(self, pr: Card = None):
+    #      # -------------------------------------------------------------------------------------------
+    #      #
+    #      # -------------------------------------------------------------------------------------------
+    #      filtered_df = self._df[(self._df['Number'] == pr.number) & (self._df['Repo'] == pr.repo])]
+    #      print(filtered_df)
+    #      return
+
     @property
     def this_run_time(self):
         return self._v['this_run_time']
@@ -233,3 +241,37 @@ class GHProjectData:
         # This validates the metadata for the data object.
         # ===================================================================================================================
         return True
+
+
+class Card:
+    def __init__(self, number: str, repo: str, labels_str: str, labels: list = None):
+        # ===================================================================================================================
+        # This creates an object that is generic enough to be used to represent an issue or a pr
+        # For simplicity, all of the properties are public
+        # properties:
+        #  number: str - the number (e.g. Issue number or PR number)
+        #  repo: str - the repo name
+        #  labels_str: str - the labels as a comma separated string
+        #  labels: list - the labels as a list
+        # ===================================================================================================================
+        # self.project =
+        # self.column =
+        # self.title =
+        # self.cardurl =
+        # self.type =
+        # self.createdat =
+        # self.updatedat =
+        # self.closedat =
+        self.state = None
+        self.size = None
+        self.number = number
+        self.repo = repo
+        self.comment = None
+        # comeBackAndFix - this is too simplistic.
+        if labels is None:
+            labels = labels_str.split(",")
+        elif labels_str is None:
+            labels_str = ",".join(labels)
+        self.labels = labels
+        self.labels_str = labels_str
+
