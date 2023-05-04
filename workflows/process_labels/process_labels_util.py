@@ -151,6 +151,7 @@ def process_sized_snapshot(df, labels='Labels', key='CardURL', required_fields=[
         for field in required_fields:
             req_fields[key_value][field] =  row[1].get(field)
     
+    # list of records, one dataframe row per record
     records = []
     # transform parsed labels and req_fields into records
     for entry in parsed_labels.keys():
@@ -172,11 +173,4 @@ def process_sized_snapshot(df, labels='Labels', key='CardURL', required_fields=[
     ret_df = ret_df.fillna(0)
     return ret_df
 
-"""
-        # get the required fields
-        req_fields = []
-        for field in required_fields:
-            elem = {}
-            elem[field] = row[1].get(field)
-            req_fields.append(elem)
-"""
+# end document
