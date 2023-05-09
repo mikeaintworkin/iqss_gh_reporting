@@ -14,7 +14,7 @@ def main():
     parser = argparse.ArgumentParser(
     prog='process_labels.py',
     description='Read and process the labels in the sized snapshot output of the `create_iq_snapshot` process',
-    epilog='Usage: python process_labels.py --input <infile> --output <ofile>')
+    epilog='Usage: python process_labels.py --input <infile> --output <ofile> --matrix <matrixfile>')
 
     parser.add_argument('--input', type=str, help='full path to input file', required=True)
     parser.add_argument('--output', type=str, help='full path to output file', required=True)

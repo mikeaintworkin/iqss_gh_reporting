@@ -23,8 +23,8 @@ def read_sized_snapshot(filename, sep='\t'):
     Raise
     -----
     KeyError
-        FileNotFoundError
-        TypeError (resource is not a file)
+    FileNotFoundError
+    TypeError (resource is not a file)
 
     Return
     -------
@@ -40,7 +40,7 @@ def read_sized_snapshot(filename, sep='\t'):
         msg = '{} is not a file'.format(filename)
         raise TypeError(msg)
         
-    # TODO perform additional validation of file, if needed
+    # TODO perform additional file validation, if needed
 
     return pd.read_csv(filename, sep=sep)
 
@@ -154,6 +154,7 @@ def process_sized_snapshot(df, labels='Labels', key='CardURL', required_fields=[
     
     # list of records, one dataframe row per record
     records = []
+    
     # transform parsed labels and req_fields into records
     for entry in parsed_labels.keys():
         record = {}
