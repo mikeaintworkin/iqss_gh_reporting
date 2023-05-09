@@ -4,10 +4,10 @@ Read and process the labels in the sized snapshot output of the `create_iq_snaps
 import argparse
 import sys
 if './' not in sys.path:
-    sys.path.append('./')
+    sys.path.append('process_labels/')
 
 import pandas as pd
-import process_labels_util as plu
+from iqss_gh_reporting import process_labels_util as plu
 
 def main():
     # load argparser

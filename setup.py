@@ -23,6 +23,7 @@ setup(
         'pyyaml'
     ],
     scripts=['workflows/create_iq_snapshot_init',
-             'workflows/create_iq_snapshot'
+             'workflows/create_iq_snapshot',
+             'workflows/process_labels'
              ],
 )
