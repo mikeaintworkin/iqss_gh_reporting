@@ -1,2 +1,0 @@
-query_input_params "{'loginOrg': 'IQSS', 'firstFew': 10, 'projectNum': 34}"
- { 
