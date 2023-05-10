@@ -38,10 +38,10 @@ def main():
     if (matrix):
         new_df.to_csv(matrix, sep='\t', index=False)
 
-    # create a summary of processed labels
-    output_df = pd.DataFrame(new_df.sum()).transpose()
-    output_df.drop('CardURL', axis=1, inplace=True)
-    output_df.drop('Repo', axis=1, inplace=True)
+    # summarize a subset of the processed snapshot
+    output_df = plu.summarize_processed_sized_snapshot(new_df, filter={})
+
+    # write summary to files
     output_df.to_csv(outfile, sep='\t',index=False)
 
 if __name__ == "__main__":
