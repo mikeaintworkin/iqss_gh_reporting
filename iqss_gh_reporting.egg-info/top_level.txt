@@ -1,3 +1,0 @@
-iqss_gh_reporting
-tests
-z-scratch
