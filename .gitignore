@@ -4,7 +4,9 @@
 **/TESTING
 **/TEST
 **/*.tar
-
+/z-scratch
+/build
+/iqss_gh_reporting.egg-info
 
 
 # OS generated files #
