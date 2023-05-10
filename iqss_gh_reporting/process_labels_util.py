@@ -68,7 +68,7 @@ def _parse_labels(labels):
             names.append(name_list[0])
     return names
 
-def process_sized_snapshot(df, labels='Labels', key='CardURL', required_fields=['Repo']):
+def process_sized_snapshot(df, labels='Labels', key='CardURL'):
     """
     Process a DataFrame derived from a sized sprint snapshot
 
@@ -83,9 +83,6 @@ def process_sized_snapshot(df, labels='Labels', key='CardURL', required_fields=[
     key : str
         Field in DataFrame to use as key. Must be unique in snapshot. 
         Default: ['CardURL]
-
-    required_fields : list
-        List of fields required in the DataFrame. Default 'Repo'
 
     Raise
     -----
@@ -113,18 +110,12 @@ def process_sized_snapshot(df, labels='Labels', key='CardURL', required_fields=[
         msg = 'Missing key field: {}'.format(key)
         raise KeyError(msg)
     
-    # dataframe must contain required fields
-    for field in required_fields:
-        if (field not in df):
-            msg = 'Missing required field: {}'.format(field)
-            raise KeyError(msg)
-    
     # key field must be unique in dataframe
     if (len(df[key].unique()) != len(df)):
         raise KeyError('Key is not unique')
     
-    # copy the input dataframe
-    ret_df = df.copy(deep=True)
+    # get a dict representation of dataframe
+    df_dict = df.to_dict('records')
 
     # create a dict for parsed labels
     # label: Label(name="D: Dataset: large number of files")
@@ -132,40 +123,32 @@ def process_sized_snapshot(df, labels='Labels', key='CardURL', required_fields=[
     # ex: {'https://github.com/repo/issues/101':[label_1, label_2, label_3]}
     parsed_labels = {}
 
-    # create a dict for required fields
-    # keyed on parameter: key
-    # ex: {'https://github.com/repo/issues/101':{'field_1':val1, 'field_2':val2, 'field3':val3}
-    req_fields = {}
+    # list of records, one dataframe row per record
+    records = []
 
-    # process each row
-    for row in df.iterrows():
+    # process each row in the copied dataframe
+    for count, row in df.iterrows():
         # get key value 
-        key_value = row[1].get(key)
+        key_value = row.get(key)
         # get label str 
-        label_str = row[1].get(labels)
+        label_str = row.get(labels)
         # if the row has any labels
         if (label_str):
             val = _parse_labels(label_str)
             parsed_labels[key_value] = val
-        # get the required fields and their values
-        req_fields[key_value] = {}
-        for field in required_fields:
-            req_fields[key_value][field] =  row[1].get(field)
-    
-    # list of records, one dataframe row per record
-    records = []
-    
-    # transform parsed labels and req_fields into records
-    for entry in parsed_labels.keys():
+        # create the record for this row
         record = {}
-        record[key] = entry
-        values = parsed_labels.get(entry)
+        record[key] = key_value
+        # get values of parsed labels 
+        values = parsed_labels.get(key_value)
+        # update value of each parsed label
         for value in values:
-            record[value] = 1
-        # get additional required fields
-        req_values = req_fields[entry]
-        # add fields to current record
-        record.update(req_values)
+                # add element to record dictionary
+                record[value] = 1
+        # get the column/values for this row
+        row_dict = df_dict[count]
+        # add current row fields to current record
+        record.update(row_dict)
         # append record to list of dataframe records
         records.append(record)
     
@@ -173,6 +156,58 @@ def process_sized_snapshot(df, labels='Labels', key='CardURL', required_fields=[
     ret_df = pd.DataFrame.from_records(records)
     # fill N/A values with 0
     ret_df = ret_df.fillna(0)
+    return ret_df
+
+def summarize_processed_sized_snapshot(df, filter={}):
+    """
+    Summarize a processed and sized snapshot given a set of filters
+
+    Parameters
+    ----------
+    df : DataFrame 
+        Output of `process_sized_snapshot`
+    filter : dict
+        Column name and list of values
+        Example: {column: [val1, val2]}
+        Default = {}
+
+    Raise
+    -----
+    ValueError
+        DataFrame is empty
+    KeyError
+        DataFrame is missing the column
+
+    Return
+    ------
+    df : DataFrame    
+    """
+    # return dataframe
+    ret_df = df.copy(deep=True)
+
+    # dataframe cannot be empty
+    if (df.empty == True):
+        raise ValueError('Empty input DataFrame')
+    
+    # dataframe must contain column if filter is specified
+    if (bool(filter)):
+        # can only have one key
+        if (len(list(filter.keys())) > 1):
+            raise ValueError('Only one column in filter allowed')
+        # if has one key, must be valide
+        column = list(filter.keys())[0]
+        if (not column in list(df.columns)):
+            msg = 'Column not found: {}'.format(column)
+            raise KeyError(msg)
+        # if the filter is valid
+        # get values
+        values = filter[column]
+        print('Values: {}'.format(values))
+        # apply filter
+        ret_df = df.loc[df[column].isin(values)]
+
+    # summarize the dataframe
+    ret_df = pd.DataFrame(ret_df.sum(numeric_only=True)).transpose()
     return ret_df
 
 # end document
