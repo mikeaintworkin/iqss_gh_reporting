@@ -4,7 +4,8 @@
 **/TESTING
 **/TEST
 **/*.tar
-environment.sh
+/build
+
 
 # OS generated files #
 ######################
