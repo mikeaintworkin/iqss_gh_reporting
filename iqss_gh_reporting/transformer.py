@@ -182,7 +182,7 @@ class SprintSizeSummarizer:
         self._sprint_col_values = []
         if not isinstance(sp_data.df, pd.DataFrame):
             raise TypeError("df must be a Pandas DataFrame")
-        self._df = sp_data.df.copy()
+        self._df = sp_data.df.copy(deep=True)
         self._dest_dir = sp_data.dest_dir
         self._dest_file = sp_data.dest_file
         self._transform()
@@ -358,39 +358,188 @@ class SprintCardSizer:
         self._add_size_column()
 
 
-class PrPointsFetcher:
-    # ===================================================================================================================
-    # This takes a dataframe containing information from a sprint
-    # precond: it must contain the size column
-    #
-    # The   barebones is completed.
-    # - Assuming the  value for pullrequest is "pull"
-    # - doesn't flag issues with zero points - should it?
-    # ===================================================================================================================
-    def __init__(self, sp_data: pdata = None):
-        # ----------------------------------------------------------------------------------------------------------
-        # - It creates an internal dataframe with rows where
-        # - the column is in one of the columns that make up an Active Sprint item
-        # - the size is 0
-        # - the type is a PullRequest
-        # ----------------------------------------------------------------------------------------------------------
-        self._sprint_col_values = []
-        if not isinstance(sp_data.df, pd.DataFrame):
-            raise TypeError("df must be a Pandas DataFrame")
+# class PRSizer:
+#     """
+#     Populate missing sizes for PRs generated during this sprint from their sized issues
+#
+#     Parameters:
+#     ----------
+#     df_snap: input; This snapshot data as input
+#     df_snap: output; the data is modified
+#
+#     Raise:
+#     -----
+#     ValueError
+#         DataFrame is empty
+#     KeyError
+#         DataFrame is missing the label field or key field
+#
+#     Return:
+#     ------
+#     DataFrame
+#
+#     What it does:
+#     ------
+#     Does this PR have a "closingIssuesReferences" issue?
+#     The answer is yes if:
+#      - The df_snap dataframe has  a "closingIssuesReferences" header
+#      - The closingIssuesReferences column has a number in it.
+#
+#     If yes:
+#     - retrieve the information we need from the closingIssuesReferences issue by looking it up in the df_sprint_start dataframe
+#     if no:
+#     - Use the API to retrieve the issue number from the PR
+#
+#     Retrieve the issue information we need from the issue by looking it up in the df_sprint_start dataframe
+#
+#     Return it in df_snap
+#
+#     Input Assumptions:
+#     ------
+#     By using the pdata object, I will be able to assume that the dataframe has the following columns:
+#     - "Closes" - a comma separated list of issue numbers as int
+#     - "Type" - with value "pull" for Pull Requests
+#     - "Column"
+#     - "Size"
+#     - "Number"
+#
+#     Output notes:
+#     ------
+#     If the list of "closingIssuesReferences" issues is > 1, then the first one found in df_sprint_start is used.
+#
+#     TODO:
+#     ------
+#     - Build out the pdata validation code in the init for that class so that I don't have to do the validation here.
+#     - In this code, reference the column headers using the standard names from the pdata class. I think I should
+#       always use th static mapping class  to reference the column headers.
+#
+#     """
+#     def __init__(self, sp_data_sprint_snap: pdata = None, sp_data_sprint_orig: pdata = None):
+#         # ----------------------------------------------------------------------------------------------------------
+#         # Initialize:
+#         # _snap - the object that is modified and returned
+#         # _df_merged - used to look up the issue size
+#         # _df_2b_sized - the PRs that we need sizes for.
+#         # ----------------------------------------------------------------------------------------------------------
+#         if not isinstance(sp_data_sprint_snap.df, pd.DataFrame):
+#             raise TypeError("sp_data_snap.df must be a Pandas DataFrame")
+#         if not isinstance(sp_data_sprint_orig.df, pd.DataFrame):
+#             raise TypeError("sp_data_snap.df must be a Pandas DataFrame")
+#
+#         self._sprint_col_values = []
+#         self._snap_obj = sp_data_sprint_snap
+#
+#         self._df_merged = None
+#         self._df_orig = sp_data_sprint_orig.df
+#         self._df_2b_sized = self._get_prs_needs_size()
+#         if len(self._df_2b_sized) == 0:
+#             # log "No PRs to size. Returning original data"
+#             print("No PRs to size. Returning original data")
+#
+#         self._set_prs_sizes()
+#
+#     def _set_prs_sizes(self):
+#         # ----------------------------------------------------------------------------------------------------------
+#         # in _df_2b_sized the columns with these headers will be populated:
+#         # - closingIssuesReferences
+#         # - Size
+#         # - labels
+#         #
+#         # Assumes that:
+#         # - _df_2b_sized is not empty (Otherwise we would have previously returned)
+#         # ----------------------------------------------------------------------------------------------------------
+#         # Loop through the rows of the dataframe and
+#         # retrieve the PR information from the df_sprint_start dataframe if possible
+#         for issue in self._get_prs_needs_size_numbers():
+#             if self._get_issue_closes_pr_info_from_df(issue):
+#                 print(f"Found issue in df_sprint_start: {issue}")
+#             else:
+#                 print(f"Did not find issue in df_sprint_start: {issue}")
+#
+#     def _get_prs_that_need_size(self):
+#         # Filter for the subset of data that we need to size
+#         fdf = self._df_orig[self._df_orig['Column'].isin(RequiredSprintColumnValues.NAMES)]
+#         fdf = fdf[fdf['Size'] == 0]
+#         fdf = fdf[fdf['Type'] == "pull"]
+#         return fdf
+#
+#     def _get_prs_needs_size_numbers(self):
+#         # return the list of PR numbers that need to be sized
+#         for index, row in self._df_2b_sized.iterrows():
+#             issue_list = []
+#             issue_list.extend(row["Closes"])
+#         return issue_list
+#
+#     def _get_issue_closes_pr_info_from_df(self, issue_num: int):
+#         df_tmp = self._df_orig.loc['Number'] == issue_num]
+#         # df_tmp = df_tmp.loc['Repo'] == repo]
+#         # for index_sp, row_sp in
+#         # if result_row is not None:
+#         #     df.loc['Size'] = result_row['Size']
+#
+#     def _get_closed_by(self):
+#         # ----------------------------------------------------------------------------------------------------------
+#         # in _df_2b_sized the columns with these headers will be populated:
+#         # - closingIssuesReferences
+#         # - Size
+#         # - labels
+#         #
+#         # Assumes that:
+#         # - _df_2b_sized is not empty (Otherwise we would have previously returned)
+#         # ----------------------------------------------------------------------------------------------------------
+#         # Loop through the rows of the dataframe and
+#         # retrieve the PR information from the df_sprint_start dataframe if possible
+#         for issue in self._get_prs_needs_size_numbers():
+#             if self._get_issue_closes_pr_info_from_df(issue):
+#                 print(f"Found issue in df_sprint_start: {issue}")
+#             else:
+#                 print(f"Did not find issue in df_sprint_start: {issue}")
 
-        fdf = sp_data.df[sp_data.df['Column'].isin(RequiredSprintColumnValues.NAMES)]
-        fdf = fdf[fdf['Size'] == 0]
-        fdf = fdf[fdf['Type'] == "pull"]
-        # RequiredSprintColumnValues.NAMES
-        self._df = fdf
+    # def _get_kickoff_issue(self, issue: str, repo: str):
+    #     # ----------------------------------------------------------------------------------------------------------
+    #     # query for this issue in the self._orig dataframe
+    #     # TODO: for now this code assumes that the original issue can be assumed to be in the  self._orig dataframe
+    #     # The reason fo this is that nothing new is supposed to be added after the sprint starts.
+    #     # In particular for PRs, if a PR is created after the sprint starts, it is supposed to be sized and therefore
+    #     #  will not be on this list.
+    #     # ----------------------------------------------------------------------------------------------------------
+    #     # find the row in the kickoff sprint data that matches this Issue Number and Repo
+    #     # return the row from the kickoff sprint data
+    #     result_row =
+    #     if len(result) == 0:
+    #         return None
+    #     else:
+    #         # check that there is a header=Size value in the row
+    #         # check that there is a header=labels value in the row
+    #         # add the size to the PR row
+    #         # Todo: The labels must be a coma separated list of strings
+    #         self._df_2b_sized.at[index, "Size"] = result_row["Size"]
+    #         self._df_2b_sized.at[index, "Labels"] = \
+    #         self._df_2b_sized.at[index, "Labels"].append(result_row["Size"])
+    #     return result_row
+
+
+
+
 
     # def get(self, sprint_start_data: pdata = None):
-    # ----------------------------------------------------------------------------------------------------------
-    # - It creates an internal dataframe with rows where
-    # - the column is in one of the columns that make up an Active Sprint item
-    # - the size is 0
-    # - the type is a PullRequest
-    # ----------------------------------------------------------------------------------------------------------
-    #     self._df, = pd.merge(self._df, sprint_start_data, on=['Number' "Repo"], how='left')
-    #     # Select the 'Attached Issue' column from the merged data frame
-    #     attached_issues = merged['Attached Issue']
+    #     # ----------------------------------------------------------------------------------------------------------
+    #     # - It creates an internal dataframe with rows where
+    #     # - the column is in one of the columns that make up an Active Sprint item
+    #     # - the size is 0
+    #     # - the type is a PullRequest
+    #     # ----------------------------------------------------------------------------------------------------------
+    #     # Problem: data collected from the legacy project does not have a closingIssuesReferences column.
+    #     #  you can't return the closingIssuesReferences Issue directly with the other data in this query.
+    #     #  For the first runs, I'm going to manually add that data to the snapshot
+    #     #
+    #     self._df_merged, = pd.merge(self._df, sprint_start_data, left_on='closingIssuesReferences', right_on='Number')
+    #     issue_num = self._df_merged['Number_y']
+    #     issue_repo = self._df_merged['Repo_y']
+    #     #attached_issues = merged['Attached Issue']
+
+    # def write_back(self):
+    #     # ----------------------------------------------------------------------------------------------------------
+    #     # Write the updated pr size data back to the original PR in GitHub
+    #     # ----------------------------------------------------------------------------------------------------------
+    #     return

@@ -21,6 +21,34 @@ import copy
 from iqss_gh_reporting.transformer import RequiredDfColumnHeaderNames
 
 
+#
+def get_kickoff_issue(number: str = "87", repo_owner:str = "IQSS",
+                      repo: str = "dataverse-frontend",
+                      access_token: str = "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"):
+    # ----------------------------------------------------------------------------------------------------------
+    # Take a PR and use the legacy GitHub API to get the issue that kicked it off.
+    # As best I can tell
+    # - the only way to get the information is to retrieve the value of the issue_url.
+    # - The native API describes this as a list. However pyGitHub returns only a string.
+    # - I did a quick test where I added a second issue to an active PR and did a lookup to confirm this.
+    # - My operating assumption is that the value of pr.issue_url will return the first issue
+    # - I tried to create an test pull request without an issue. It looks like it needs two different
+    # - branches.  I'm not sure what to make of this. for now I'm going to assume that the value will
+    #   always be at least an empty stirn
+    # ----------------------------------------------------------------------------------------------------------
+    client = Github(access_token)
+    repo_string = repo_owner + '/' + repo
+    repo = client.get_repo(repo_string)
+    pr = repo.get_pull(int(number))
+
+    # get the list of issues that pr closes and filter out the ones that are already closed
+    # In reality issue_url returns only a single issue as a string
+    issue_number = re.search(r'(?<=issues/)\d+', pr.issue_url).group(0)
+    issues = [].append(issue_number)
+    print(f"Issue #{issue_number}")
+    # The code current can only return a list of 1 issue
+    return issues
+
 
 class LegacyProjectCards:
     # ===================================================================================================================
