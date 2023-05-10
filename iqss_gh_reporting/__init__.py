@@ -1,6 +1,7 @@
 from iqss_gh_reporting import (
-    legacy_project_cards,
+    legacy,
     pdata,
     transformer,
-    utils
+    utils,
+    process_labels_util
 )

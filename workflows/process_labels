@@ -1,8 +1,11 @@
+#!/usr/bin/env python3
+
 """
 Read and process the labels in the sized snapshot output of the `create_iq_snapshot` process  
 """
 import argparse
 import sys
+
 import pandas as pd
 from iqss_gh_reporting import process_labels_util as plu
 

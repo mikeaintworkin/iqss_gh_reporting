@@ -5,7 +5,7 @@ import re
 from datetime import datetime
 import yaml
 
-from iqss_gh_reporting import legacy_project_cards as pdio
+from iqss_gh_reporting import legacy as pdio
 from iqss_gh_reporting import pdata as ghpdata
 from iqss_gh_reporting import utils as utils
 from iqss_gh_reporting import transformer as transformer

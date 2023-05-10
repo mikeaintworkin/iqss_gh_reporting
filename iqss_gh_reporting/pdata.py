@@ -91,6 +91,9 @@ class GHProjectData:
         self._v['out_file'] = self._set_out_file_name()
         self._log = None
         self._initialize_log()
+        self._validate_headers()
+        self._validate_metadata()
+        self._validate_sprint_status_values()
 
     def _set_out_file_name(self):
         f = \
@@ -236,42 +239,57 @@ class GHProjectData:
         print(f" {out_file}")
         self._df.to_csv(out_file, sep='\t', index=False)
 
-    def validate_metadata(self):
+    def _validate_metadata(self):
         # ===================================================================================================================
         # This validates the metadata for the data object.
         # ===================================================================================================================
         return True
 
+    def _validate_headers(self):
+        # ===================================================================================================================
+        # This validates the column headers for the data object dataframe.
+        # It will ensure that any df with an object of this type has a consistent set of column headers.
+        # ===================================================================================================================
+        return True
 
-class Card:
-    def __init__(self, number: str, repo: str, labels_str: str, labels: list = None):
+    def _validate_sprint_status_values(self):
         # ===================================================================================================================
-        # This creates an object that is generic enough to be used to represent an issue or a pr
-        # For simplicity, all of the properties are public
-        # properties:
-        #  number: str - the number (e.g. Issue number or PR number)
-        #  repo: str - the repo name
-        #  labels_str: str - the labels as a comma separated string
-        #  labels: list - the labels as a list
+        # This validates the possible values associated with the "Column" column header from teh sprint.
+        # It will ensure that any df with an object of this type has a consistent set of column headers.
+        # It will need to take into account that the sprint may have been created with a different set of column header
+        #  values than the current set of column header values.
         # ===================================================================================================================
-        # self.project =
-        # self.column =
-        # self.title =
-        # self.cardurl =
-        # self.type =
-        # self.createdat =
-        # self.updatedat =
-        # self.closedat =
-        self.state = None
-        self.size = None
-        self.number = number
-        self.repo = repo
-        self.comment = None
-        # comeBackAndFix - this is too simplistic.
-        if labels is None:
-            labels = labels_str.split(",")
-        elif labels_str is None:
-            labels_str = ",".join(labels)
-        self.labels = labels
-        self.labels_str = labels_str
+        return True
+
+# class Card:
+#     def __init__(self, number: str, repo: str, labels_str: str, labels: list = None):
+#         # ===================================================================================================================
+#         # This creates an object that is generic enough to be used to represent an issue or a pr
+#         # For simplicity, all of the properties are public
+#         # properties:
+#         #  number: str - the number (e.g. Issue number or PR number)
+#         #  repo: str - the repo name
+#         #  labels_str: str - the labels as a comma separated string
+#         #  labels: list - the labels as a list
+#         # ===================================================================================================================
+#         # self.project =
+#         # self.column =
+#         # self.title =
+#         # self.cardurl =
+#         # self.type =
+#         # self.createdat =
+#         # self.updatedat =
+#         # self.closedat =
+#         self.state = None
+#         self.size = None
+#         self.number = number
+#         self.repo = repo
+#         self.comment = None
+#         # comeBackAndFix - this is too simplistic.
+#         if labels is None:
+#             labels = labels_str.split(",")
+#         elif labels_str is None:
+#             labels_str = ",".join(labels)
+#         self.labels = labels
+#         self.labels_str = labels_str
 
