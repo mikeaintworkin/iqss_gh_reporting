@@ -1,0 +1,204 @@
+﻿# =================================================================
+# get a list of all contents of a project
+# =================================================================
+#         input: $loginOrg: e.g. IQSS/dataverse
+#              : repository: e.g. dataverse
+#              : $firstFew: get this many items on this query
+#              : $startWith: the starting place for getting the next page of data
+#  Intermediary: for paging - hasNextPage, hasPreviousPage, endCursor, startCursor
+#
+#
+#        output: The results as JSON
+#
+#       precond:
+#      postcond:
+
+query ($loginOrg: String!, $firstFew: Int, $startWith: String, $projectNum: Int!) {
+ #   query ($first: Int!, $skip: Int!) {
+ # products(first: $first, skip: $skip) {
+    organization(login: $loginOrg) {
+            id
+            email
+            projectsUrl
+            login
+            projectV2 (number: $projectNum) {
+                id
+                title
+                closed
+                number
+                createdAt
+                updatedAt
+                closedAt
+                url
+                creator {
+                    login
+                }
+                items (first: $firstFew, after: $startWith) {
+
+                     totalCount
+                     pageInfo {
+                        hasNextPage
+                        hasPreviousPage
+                        endCursor
+                        startCursor
+                    }
+                    nodes {
+                        id
+                        type
+                        fieldValues (first: 20) {
+                            totalCount
+                            nodes {
+
+                                    ... on ProjectV2ItemFieldDateValue {
+                                        field {
+                                        ... on  ProjectV2Field {
+                                            name
+                                            }
+                                        ... on  ProjectV2IterationField {
+                                            name
+                                            }
+                                        ... on  ProjectV2SingleSelectField {
+                                            name
+                                            }
+                                        }
+                                        date
+                                    }
+
+                                    ... on  ProjectV2ItemFieldIterationValue {
+                                        id
+                                    }
+                                    ... on  ProjectV2ItemFieldLabelValue {
+                                        labels(first:20) {
+
+                                            totalCount
+                                            nodes {
+                                                name
+                                            }
+                                        }
+                                    }
+                                    ... on  ProjectV2ItemFieldMilestoneValue {
+                                       milestone {
+                                           title
+                                        }
+                                    }
+                                    ... on  ProjectV2ItemFieldNumberValue {
+                                        number
+                                    }
+                                    ... on  ProjectV2ItemFieldPullRequestValue {
+                                        pullRequests {
+                                            totalCount
+                                        }
+                                    }
+                                    ... on  ProjectV2ItemFieldRepositoryValue {
+                                        repository {
+                                            name
+                                            id
+
+                                        }
+                                    }
+                                    ... on  ProjectV2ItemFieldReviewerValue {
+                                        reviewers(first:1) {
+                                            totalCount
+                                        }
+
+                                    }
+                                    ... on  ProjectV2ItemFieldSingleSelectValue {
+                                        name
+                                        field {
+                                        ... on  ProjectV2Field {
+                                            name
+                                            }
+                                        ... on  ProjectV2IterationField {
+                                            name
+                                            }
+                                        ... on  ProjectV2SingleSelectField {
+                                            name
+                                            }
+                                        }
+                                    }
+                                    ... on  ProjectV2ItemFieldTextValue {
+                                        field {
+                                        ... on  ProjectV2Field {
+                                            name
+                                            }
+                                        ... on  ProjectV2IterationField {
+                                            name
+                                            }
+                                        ... on  ProjectV2SingleSelectField {
+                                            name
+                                            }
+                                        }
+                                        text
+                                    }
+                                    ... on  ProjectV2ItemFieldUserValue {
+                                        users(first:20) {
+                                            totalCount
+                                        }
+                                    }
+                            }
+                        }
+                        content {
+                            ... on Issue {
+                                ...issueFields
+                            }
+                            ... on PullRequest {
+                                ...prFields
+                            }
+                            ... on DraftIssue {
+                                title
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+}
+fragment issueFields on Issue {
+
+                                repository {
+                                    name
+                                }
+                                assignees (first: 10) {
+                                  totalCount
+                                    nodes {
+                                        login
+                                    }
+                                }
+                                body
+                                bodyText
+                                title
+                                number
+                                url
+                                closed
+                                closedAt
+                                labels (first: 10) {
+                                  totalCount
+                                    nodes {
+                                        name
+                                    }
+                                }
+                            }
+fragment prFields on PullRequest {
+                               repository {
+                                    name
+                                }
+                                title
+                                number
+                                url
+                                closed
+                                closedAt
+                                labels (first: 10) {
+                                  totalCount
+                                    nodes {
+                                        name
+                                    }
+                                }
+                                closingIssuesReferences (first: 20){
+                                    totalCount
+                                    nodes {
+                                        number
+                                        }
+
+                                }
+                            }
