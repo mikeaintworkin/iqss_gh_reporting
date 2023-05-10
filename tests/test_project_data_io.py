@@ -3,11 +3,11 @@ from unittest import TestCase
 import pandas as pd
 import os
 
-from iqss_gh_reporting.legacy_project_cards import list_contains_at_least
-from iqss_gh_reporting.legacy_project_cards import DFFromFile
-from iqss_gh_reporting.legacy_project_cards import SprintSizeSummarizer
-from iqss_gh_reporting.legacy_project_cards import RequiredSprintColumnValues
-from iqss_gh_reporting.legacy_project_cards import SprintCardSizer
+from iqss_gh_reporting.legacy import list_contains_at_least
+from iqss_gh_reporting.legacy import DFFromFile
+from iqss_gh_reporting.legacy import SprintSizeSummarizer
+from iqss_gh_reporting.legacy import RequiredSprintColumnValues
+from iqss_gh_reporting.legacy import SprintCardSizer
 class RequiredDfColumnHeaderNamesPresent(TestCase):
 
     def list_contains_at_least_required_entries_names_missing(self):
