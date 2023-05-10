@@ -12,7 +12,7 @@ setup(
     author_email='mike@reekie.us',
     url='https://github.com/thisaintwork/iqss_gh_reporting/tree/master/workflows',
     license='MIT',
-    packages=find_packages(),
+    packages=find_packages(exclude=['deprecated', 'tests']),
     long_description=long_description,
     long_description_content_type="text/markdown",
     install_requires=[
