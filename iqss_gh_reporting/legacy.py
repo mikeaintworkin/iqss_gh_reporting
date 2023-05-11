@@ -159,7 +159,13 @@ class LegacyProjectCards:
                     if self._card_count % 50 == 0:
                         print(f">>>>>> {self._card_count} # cards {self._project_object.name}: {column.name} \
                         ,{card_type} ,{card_content.number},{card_content.repository.name} ,{card_content.title}")
+
                     # If the card is associated with a pull request, include the associated issues
+                    # in PyGitHub, the only thing we have to workwith is the issue_url
+                    # The legacy api says that this isa list of URLs, but PyGithub returns a single URL
+                    this_pr_closes=""
+                    if card_type == "pull":
+                        this_pr_closes=card_content.issue_url()
 
                     new_row = {
                         RequiredDfColumnHeaderNames.value("project"): self._project_object.name,
@@ -174,7 +180,7 @@ class LegacyProjectCards:
                         RequiredDfColumnHeaderNames.value("CreatedAt"): card_content.created_at,
                         RequiredDfColumnHeaderNames.value("UpdatedAt"): card_content.updated_at,
                         RequiredDfColumnHeaderNames.value("ClosedAt"): card_content.closed_at,
-                        RequiredDfColumnHeaderNames.value("LinkedPRIssues"): ""
+                        RequiredDfColumnHeaderNames.value("Closes"): this_pr_closes
 
                     }
                     self._project_cards = pd.concat([self._project_cards, pd.DataFrame([new_row])], ignore_index=True)
