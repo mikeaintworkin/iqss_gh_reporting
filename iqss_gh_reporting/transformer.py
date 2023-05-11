@@ -183,8 +183,8 @@ class SprintSizeSummarizer:
         if not isinstance(sp_data.df, pd.DataFrame):
             raise TypeError("df must be a Pandas DataFrame")
         self._df = sp_data.df.copy(deep=True)
-        self._dest_dir = sp_data.dest_dir
-        self._dest_file = sp_data.dest_file
+        self._dest_dir = sp_data.dest_dir_name
+        self._dest_file = sp_data.dest_file_name
         self._transform()
 
     def _summarize_size_column(self):
