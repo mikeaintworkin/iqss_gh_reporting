@@ -18,6 +18,7 @@ import os
 import pandas as pd
 import re
 import copy
+from pathvalidate import sanitize_filepath
 
 
 class GHProjectData:
@@ -84,11 +85,15 @@ class GHProjectData:
         self._v['in_dir'] = sanitize_filepath(src_dir_name, platform="auto")
         self._v['in_file'] = sanitize_filename(src_file_name, platform="auto")
         self._v['out_dir'] = sanitize_filepath(dest_dir_name, platform="auto")
+        os.makedirs(self._v['out_dir'], exist_ok=True)
+        print(f"directory created: {self._v['out_dir']}")
         self._v['workflow_name'] = os.path.splitext(os.path.basename(workflow_name))[0]
         self._v['src_type'] = src_type
 
         self._v['data_collected_time'] = self._set_data_collection_time(data_collected_time)
         self._v['out_file'] = self._set_out_file_name()
+
+
         self._log = None
         self._initialize_log()
         self._validate_headers()
@@ -177,11 +182,11 @@ class GHProjectData:
         return self._v['this_run_time']
 
     @property
-    def dest_dir(self):
+    def dest_dir_name(self):
         return self._v['out_dir']
 
     @property
-    def dest_file(self):
+    def dest_file_name(self):
         return self._v['out_file']
 
     @property

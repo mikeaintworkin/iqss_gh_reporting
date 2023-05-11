@@ -9,31 +9,21 @@ import argparse
 import os
 import re
 import yaml
+from pathvalidate import sanitize_filename
+from pathvalidate import sanitize_filepath
+
 
 def main():
     print(f"Running {__file__} as the main program")
-    yaml_file = os.path.expanduser("~/iqss_gh_reporting/run/in" + '/' + 'input_file.yaml')
+    yaml_file = os.path.expanduser(os.getcwd() + '/' + 'input_file.yaml')
+    data = utils.read_yaml(yaml_file)
+    if data is None:
+        raise ValueError(f"Error: there must be a valid input.yaml file in the current working dir: {os.getcwd()}")
+
     with open(yaml_file) as file:
         ydata = yaml.load(file, Loader=yaml.FullLoader)
-    parser = argparse.ArgumentParser(
-        prog='create_iq_snapshot_init',
-        description='run this at the beginning of the sprint to set the defaults for the sprint',
-        epilog='<>')
-
-
-    parser.add_argument('--sprint_name', dest='sprint_name', default=ydata['sprint_name'], type=str, help='XXX')
-    parser.add_argument('--collection_flag', dest='collection_flag', default=ydata['collection_flag'], type=str, help='XXX')
-    parser.add_argument('--collection_timestamp', dest='collection_timestamp', default=ydata['collection_timestamp'], type=str, help='XXX')
-    parser.add_argument('--organization_name', dest='organization_name', default=ydata['api']['organization_name'], type=str, help='XXX')
-    parser.add_argument('--project_name', dest='project_name', default=ydata['api']['project_name'], type=str, help='XXX')
-    parser.add_argument('--src_file_name', dest='src_file_name', default=os.path.expanduser(ydata['file']['src_file_name']), type=str, help='XXX')
-    parser.add_argument('--src_dir_name', dest='src_dir_name', default=os.path.expanduser(ydata['file']['src_dir_name']), type=str, help='XXX')
-    parser.add_argument('--src_from', dest='src_type', default=ydata['src_type'], type=str, help='XXX')
-    args = parser.parse_args()
-    # parser.print_help()
-    args_dict = vars(args)
-    yaml_string = yaml.dump(args_dict, default_flow_style=False)
-    print(yaml_string)
+    yaml_string = yaml.dump(ydata, default_flow_style=False)
+    print(f"input arguments:\n\n{yaml_string}")
 
     # set workflow specific variables
     summary_of_this_run = '''
@@ -46,33 +36,29 @@ def main():
         - 4/28/23 23:40 fixed a bug which was including Sprint Ready in ActiveSprint
         '''
 
-
     # identify where we are sourcing the data from
     # This is meant to be hardcoded here
 
     sprint_data = ghpdata.GHProjectData(
-        src_type=args.src_type,
-        workflow_name=os.path.basename(__file__),
-        sprint_name=args.sprint_name,
-        collection_flag=args.collection_flag,
-        src_dir_name=args.src_dir_name,
-        src_file_name=args.src_file_name,
-        dest_dir_name=os.path.expanduser(ydata['dest_dir_name']),
-        data_collected_time=args.collection_timestamp,
-        organization_name=args.organization_name,
-        project_name=args.project_name
-
+        src_type=ydata['src_type'],
+        workflow_name=ydata['workflow_name'],
+        sprint_name=ydata['sprint_name'],
+        collection_flag=ydata['collection_flag'],
+        src_dir_name=ydata['src_dir_name'],
+        src_file_name=ydata['src_file_name'],
+        dest_dir_name=sanitize_filepath(ydata['output_base_dir'] + '/' + data['sprint_name'], platform="auto"),
+        data_collected_time=ydata['collection_timestamp'],
+        organization_name=ydata['organization_name'],
+        project_name=ydata['project_name']
         )
 
-
-
-    if args.src_type == "file":
+    if ydata['src_type'] == "file":
         sprint_data.df = utils.read_dataframe_file(
-            in_dir=args.src_dir_name,
-            file_name=args.src_file_name
+            in_dir=ydata['src_dir_name'],
+            file_name=ydata['src_file_name']
             )
         sprint_data.add_log_entry(context="utils", comment=summary_of_this_run)
-    elif args.src_type == "api":
+    elif ydata['src_type'] == "api":
         # get OAUTH token
         auth_token_val = os.getenv('GITHUB_TOKEN', "novalue")
         if auth_token_val == "novalue":
@@ -93,6 +79,9 @@ def main():
     xfmrd_df = xfmr.SprintCardSizer(sprint_data).df
     sprint_data.df = xfmrd_df
     sprint_data.write(postfix="sized")
+    with open("runlog.sh", 'a') as f:
+        f.write(f"DEST_DIR_NAME={sprint_data.dest_dir_name}\n")
+        f.write(f"DEST_FILE_SIZED={sprint_data.dest_file_name}-sized.tsv\n")
 
     # prs = transformer.PrPointsFetcher(sprint_data)
     # utils.write_dataframe(df=prs.df_zero_rows())
@@ -100,8 +89,6 @@ def main():
     # SprintSizeSummarizer creates a new dataframe so I need create a variable that I can reference to get the results
     summarized_data = xfmr.SprintSizeSummarizer(sprint_data)
     summarized_data.write("summary")
-
-
 
 if __name__ == "__main__":
     main()

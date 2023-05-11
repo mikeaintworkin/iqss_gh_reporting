@@ -18,6 +18,23 @@ import os
 import pandas as pd
 import re
 import copy
+import yaml
+
+
+def read_yaml(yaml_file: str = None):
+    # ================================================================================================================
+    # Read the yaml file (including path) and return the contents as a dictionary
+    # ================================================================================================================
+    if os.path.exists(yaml_file):
+        try:
+            with open(yaml_file, 'r') as yaml_file:
+                data = yaml.safe_load(yaml_file)
+        except yaml.YAMLError as e:
+            print(f"YAML syntax error: {e}")
+        else:
+            print("YAML data is valid!")
+        #print(default_yaml_contents)
+        return data
 
 
 def write_dataframe(df: pd.DataFrame = None,
@@ -31,6 +48,7 @@ def write_dataframe(df: pd.DataFrame = None,
     print(f"Saving result to file.")
     print(f" {out_file}")
     df.to_csv(out_file, sep='\t', index=False)
+
 
 def print_dataframe(df: pd.DataFrame = None):
     # ===================================================================================================================
@@ -54,4 +72,3 @@ def read_dataframe_file(in_dir: str = None, file_name: str = None):
         print("Attempt to read input from file. No valid initialization data.  Exiting.")
     else:
         return pd.read_csv(input_file, sep='\t')
-

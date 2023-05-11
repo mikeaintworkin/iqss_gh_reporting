@@ -4,148 +4,136 @@ import os
 import re
 from datetime import datetime
 import yaml
-
-from iqss_gh_reporting import legacy as pdio
-from iqss_gh_reporting import pdata as ghpdata
 from iqss_gh_reporting import utils as utils
-from iqss_gh_reporting import transformer as transformer
+from pathvalidate import sanitize_filename
+from pathvalidate import sanitize_filepath
 
+
+
+
+        
+def default_yaml_contents(type: str = "string"):
+    data = {}
+    data['src_type'] = "str: valid values: api | file"
+    data['sprint_name'] = "str: no spaces,commas,dashes Represents the sprint name. e.g. sprint_2023_04_26"
+    data['collection_flag'] = "str: valid values: start | snapshot | end"
+    data['collection_timestamp'] = "str: gen automaticaly for 'api', require for  'file"
+    data['output_base_dir'] = "base directory for output files. e.g. ~/iqss_gh_reporting/run/out"
+    data['organization_name'] = "str: e.g: IQSS"
+    data['project_name'] = "str: e.g: IQSS/dataverse"
+    data['src_file_name'] = "str: e.g: 2023_04_26-17_32_18-output.tsv"
+    data['src_dir_name'] = "str: e.g: ~/iqss_gh_reporting/run/in"
+    data['workflow_name'] = "very short description or code"
+    if type == "string":
+        return yaml.dump(data, default_flow_style=False, indent=2)
+    
+    return data
 
 def main():
-    mydirs = {"in": "~/iqss_gh_reporting/run/in", "wrk": "~/iqss_gh_reporting/run/wrk", "out": "~/iqss_gh_reporting/run/out"}
-
-    text = \
-        "3 directories must exist:\n" \
-        + "\n- " + mydirs["in"] \
-        + "\n- " + mydirs["wrk"] \
-        + "\n- " + mydirs["out"] \
-        + "\n" \
-        + "\n- " + "if they do not exist they will be created."
-
-    print(f"{text}")
-
-    for d in mydirs.values():
-        d = os.path.expanduser(d)
-        if not os.path.exists(d):
-            # print(f"Creating directory: {d}")
-            os.makedirs(d)
-        if os.path.exists(d):
-            print('.')
-            # print('Directories exist')
-        else:
-            print('Directories missing')
-
-    yaml_file = os.path.expanduser(mydirs["in"] + '/' + 'input_file.yaml')
-    if not os.path.exists(yaml_file):
-        print(f"Creating file: {yaml_file}")
-        default_yaml_contents = \
-            '''
-            sprint_name: 'April 12, 2023' 
-            collection_flag: 'start' 
-            # collection_flag: 'end'
-            # collection_flag: 'other'
-            dest_dir_name: '~/iqss_gh_reporting/run/out'
-            collection_timestamp: None 
-            src_type: 'file'
-    
-            api:
-              organization_name: 'IQSS'
-              project_name: 'IQSS/dataverse'
-    
-            file: 
-              src_file_name: '2023_04_26-17_32_18-output.tsv'
-              src_dir_name: '~/iqss_gh_reporting/run/wrk'
-            '''
-        # print(default_yaml_contents)
-
-        # Validate the YAML string
-        try:
-            data = yaml.safe_load(default_yaml_contents)
-        except yaml.YAMLError as e:
-            print(f"YAML syntax error: {e}")
-        else:
-            print("YAML data is valid!")
-
-        print(default_yaml_contents)
-
+    # ================================================================================================================
+    # there must be an input.yaml file in the pwd
+    # flag
+    # --edit  look at and change the setup parameters
+    # --run   setup the environment with the parameters (when used with --edit, it will make changes and then run)
+    # --yaml_file_dir the directory where the input.yaml file is located 
+    # case: first run
+    # define default entries for the yaml file
+    # define a default overall yaml file that uses the default entries as data
+    # --
+    # read the input.yaml that is in the cwd
+    # if there is no input.yaml then write the default yaml file to the cwd
+    # read the input.yaml file from cwd
+    # set the parser arguments defaults from the input.yaml file
+    # ================================================================================================================
+    yaml_file = os.path.expanduser(os.getcwd() + '/' + 'input_file.yaml')
+    data = utils.read_yaml(yaml_file)
+    if data is None:
         with open(yaml_file, 'w') as f:
-            f.write(default_yaml_contents)
-
-    with open(yaml_file) as file:
-        data = yaml.load(file, Loader=yaml.FullLoader)
-
-    print("------------------------------")
-    print(f"Current defaults set in {yaml_file}:")
-    yaml_string = yaml.dump(data, default_flow_style=False)
-    print(yaml_string)
-
-    long_text = '''
-       The relationship between the arguments:\n
-
-       When you run the any of the other scripts in the workflow, they will use the defaults set here.\n
-       Those defaults can be over  ridden by passing in command line arguments.\n
-
-       The required argument is the variable: src_type
-       This is hardcoded in the workflow.
-
-       When src_type set to 'file' the workflow will read the data from a file and these arguments are used:
-        --src_file_name
-        --src_dir_name
-        --dest_dir_name
-        --sprint_name
-        --collection_flag
-        --collection_timestamp
-
-       When src_type set to 'api' the workflow will read the data from a file and these arguments are used:
-       --organization_name
-       --project_name
-       --dest_dir_name
-       --sprint_name
-       --collection_flag
-       --collection_timestamp
-    '''
-
+            f.write(default_yaml_contents("string") )
+        data = default_yaml_contents("dict")
+    help = default_yaml_contents("dict")
     parser = argparse.ArgumentParser(
         prog='create_iq_snapshot_init',
         description='run this at the beginning of the sprint to set the defaults for the sprint',
-        epilog=long_text)
-    # don't allow the dest-dir_name to be set from the command line
-    # parser.add_argument('--dest_dir_name', dest='dest_dir_name', default=os.path.expanduser(data['dest_dir_name']), type=str, help='XXX')
-    parser.add_argument('--sprint_name', dest='sprint_name', default=data['sprint_name'], type=str, help='XXX')
-    parser.add_argument('--collection_flag', dest='collection_flag', default=data['collection_flag'], type=str, help='XXX')
-    parser.add_argument('--collection_timestamp', dest='collection_timestamp', default=data['collection_timestamp'], type=str, help='XXX')
-    parser.add_argument('--organization_name', dest='organization_name', default=data['api']['organization_name'], type=str, help='XXX')
-    parser.add_argument('--project_name', dest='project_name', default=data['api']['project_name'], type=str, help='XXX')
-    parser.add_argument('--src_file_name', dest='src_file_name', default=os.path.expanduser(data['file']['src_file_name']), type=str, help='XXX')
-    parser.add_argument('--src_dir_name', dest='src_dir_name', default=os.path.expanduser(data['file']['src_dir_name']), type=str, help='XXX')
-    parser.add_argument('--src_type', dest='src_type',default=data['src_type'], type=str, help='XXX')
+        epilog="")
+    # 
+    parser.add_argument('--output_base_dir', dest='output_base_dir',
+                        default=os.path.expanduser(data['output_base_dir']),
+                        type=str, help=help['output_base_dir'])
+    
 
+    parser.add_argument('--sprint_name', dest='sprint_name', 
+                        default=data['sprint_name'], 
+                        type=str, help=help['sprint_name'])
 
+    parser.add_argument('--collection_flag', dest='collection_flag', 
+                        default=data['collection_flag'], 
+                        type=str, help=help['collection_flag'])
 
+    parser.add_argument('--collection_timestamp', dest='collection_timestamp', 
+                        default=data['collection_timestamp'], 
+                        type=str, help=help['collection_timestamp'])
+    
+    parser.add_argument('--organization_name', dest='organization_name', 
+                        default=data['organization_name'],
+                        type=str, help=help['organization_name'])
+
+    parser.add_argument('--project_name', dest='project_name', 
+                        default=data['project_name'], type=str, help='project_name')
+
+    parser.add_argument('--src_file_name', dest='src_file_name', 
+                        default=os.path.expanduser(data['src_file_name']),
+                        type=str, help=help['src_file_name'])
+
+    parser.add_argument('--src_dir_name', dest='src_dir_name', 
+                        default=os.path.expanduser(data['src_dir_name']),
+                        type=str, help=help['src_dir_name'])
+
+    parser.add_argument('--src_type', dest='src_type', default=data['src_type'],
+                        type=str, help=help['src_type'])
+
+    parser.add_argument('--workflow_name', dest='workflow_name', default=data['workflow_name'],
+                        type=str, help=help['workflow_name'])
 
     args = parser.parse_args()
 
-    print("------------------------------")
-    print("Defaults currently mapped to Command Line input:")
-    print("Any changes you just made will be written back to the yaml file")
-    print("you can run this file repeatedly to update the defaults\n\n")
-    args_dict = vars(args)
-    yaml_string = yaml.dump(args_dict, default_flow_style=False)
-    print(yaml_string)
 
+     #TODO: add a test here to make sure that the same exact keys are present in args and data as in the default
 
     data['src_type'] = args.src_type
     data['sprint_name'] = args.sprint_name
     data['collection_flag'] = args.collection_flag
     data['collection_timestamp'] = args.collection_timestamp
-    data['api']['organization_name'] = args.organization_name
-    data['api']['project_name'] = args.project_name
-    data['file']['src_file_name'] = args.src_file_name
-    data['file']['src_dir_name'] = args.src_dir_name
+    data['organization_name'] = args.organization_name
+    data['project_name'] = args.project_name
+    data['src_file_name'] = args.src_file_name
+    data['src_dir_name'] = args.src_dir_name
+    data['output_base_dir'] = args.output_base_dir
+    data['workflow_name'] = args.workflow_name
     yaml_str = yaml.dump(data, default_flow_style=False, indent=8)
     with open(yaml_file, 'w') as f:
         f.write(yaml_str)
 
+    print("------------------------------")
+    print("Defaults currently mapped to Command Line input:")
+    print("Any changes you just made will be written back to the yaml file")
+    print("you can run this file repeatedly to update the defaults\n\n")
+    print(yaml_str)
+
+
 
 if __name__ == "__main__":
     main()
+
+    # print(f"{text}")
+    #
+    # for d in mydirs.values():
+    #     d = os.path.expanduser(d)
+    #     if not os.path.exists(d):
+    #         # print(f"Creating directory: {d}")
+    #         os.makedirs(d)
+    #     if os.path.exists(d):
+    #         print('.')
+    #         # print('Directories exist')
+    #     else:
+    #         print('Directories missing')
