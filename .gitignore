@@ -21,7 +21,6 @@
 *.csv
 *.txt
 *.xml
-*.json
 *.png
 
 # Other files #
