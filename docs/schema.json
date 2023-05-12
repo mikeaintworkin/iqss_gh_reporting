@@ -1,0 +1,16 @@
+# test
+{
+    'project':{
+        'project_name':str,
+        'organization':str,
+        'project_queues':[{'name':str,'description':str}],
+        # set of all attributes that belong to all project repos
+        'project_attributes':[{'name':str}],
+        # set of all repos that belong to a project
+        'project_repos':[{'name':str,'url':str, 
+                          'attributes':[{'name':str}]}],
+        # set of all pull requests and issues that belong to all project repos
+        'project_items':[{'url':str, 'name':str, 'repo':str, 'size':int, 
+                          'attributes':[{'name':str}], 'item_type':str}],
+        },
+}
