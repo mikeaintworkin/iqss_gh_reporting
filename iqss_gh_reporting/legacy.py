@@ -92,7 +92,7 @@ class LegacyProjectCards:
                 RequiredDfColumnHeaderNames.value("CreatedAt"),
                 RequiredDfColumnHeaderNames.value("UpdatedAt"),
                 RequiredDfColumnHeaderNames.value("ClosedAt"),
-                RequiredDfColumnHeaderNames.value("LinkedPRIssues")
+                RequiredDfColumnHeaderNames.value("ClosedBy")
                 ]
             )
         # external init
@@ -156,6 +156,7 @@ class LegacyProjectCards:
                     regex2 = re.compile(r"(issues|pull)")
                     card_type = regex1.search(card_content.html_url).group(0)
                     card_type = regex2.search(card_type).group(0)
+                    card_type = 'undefined' if card_type in ['issues', 'pull'] else card_type
                     if self._card_count % 50 == 0:
                         print(f">>>>>> {self._card_count} # cards {self._project_object.name}: {column.name} \
                         ,{card_type} ,{card_content.number},{card_content.repository.name} ,{card_content.title}")
@@ -165,12 +166,13 @@ class LegacyProjectCards:
                     # The legacy api says that this isa list of URLs, but PyGithub returns a single URL
                     this_pr_closes=""
                     if card_type == "pull":
-                        this_pr_closes=card_content.issue_url()
+                        if hasattr(card_content, 'issue_url') and card_content.issue_url is not None:
+                            this_pr_closes=card_content.issue_url
 
                     new_row = {
                         RequiredDfColumnHeaderNames.value("project"): self._project_object.name,
                         RequiredDfColumnHeaderNames.value("column"): column_name,
-                        RequiredDfColumnHeaderNames.value("card"): card_content.title,
+                        RequiredDfColumnHeaderNames.value("Card"): card_content.title,
                         RequiredDfColumnHeaderNames.value("CardURL"): card_content.html_url,
                         RequiredDfColumnHeaderNames.value("type"): card_type,
                         RequiredDfColumnHeaderNames.value("number"): card_content.number,
@@ -181,7 +183,6 @@ class LegacyProjectCards:
                         RequiredDfColumnHeaderNames.value("UpdatedAt"): card_content.updated_at,
                         RequiredDfColumnHeaderNames.value("ClosedAt"): card_content.closed_at,
                         RequiredDfColumnHeaderNames.value("Closes"): this_pr_closes
-
                     }
                     self._project_cards = pd.concat([self._project_cards, pd.DataFrame([new_row])], ignore_index=True)
             print(f"  end: {self._card_count} cards processed: {self._project_object.name}, Column {column.name}")
