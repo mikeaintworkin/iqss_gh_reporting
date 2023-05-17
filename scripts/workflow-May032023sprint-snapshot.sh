@@ -29,7 +29,7 @@ create_iq_snapshot_init \
      --src_file_name "" \
      --organization_name "IQSS" \
      --project_name "IQSS/dataverse" \
-     --src_type "api"
+     --src_type "api"\
      --workflow_name "tst"
 
 # iqss_gh_reporting
