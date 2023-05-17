@@ -165,10 +165,14 @@ class LegacyProjectCards:
                     # The legacy api says that this isa list of URLs, but PyGithub returns a single URL
                     this_pr_closes = ""
                     if card_type == "pull":
-                        if hasattr(card_content, 'issue_url') and card_content.issue_url is not None:
-                            this_pr_closes = card_content.issue_url
+                        if hasattr(card_content, 'issue_url'):
+                            this_pr_closes = this_pr_closes + ";" + "has attr issue_url"
+                            if card_content.issue_url is not None:
+                                this_pr_closes = card_content.issue_url
+                            else:
+                                this_pr_closes = this_pr_closes + ";" + "issue_url is None"
                         else:
-                            this_pr_closes = "undefined"
+                            this_pr_closes  = this_pr_closes + ";" + "has no attr issue_url"
 
                     new_row = {
                         RequiredDfColumnHeaderNames.value("project"): self._project_object.name,
