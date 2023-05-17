@@ -22,7 +22,7 @@ from iqss_gh_reporting.transformer import RequiredDfColumnHeaderNames
 
 
 #
-def get_kickoff_issue(number: str = "87", repo_owner:str = "IQSS",
+def get_kickoff_issue(number: str = "87", repo_owner: str = "IQSS",
                       repo: str = "dataverse-frontend",
                       access_token: str = "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"):
     # ----------------------------------------------------------------------------------------------------------
@@ -102,7 +102,6 @@ class LegacyProjectCards:
         self._organization_api_object = None
         self._fetch_data()
 
-
     def _fetch_data(self):
 
         self._organization_api_object = self._client.get_organization(self._organization_name)
@@ -140,7 +139,7 @@ class LegacyProjectCards:
         # return the legacy project columns names
         # check to make sure that they contain the critical columns we care about.
         columns = self._project_object.get_columns()
-        three_months_ago = datetime.datetime.utcnow() - timedelta(days=90)
+        # three_months_ago = datetime.datetime.utcnow() - timedelta(days=90)
 
         self._card_count = 0
         for column in columns:
@@ -156,7 +155,7 @@ class LegacyProjectCards:
                     regex2 = re.compile(r"(issues|pull)")
                     card_type = regex1.search(card_content.html_url).group(0)
                     card_type = regex2.search(card_type).group(0)
-                    card_type = 'undefined' if card_type in ['issues', 'pull'] else card_type
+                    card_type = 'undefined' if card_type not in ['issues', 'pull'] else card_type
                     if self._card_count % 50 == 0:
                         print(f">>>>>> {self._card_count} # cards {self._project_object.name}: {column.name} \
                         ,{card_type} ,{card_content.number},{card_content.repository.name} ,{card_content.title}")
@@ -164,10 +163,10 @@ class LegacyProjectCards:
                     # If the card is associated with a pull request, include the associated issues
                     # in PyGitHub, the only thing we have to workwith is the issue_url
                     # The legacy api says that this isa list of URLs, but PyGithub returns a single URL
-                    this_pr_closes=""
+                    this_pr_closes = ""
                     if card_type == "pull":
                         if hasattr(card_content, 'issue_url') and card_content.issue_url is not None:
-                            this_pr_closes=card_content.issue_url
+                            this_pr_closes = card_content.issue_url
 
                     new_row = {
                         RequiredDfColumnHeaderNames.value("project"): self._project_object.name,
