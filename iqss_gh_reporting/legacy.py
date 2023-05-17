@@ -167,6 +167,8 @@ class LegacyProjectCards:
                     if card_type == "pull":
                         if hasattr(card_content, 'issue_url') and card_content.issue_url is not None:
                             this_pr_closes = card_content.issue_url
+                        else:
+                            this_pr_closes = "undefined"
 
                     new_row = {
                         RequiredDfColumnHeaderNames.value("project"): self._project_object.name,
