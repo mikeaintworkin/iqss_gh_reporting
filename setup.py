@@ -20,7 +20,8 @@ setup(
         'gql',
         'pathvalidate',
         'pandas',
-        'pyyaml'
+        'pyyaml',
+        'graphql-py'
     ],
     scripts=['workflows/create_iq_snapshot_init',
              'workflows/create_iq_snapshot',
