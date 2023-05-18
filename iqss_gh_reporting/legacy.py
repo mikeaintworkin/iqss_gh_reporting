@@ -140,7 +140,7 @@ class LegacyProjectCards:
                     new_row = {
                         RequiredDfColumnHeaderNames.value("project"): self._project_object.name,
                         RequiredDfColumnHeaderNames.value("column"): column_name,
-                        RequiredDfColumnHeaderNames.value("Card"): card_content.title,
+                        RequiredDfColumnHeaderNames.value("card"): card_content.title,
                         RequiredDfColumnHeaderNames.value("CardURL"): card_content.html_url,
                         RequiredDfColumnHeaderNames.value("type"): card_type,
                         RequiredDfColumnHeaderNames.value("number"): card_content.number,
