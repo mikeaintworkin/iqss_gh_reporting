@@ -150,7 +150,7 @@ class LegacyProjectCards:
                         RequiredDfColumnHeaderNames.value("CreatedAt"): card_content.created_at,
                         RequiredDfColumnHeaderNames.value("UpdatedAt"): card_content.updated_at,
                         RequiredDfColumnHeaderNames.value("ClosedAt"): card_content.closed_at,
-                        RequiredDfColumnHeaderNames.value("Closes"): ""
+                        RequiredDfColumnHeaderNames.value("ClosedBy"): ""
                     }
                     self._project_cards = pd.concat([self._project_cards, pd.DataFrame([new_row])], ignore_index=True)
             print(f"  end: {self._card_count} cards processed: {self._project_object.name}, Column {column.name}")
