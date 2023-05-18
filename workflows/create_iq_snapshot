@@ -5,12 +5,14 @@ from iqss_gh_reporting import legacy as pdio
 from iqss_gh_reporting import pdata as ghpdata
 from iqss_gh_reporting import transformer as xfmr
 from iqss_gh_reporting import utils as utils
+
 import argparse
 import os
 import re
 import yaml
 from pathvalidate import sanitize_filename
 from pathvalidate import sanitize_filepath
+from iqss_gh_reporting import process_labels_util as plu
 
 
 def main():
@@ -88,7 +90,35 @@ def main():
 
     # SprintSizeSummarizer creates a new dataframe so I need create a variable that I can reference to get the results
     summarized_data = xfmr.SprintSizeSummarizer(sprint_data)
-    summarized_data.write("summary")
+    summarized_data.write(postfix="summary")
+
+    # create a matrix of the data
+    # communicate what is needed using a Yaml file
+    # Todo: this is a temporary Solution for the V1.0 MVP
+    # epilog='Usage: python process_labels.py --input <infile> --output <ofile> --matrix <matrixfile>')
+
+    # read the input file
+    snapshot_file = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-sized.tsv"
+    df = plu.read_sized_snapshot(snapshot_file)
+
+    # process the labels in the file
+    new_df = plu.process_sized_snapshot(df, labels='Labels', key='CardURL')
+
+    # write to matrix file
+    matrix_out = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-matrix.tsv"
+    print("Saving results to file.")
+    print(matrix_out)
+    new_df.to_csv(matrix_out, sep='\t', index=False)
+
+    # summarize a subset of the processed snapshot
+    output_df = plu.summarize_processed_sized_snapshot(new_df, filter={})
+
+    # write summary to files
+    one_line_summary = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-1line-matrix.tsv"
+    print("Saving results to file.")
+    print(one_line_summary)
+    output_df.to_csv(one_line_summary, sep='\t', index=False)
+
 
 if __name__ == "__main__":
     main()
