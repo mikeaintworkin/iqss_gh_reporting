@@ -32,31 +32,13 @@ create_iq_snapshot_init \
      --src_type "api"\
      --workflow_name "tst"
 
-# iqss_gh_reporting
-# usage: process_labels.py [-h] --input INPUT --output OUTPUT [--matrix MATRIX]
-# process_labels.py: error: the following arguments are required: --input, --output
-# perftest@ubuntu:~/DevCode/github-com-mreekie/iqss_gh_reporting$
-DIRNAME=/home/perftest/iqss_gh_reporting/run/out/April_26_2023_sprint-end
-INFILE=2023_05_10-14_37_49-April262023-end-create_iq_snapshot-api-20230510143749-sized.tsv
-INFILECORE=$(echo "${INFILE}" | cut -d'-' -f1-7)
-
-
-OUTFILE="${INFILECORE}-matrix_summary .tsv"
-MATRIXFILE="${INFILECORE}-matrix.tsv"
 
 cat<<EOF
-${DIRNAME}
-${INFILE}
-${INFILECORE}
-${OUTFILE}
-${MATRIXFILE}
-cp ${DIRNAME}/${INFILE} ${DIRNAME}/input.tsv
+
+You have set the run parameters.
+To actually run the analysis or collection and analysis run:
+
+create_iq_snapshot
+
 
 EOF
-
-cp "${DIRNAME}/${INFILE}" "${DIRNAME}/input.tsv"
-
-process_labels --input "${DIRNAME}/input.tsv" --output "${DIRNAME}/outputput.tsv" --matrix "${DIRNAME}/matrix.tsv"
-
-cp  "${DIRNAME}/outputput.tsv" "${DIRNAME}/${OUTFILE}"
-cp "${DIRNAME}/matrix.tsv" "${DIRNAME}/${MATRIXFILE}"
