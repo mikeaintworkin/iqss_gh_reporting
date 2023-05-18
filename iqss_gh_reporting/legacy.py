@@ -21,35 +21,6 @@ import copy
 from iqss_gh_reporting.transformer import RequiredDfColumnHeaderNames
 
 
-#
-def get_kickoff_issue(number: str = "87", repo_owner: str = "IQSS",
-                      repo: str = "dataverse-frontend",
-                      access_token: str = "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"):
-    # ----------------------------------------------------------------------------------------------------------
-    # Take a PR and use the legacy GitHub API to get the issue that kicked it off.
-    # As best I can tell
-    # - the only way to get the information is to retrieve the value of the issue_url.
-    # - The native API describes this as a list. However pyGitHub returns only a string.
-    # - I did a quick test where I added a second issue to an active PR and did a lookup to confirm this.
-    # - My operating assumption is that the value of pr.issue_url will return the first issue
-    # - I tried to create an test pull request without an issue. It looks like it needs two different
-    # - branches.  I'm not sure what to make of this. for now I'm going to assume that the value will
-    #   always be at least an empty stirn
-    # ----------------------------------------------------------------------------------------------------------
-    client = Github(access_token)
-    repo_string = repo_owner + '/' + repo
-    repo = client.get_repo(repo_string)
-    pr = repo.get_pull(int(number))
-
-    # get the list of issues that pr closes and filter out the ones that are already closed
-    # In reality issue_url returns only a single issue as a string
-    issue_number = re.search(r'(?<=issues/)\d+', pr.issue_url).group(0)
-    issues = [].append(issue_number)
-    print(f"Issue #{issue_number}")
-    # The code current can only return a list of 1 issue
-    return issues
-
-
 class LegacyProjectCards:
     # ===================================================================================================================
     # represents a query of data of all the cards from a legacy GitHub project
@@ -148,32 +119,24 @@ class LegacyProjectCards:
             print(f"start: {self._card_count} cards processed: {self._project_object.name}, Column {column.name}")
             for card in cards:
                 self._card_count += 1
+                # get_content() can take "PullRequest" or "Issue" as an argument
+                # These notes are from the source code!
+                # https://github.com/PyGithub/PyGithub/blob/master/github/ProjectCard.py
+                # Note that the content_url for any card will be an "issue" URL, from
+                # which you can retrieve either an Issue or a PullRequest. Unfortunately
+                # the API doesn't make it clear which you are dealing with.
+
                 card_content = card.get_content()
                 # if card_content is not None and card.updated_at >= three_months_ago:
                 if card_content is not None:
                     regex1 = re.compile(r"(/issues/|/pull/)")
-                    regex2 = re.compile(r"(issues|pull)")
-                    card_type = regex1.search(card_content.html_url).group(0)
-                    card_type = regex2.search(card_type).group(0)
-                    card_type = 'undefined' if card_type not in ['issues', 'pull'] else card_type
+                    sub_string = regex1.search(card_content.html_url).group(0).replace("/", "")
+                    card_type = "Issue"
+                    if sub_string == "pull":
+                        card_type = "PullRequest"
                     if self._card_count % 50 == 0:
                         print(f">>>>>> {self._card_count} # cards {self._project_object.name}: {column.name} \
                         ,{card_type} ,{card_content.number},{card_content.repository.name} ,{card_content.title}")
-
-                    # If the card is associated with a pull request, include the associated issues
-                    # in PyGitHub, the only thing we have to workwith is the issue_url
-                    # The legacy api says that this isa list of URLs, but PyGithub returns a single URL
-                    this_pr_closes = ""
-                    if card_type == "pull":
-                        if hasattr(card_content, 'issue_url'):
-                            this_pr_closes = this_pr_closes + ";" + "has attr issue_url"
-                            if card_content.issue_url is not None:
-                                this_pr_closes = card_content.issue_url
-                            else:
-                                this_pr_closes = this_pr_closes + ";" + "issue_url is None"
-                        else:
-                            this_pr_closes  = this_pr_closes + ";" + "has no attr issue_url"
-
                     new_row = {
                         RequiredDfColumnHeaderNames.value("project"): self._project_object.name,
                         RequiredDfColumnHeaderNames.value("column"): column_name,
@@ -187,7 +150,7 @@ class LegacyProjectCards:
                         RequiredDfColumnHeaderNames.value("CreatedAt"): card_content.created_at,
                         RequiredDfColumnHeaderNames.value("UpdatedAt"): card_content.updated_at,
                         RequiredDfColumnHeaderNames.value("ClosedAt"): card_content.closed_at,
-                        RequiredDfColumnHeaderNames.value("Closes"): this_pr_closes
+                        RequiredDfColumnHeaderNames.value("Closes"): ""
                     }
                     self._project_cards = pd.concat([self._project_cards, pd.DataFrame([new_row])], ignore_index=True)
             print(f"  end: {self._card_count} cards processed: {self._project_object.name}, Column {column.name}")
@@ -207,5 +170,3 @@ class LegacyProjectCards:
     @property
     def type(self):
         return type(self).__name__
-
-
