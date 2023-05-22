@@ -22,7 +22,8 @@ from iqss_gh_reporting import pdata
 
 def string_cleaned(to_be_cleaned: str=None):
     # ===================================================================================================================
-    # This cleans up a string to remove characters that are not allowed in file names.
+    # This cleans up a string to remove characters that I do not want allowed in file names and directory names
+    # There is an assumption that the stings will also be sanity checked using a library for filenames and directory names
     # ===================================================================================================================
     x = {
         ' ': '_',
