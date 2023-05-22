@@ -42,25 +42,25 @@ def main():
     # This is meant to be hardcoded here
 
     sprint_data = ghpdata.GHProjectData(
-        src_type=ydata['src_type'],
-        workflow_name=ydata['workflow_name'],
-        sprint_name=ydata['sprint_name'],
-        collection_flag=ydata['collection_flag'],
-        src_dir_name=ydata['src_dir_name'],
-        src_file_name=ydata['src_file_name'],
-        dest_dir_name=sanitize_filepath(ydata['output_base_dir'] + '/' + data['sprint_name'], platform="auto"),
-        data_collected_time=ydata['collection_timestamp'],
-        organization_name=ydata['organization_name'],
-        project_name=ydata['project_name']
+        src_type=ydata['src_type']['v'],
+        workflow_name=ydata['workflow_name']['v'],
+        sprint_name=ydata['sprint_name']['v'],
+        collection_flag=ydata['collection_flag']['v'],
+        src_dir_name=ydata['src_dir_name']['v'],
+        src_file_name=ydata['src_file_name']['v'],
+        dest_dir_name=ydata['output_base_dir']['v'],
+        organization_name=ydata['organization_name']['v'],
+        project_name=ydata['project_name']['v'],
+        output_file_base_name=ydata['output_file_base_name']['v']
         )
 
-    if ydata['src_type'] == "file":
+    if ydata['src_type']['v'] == "file":
         sprint_data.df = utils.read_dataframe_file(
-            in_dir=ydata['src_dir_name'],
-            file_name=ydata['src_file_name']
+            in_dir=ydata['src_dir_name']['v'],
+            file_name=ydata['src_file_name']['v']
             )
         sprint_data.add_log_entry(context="utils", comment=summary_of_this_run)
-    elif ydata['src_type'] == "api":
+    elif ydata['src_type']['v'] == "api":
         # get OAUTH token
         auth_token_val = os.getenv('GITHUB_TOKEN', "novalue")
         if auth_token_val == "novalue":

@@ -8,38 +8,60 @@ from iqss_gh_reporting import utils as utils
 from pathvalidate import sanitize_filename
 from pathvalidate import sanitize_filepath
 
-
-
-
         
-def default_yaml_contents(type: str = "string"):
-    data = {}
-    data['src_type'] = "str: valid values: api | file"
-    data['sprint_name'] = "str: no spaces,commas,dashes Represents the sprint name. e.g. sprint_2023_04_26"
-    data['collection_flag'] = "str: valid values: start | snapshot | end"
-    data['collection_timestamp'] = "str: gen automaticaly for 'api', require for  'file"
-    data['output_base_dir'] = "base directory for output files. e.g. ~/iqss_gh_reporting/run/out"
-    data['organization_name'] = "str: e.g: IQSS"
-    data['project_name'] = "str: e.g: IQSS/dataverse"
-    data['src_file_name'] = "str: e.g: 2023_04_26-17_32_18-output.tsv"
-    data['src_dir_name'] = "str: e.g: ~/iqss_gh_reporting/run/in"
-    data['workflow_name'] = "very short description or code"
-    if type == "string":
-        return yaml.dump(data, default_flow_style=False, indent=2)
-    
+def default_yaml_contents(how_do_you_want_it: str = "string"):
+    # ----------------------------------------------------------------------------------------------------------------
+    # returns a string or a dictionary with the default values for the input.yaml file
+    # ----------------------------------------------------------------------------------------------------------------
+    data = {
+        'src_type': {
+            'v': 'api',
+            'h': "str: valid values: api | file. Always required."
+        },
+        'collection_flag': {
+            'v': 'snapshot',
+            'h': "str: valid values: start | snapshot | end. api=required. file=Ignored."
+        },
+        'organization_name': {
+            'v': 'IQSS',
+            'h': "str: e.g: IQSS. Always required."
+        },
+        'output_base_dir': {
+            'v': '/mnt/hgfs/iq_reporting_collab/run/out',
+            'h': "str: /mnt/hgfs/iq_reporting_collab/run/out;no[ ,.-special_char] ok:'_'.Always required"
+        },
+        'project_name': {
+            'v': 'IQSS/dataverse',
+            'h': "str: e.g: IQSS/dataverse. Always required."
+        },
+        'sprint_name': {
+            'v': 'sprint2023_05_03',
+            'h': "str: e.g. sprint_2023_04_26;no[ ,.-special_char] ok:'_'; api=required.file=Ignored."
+        },
+        'src_file_name': {
+            'v': 'sprint_2023_05_03-snapshot-2023_05_22_11_00-api-000-orig.tsv',
+            'h': "str: e.g: sprint_2023_05_03-snapshot-2023_05_22_11_00-api-000-orig.tsv .api=ignored. file=required."
+        },
+        'output_file_base_name': {
+            'v': 'sprint_2023_05_03-snapshot-2023_05_22_11_00-api-000-orig',
+            'h': "str: e.g. sprint_2023_05_03-snapshot-2023_05_22_11_00-api-000-orig  .api=ignored. file=not required."
+        },
+        'workflow_name': {
+            'v': '000',
+            'h': "very short description or code.no[ ,.-special_char] ok:'_' Optional."
+        },
+        'src_dir_name': {
+            'v': '',
+            'h': "str: e.g: ~/iqss_gh_reporting/run/in . api=ignored. file=required."
+        }
+    }
+    if how_do_you_want_it == "string":
+        return yaml.dump(data, default_flow_style=False, indent=2, width=1000)
     return data
+
 
 def main():
     # ================================================================================================================
-    # there must be an input.yaml file in the pwd
-    # flag
-    # --edit  look at and change the setup parameters
-    # --run   setup the environment with the parameters (when used with --edit, it will make changes and then run)
-    # --yaml_file_dir the directory where the input.yaml file is located 
-    # case: first run
-    # define default entries for the yaml file
-    # define a default overall yaml file that uses the default entries as data
-    # --
     # read the input.yaml that is in the cwd
     # if there is no input.yaml then write the default yaml file to the cwd
     # read the input.yaml file from cwd
@@ -49,67 +71,78 @@ def main():
     data = utils.read_yaml(yaml_file)
     if data is None:
         with open(yaml_file, 'w') as f:
-            f.write(default_yaml_contents("string") )
-        data = default_yaml_contents("dict")
-    help = default_yaml_contents("dict")
+            f.write(default_yaml_contents("string"))
+        data = utils.read_yaml(yaml_file)
+
     parser = argparse.ArgumentParser(
         prog='create_iq_snapshot_init',
         description='run this at the beginning of the sprint to set the defaults for the sprint',
         epilog="")
-    # 
+
     parser.add_argument('--output_base_dir', dest='output_base_dir',
-                        default=os.path.expanduser(data['output_base_dir']),
-                        type=str, help=help['output_base_dir'])
-    
+                        default=data['output_base_dir']['v'],
+                        help=data['output_base_dir']['h'],
+                        type=str)
 
     parser.add_argument('--sprint_name', dest='sprint_name', 
-                        default=data['sprint_name'], 
-                        type=str, help=help['sprint_name'])
+                        default=data['sprint_name']['v'],
+                        help=data['sprint_name']['h'],
+                        type=str)
 
     parser.add_argument('--collection_flag', dest='collection_flag', 
-                        default=data['collection_flag'], 
-                        type=str, help=help['collection_flag'])
+                        default=data['collection_flag']['v'],
+                        help=data['collection_flag']['h'],
+                        type=str)
 
-    parser.add_argument('--collection_timestamp', dest='collection_timestamp', 
-                        default=data['collection_timestamp'], 
-                        type=str, help=help['collection_timestamp'])
-    
-    parser.add_argument('--organization_name', dest='organization_name', 
-                        default=data['organization_name'],
-                        type=str, help=help['organization_name'])
+    parser.add_argument('--organization_name', dest='organization_name',
+                        default=data['organization_name']['v'],
+                        help=data['organization_name']['h'],
+                        type=str)
 
-    parser.add_argument('--project_name', dest='project_name', 
-                        default=data['project_name'], type=str, help='project_name')
+    parser.add_argument('--project_name', dest='project_name',
+                        default=data['project_name']['v'],
+                        help=data['project_name']['h'],
+                        type=str)
 
     parser.add_argument('--src_file_name', dest='src_file_name', 
-                        default=os.path.expanduser(data['src_file_name']),
-                        type=str, help=help['src_file_name'])
+                        default=data['src_file_name']['v'],
+                        help=data['src_file_name']['h'],
+                        type=str)
 
     parser.add_argument('--src_dir_name', dest='src_dir_name', 
-                        default=os.path.expanduser(data['src_dir_name']),
-                        type=str, help=help['src_dir_name'])
+                        default=data['src_dir_name']['v'],
+                        help=data['src_dir_name']['h'],
+                        type=str)
 
-    parser.add_argument('--src_type', dest='src_type', default=data['src_type'],
-                        type=str, help=help['src_type'])
+    parser.add_argument('--src_type', dest='src_type',
+                        default=data['src_type']['v'],
+                        help=data['src_type']['h'],
+                        type=str)
 
-    parser.add_argument('--workflow_name', dest='workflow_name', default=data['workflow_name'],
-                        type=str, help=help['workflow_name'])
+    parser.add_argument('--workflow_name', dest='workflow_name',
+                        default=data['workflow_name']['v'],
+                        help=data['workflow_name']['h'],
+                        type=str)
+
+    parser.add_argument('--output_file_base_name', dest='output_file_base_name',
+                        default=data['output_file_base_name']['v'],
+                        help=data['output_file_base_name']['h'],
+                        type=str)
 
     args = parser.parse_args()
 
+    # TODO: add a test here to make sure that the same exact keys are present in args and data as in the default
 
-     #TODO: add a test here to make sure that the same exact keys are present in args and data as in the default
-
-    data['src_type'] = args.src_type
-    data['sprint_name'] = args.sprint_name
-    data['collection_flag'] = args.collection_flag
-    data['collection_timestamp'] = args.collection_timestamp
-    data['organization_name'] = args.organization_name
-    data['project_name'] = args.project_name
-    data['src_file_name'] = args.src_file_name
-    data['src_dir_name'] = args.src_dir_name
-    data['output_base_dir'] = args.output_base_dir
-    data['workflow_name'] = args.workflow_name
+    data['src_type']['v'] = args.src_type
+    data['sprint_name']['v'] = args.sprint_name
+    data['collection_flag']['v'] = args.collection_flag
+    data['organization_name']['v'] = args.organization_name
+    data['project_name']['v'] = args.project_name
+    data['src_file_name']['v'] = args.src_file_name
+    data['src_dir_name']['v'] = args.src_dir_name
+    data['output_base_dir']['v'] = args.output_base_dir
+    data['workflow_name']['v'] = args.workflow_name
+    data['output_file_base_name']['v'] = args.output_file_base_name
     yaml_str = yaml.dump(data, default_flow_style=False, indent=8)
     with open(yaml_file, 'w') as f:
         f.write(yaml_str)
@@ -121,19 +154,6 @@ def main():
     print(yaml_str)
 
 
-
 if __name__ == "__main__":
     main()
 
-    # print(f"{text}")
-    #
-    # for d in mydirs.values():
-    #     d = os.path.expanduser(d)
-    #     if not os.path.exists(d):
-    #         # print(f"Creating directory: {d}")
-    #         os.makedirs(d)
-    #     if os.path.exists(d):
-    #         print('.')
-    #         # print('Directories exist')
-    #     else:
-    #         print('Directories missing')
