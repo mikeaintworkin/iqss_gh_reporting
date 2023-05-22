@@ -1,7 +1,6 @@
 #!/usr/bin/bash
 
 # collection_flag: 'str: valid values: start | snapshot | end'
-# collection_timestamp: 'str: gen automaticaly for ''api'', require for  ''file'
 # organization_name: 'str: e.g: IQSS'
 # output_base_dir: base directory for output files. e.g. ~/iqss_gh_reporting/run/out
 # project_name: 'str: e.g: IQSS/dataverse'
@@ -29,7 +28,6 @@ EOF
 SPRINTNAME="sprint_2023_05_10"
 create_iq_snapshot_init \
      --collection_flag "start" \
-     --collection_timestamp "" \
      --sprint_name ${SPRINTNAME} \
      --src_dir_name "" \
      --src_file_name "" \
