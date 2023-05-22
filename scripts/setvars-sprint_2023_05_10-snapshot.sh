@@ -4,7 +4,7 @@ rm ./input_file.yaml
 
 create_iq_snapshot_init \
      --collection_flag "snapshot" \
-     --sprint_name "sprint_2023_05_03" \
+     --sprint_name "sprint_2023_05_10" \
      --src_dir_name "" \
      --src_file_name "" \
      --organization_name "IQSS" \
