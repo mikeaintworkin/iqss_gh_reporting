@@ -212,8 +212,8 @@ def summarize_processed_sized_snapshot(df, filter={}):
 
 def create_sprint_filter(column, column_values, substrs):
     """
-    Create the list of column values to filter on. 
-    Useful because column labels and values may contain unprintable utf-8 characters.
+    Create the list of column values to filter on. Useful for column 
+    labels and values that contain unprintable utf-8 characters.
 
     Parameters
     ----------
