@@ -19,6 +19,7 @@ def main():
     parser.add_argument('--input', type=str, help='full path to input file', required=True)
     parser.add_argument('--output', type=str, help='full path to output file', required=True)
     parser.add_argument('--matrix', type=str, help='full path to matrix output file, if desired')
+    parser.add_argument('--size_summary', type=str, help='full path to size summary file, if desired')
 
     args = parser.parse_args()
     # get input file
@@ -27,6 +28,8 @@ def main():
     outfile = args.output
     # get optional matrix file
     matrix = args.matrix
+    # get the optional size summary file
+    size_summary = args.size_summary
 
     # read the input file 
     df = plu.read_sized_snapshot(infile)
@@ -52,6 +55,20 @@ def main():
 
     # write summary to files
     output_df.to_csv(outfile, sep='\t',index=False)
+
+    # create size summary, if requested
+    if (size_summary):
+        # exclude some fields when modifying values to create the special matrix of sizes
+        excluded = ['CardURL','Project','Column','Card',
+                    'Type','Number','Labels','Repo','State',
+                    'CreatedAt','UpdatedAt','ClosedAt','LinkedPRIssues',
+                    'card','Size']
+        # create a matrix dataframe using issue size values
+        new_matrix_df = plu.create_label_sized_matrix(new_df, size='Size', exclude=excluded)
+        # summarize the matrix
+        summarized_matrix = plu.summarize_processed_sized_snapshot(new_matrix_df, filter=filter)
+        # write summary to file
+        summarized_matrix.to_csv(size_summary,sep='\t')
 
 if __name__ == "__main__":
     main()
