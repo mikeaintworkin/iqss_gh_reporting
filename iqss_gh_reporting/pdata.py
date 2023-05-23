@@ -7,6 +7,7 @@ from github import Github
 # from gql import gql, Client
 # from gql.transport.aiohttp import AIOHTTPTransport
 # from json2xml import json2xml
+from iqss_gh_reporting import transformer
 from pathvalidate import sanitize_filename
 from pathvalidate import sanitize_filepath
 # from typing import Literal
@@ -31,7 +32,6 @@ class GHProjectData:
     #                  src_dir_name: str,
     #                  src_file_name: str,
     #                  dest_dir_name: str,
-    #                  data_collected_time: str = None,
     #                  sprint_name: str = "no sprint name"
     # df - data frame containing data to be processed
     # sprint_snap_status - Expected to be one of: Start, snapshot, End, unknown. Not enforced.
@@ -57,41 +57,51 @@ class GHProjectData:
     # 2023_04_27-18_12_36,SprintSizeSummarizer,Summarize the sprint
     # ===================================================================================================================
     def __init__(self,
-                 src_type: str,
-                 workflow_name: str,
-                 dest_dir_name: str,
+                 src_type: str = None,
+                 workflow_name: str = None,
+                 dest_dir_name: str = None,
                  collection_flag: str = None,
-                 sprint_name: str = "no sprint name",
+                 sprint_name: str = None,
                  src_dir_name: str = None,
                  src_file_name: str = None,
-                 data_collected_time: str = None,
                  organization_name: str = None,
-                 project_name: str = None
+                 project_name: str = None,
+                 output_file_base_name=None
                  ):
         self._df = None
 
-        if collection_flag not in ["start", "snapshot", "end", "unknown"]:
-            raise ValueError(f"Error: sprint_snap_status must be one of: 'start', 'snapshot', 'end', 'unknown'")
+        self._v = {
+            'organization_name': str(organization_name),
+            'project_name': str(project_name),
+            'collection_flag': str(collection_flag),
+            'data_collected_time': pd.Timestamp.now().strftime("%Y%m%d%H%M%S"),
+            'sprint_name': str(sprint_name),
+            'in_dir': sanitize_filepath(src_dir_name, platform="auto"),
+            'in_file': sanitize_filename(src_file_name, platform="auto"),
+            'workflow_name': str(workflow_name),
+            'src_type': str(src_type),
 
-        if src_type not in ["file", "api"]:
+            'out_dir':  transformer.string_cleaned(sanitize_filepath(dest_dir_name + '/' + sprint_name, platform="auto")),
+            'output_file_base_name': str(output_file_base_name)
+        }
+
+        if src_type not in "api" and src_type not in "file":
             raise ValueError(f"Error: src_type: must be one of 'file', 'api', 'unknown'")
 
-        self._v = {}
-        self._v['organization_name'] = organization_name
-        self._v['project_name'] = project_name
-        self._v['snapshot_type'] = collection_flag
-        self._v['this_run_time'] = pd.Timestamp.now().strftime("%Y%m%d%H%M%S")
-        self._v['sprint_name'] = sprint_name
-        self._v['in_dir'] = sanitize_filepath(src_dir_name, platform="auto")
-        self._v['in_file'] = sanitize_filename(src_file_name, platform="auto")
-        self._v['out_dir'] = sanitize_filepath(dest_dir_name, platform="auto")
-        os.makedirs(self._v['out_dir'], exist_ok=True)
-        print(f"directory created: {self._v['out_dir']}")
-        self._v['workflow_name'] = os.path.splitext(os.path.basename(workflow_name))[0]
-        self._v['src_type'] = src_type
+        if src_type == "file":
+            self._v['output_file_base_name'] = self._set_output_file_base_name_4file()
+            # if we're reprocessing a file, we need to make sure that the output file goes back where it came from
+            # above this, I default to assuming src_type is set to api
+            self._v['out_dir'] = dest_dir_name
+            if self._v['out_dir'] is None or len(self._v['out_dir']) == 0:
+                self._v['out_dir'] = self._v['in_dir']
+        else:
+            self._v['output_file_base_name'] = self._set_output_file_base_name_4api()
+            if self._v['collection_flag'] not in ["start", "snapshot", "end", "unknown"]:
+                raise ValueError(f"Error: sprint_snap_status must be one of: 'start', 'snapshot', 'end', 'unknown'")
 
-        self._v['data_collected_time'] = self._set_data_collection_time(data_collected_time)
-        self._v['out_file'] = self._set_out_file_name()
+        os.makedirs(str(self._v['out_dir']), exist_ok=True)
+        print(f"directory exists or was created now: {self._v['out_dir']}")
 
 
         self._log = None
@@ -100,17 +110,41 @@ class GHProjectData:
         self._validate_metadata()
         self._validate_sprint_status_values()
 
-    def _set_out_file_name(self):
-        f = \
-            self._v['data_collected_time'] \
-            + "-" + self._v['sprint_name'] \
-            + "-" + self._v['snapshot_type'] \
-            + "-" + self._v['workflow_name'] \
-            + "-" + self._v['src_type'] \
-            + "-" + self._v['this_run_time']
+    def _set_output_file_base_name_4file(self):
+        # --------------------------------------------------------------------------------------------------------
+        # set output file base name to:
+        # output_file_base_name	-src_type	-workflow_name	-(timestamp)
+        # --------------------------------------------------------------------------------------------------------
+        if self._v['output_file_base_name'] is None or len(self._v['output_file_base_name']) == 0:
+            self._v['output_file_base_name'] = str(os.path.basename(self._v['in_file']))
+
+        self._v['output_file_base_name'] = os.path.splitext(self._v['output_file_base_name'])[0]
+        f = transformer.string_cleaned(self._v['output_file_base_name'])
+        wfn = self._v['workflow_name']
+        if wfn is not None and len(wfn) > 0:
+            f = f + "-" + transformer.string_cleaned(wfn)
+
+        f = f + "-" + transformer.string_cleaned(self._v['src_type']) \
+            + "-" + self._v['data_collected_time']
+
         f = sanitize_filename(f, platform="auto")
-        f = f.replace(' ', '')
-        f = f.replace(',', '')
+        return f
+
+    def _set_output_file_base_name_4api(self):
+        # --------------------------------------------------------------------------------------------------------
+        # set output file base name to:
+        # sprint_name	-collection_flag	-src_type	-workflow_name	-(timestamp)
+        # --------------------------------------------------------------------------------------------------------
+        f = \
+            transformer.string_cleaned(self._v['sprint_name']) \
+            + "-" + transformer.string_cleaned(self._v['collection_flag'])
+        wfn = self._v['workflow_name']
+        if wfn is not None and len(wfn) > 0:
+            f = f + "-" + transformer.string_cleaned(wfn)
+
+        f = f  + "-" + transformer.string_cleaned(self._v['src_type']) \
+            + "-" + self._v['data_collected_time']
+        f = sanitize_filename(f, platform="auto")
         return f
 
     def _initialize_log(self):
@@ -142,32 +176,10 @@ class GHProjectData:
         # ===================================================================================================================
         # This writes the contents of work log to a file
         # ===================================================================================================================
-        out_file = self._v['out_dir'] + '/' + self._v['out_file'] + "-log.tsv"
+        out_file = self._v['out_dir'] + '/' + self._v['output_file_base_name'] + "-log.tsv"
         print(f"Writing Log to:.")
         print(f" {out_file}")
         self._log.to_csv(out_file, sep='\t', index=False)
-
-    def _set_data_collection_time(self, dct: str):
-        # -------------------------------------------------------------------------------------------
-        # "file","api", "unknown" - indicates the source of the data.
-        #
-        # the --src_file_name is assumed to start with a timestamp that marks the original date/time that it
-        #  was collected using the API.
-        # Here are a few examples.
-        # - 2023_04_26-15_38_22-output.tsv
-        # - 2023_04_26-153822-output.tsv
-        # - 20230426_153822-output.tsv
-        # -------------------------------------------------------------------------------------------
-        # if source is a file, then assume the prefix of the file name is the date/time that the data was collected.
-        if self._v['src_type'] == "file":
-            if dct is None:
-                regex1 = re.compile(r"(^[0-9_-]+)")
-                return regex1.search(os.path.basename(self._v['in_file'])).group(0)
-        elif self._v['src_type'] == "api":
-            return datetime.now().strftime("%Y_%m_%d-%H_%M_%S")
-        elif dct is None:
-            return "data_collected_time_not_specified"
-        return dct
 
     # def get_issue(self, pr: Card = None):
     #      # -------------------------------------------------------------------------------------------
@@ -178,16 +190,12 @@ class GHProjectData:
     #      return
 
     @property
-    def this_run_time(self):
-        return self._v['this_run_time']
-
-    @property
     def dest_dir_name(self):
         return self._v['out_dir']
 
     @property
     def dest_file_name(self):
-        return self._v['out_file']
+        return self._v['output_file_base_name']
 
     @property
     def df(self):
@@ -236,7 +244,7 @@ class GHProjectData:
         # This writes the contents of a dataframe to a tab delimited file.
         # ===================================================================================================================
         out_file = sanitize_filepath(self._v['out_dir'], platform="auto") \
-                   + '/' + sanitize_filename(self._v['out_file'], platform="auto") \
+                   + '/' + sanitize_filename(self._v['output_file_base_name'], platform="auto") \
                    + '-' \
                    + postfix \
                    + ".tsv"
@@ -297,4 +305,3 @@ class GHProjectData:
 #             labels_str = ",".join(labels)
 #         self.labels = labels
 #         self.labels_str = labels_str
-
