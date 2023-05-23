@@ -251,4 +251,55 @@ def create_sprint_filter(column, column_values, substrs):
 
     return {column : filtered}
 
+def create_label_sized_matrix(matrix_df, size='Size', exclude=[]):
+    """
+    Create a matrix where the values for each label equals the issue size 
+
+    Parameter
+    ---------
+    matrix_df : DataFrame
+        DataFrame output of `process_sized_snapshot`
+    size: str
+        Column label containing the issue size field
+        Default: 'Size'
+    exclude : list
+        List of columns to exclude
+        Default: []
+    
+    Raise
+    -----
+    ValueError
+        Empty input DataFrame
+    KeyError
+        Missing field
+
+    Return
+    ------
+    """
+    # dataframe cannot be empty
+    if (matrix_df.empty == True):
+        raise ValueError('Empty input DataFrame')
+    
+    # dataframe must contain labels field
+    if (size not in matrix_df.columns):
+        msg = 'Missing field: {}'.format(size)
+        raise KeyError(msg)
+    
+    # copy the matrix
+    copy_df = matrix_df.copy(deep=True)
+    
+    # get the matrix columns
+    columns = copy_df.columns
+
+    # update matrix fields with size value
+    for index, row in copy_df.iterrows():
+        sz = row.get(size)
+        for column in columns:
+            if column not in exclude:
+                value = row.get(column)
+                if (value != 0):
+                    copy_df.at[index, column] = sz
+
+    return copy_df
+
 # end document
