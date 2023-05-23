@@ -275,6 +275,7 @@ def create_label_sized_matrix(matrix_df, size='Size', exclude=[]):
 
     Return
     ------
+        DataFrame    
     """
     # dataframe cannot be empty
     if (matrix_df.empty == True):
