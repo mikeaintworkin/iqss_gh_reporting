@@ -5,13 +5,14 @@ rm ./input_file.yaml
 create_iq_snapshot_init \
      --collection_flag "snapshot" \
      --sprint_name "sprint_2023_05_10" \
-     --src_dir_name "" \
-     --src_file_name "" \
+     --src_dir_name "/mnt/hgfs/iq_reporting_collab/sprint_2023_05_10" \
+     --src_file_name "sprint_2023_05_10-snapshot-api-000-20230522204509-orig.tsv" \
      --organization_name "IQSS" \
      --project_name "IQSS/dataverse" \
-     --src_type "api"\
-     --workflow_name "000" \
-     --output_base_dir "/mnt/hgfs/iq_reporting_collab/"
+     --src_type "file"\
+     --workflow_name "tst" \
+     --output_base_dir "" \
+     --output_file_base_name ""
 
 
 cat<<EOF
