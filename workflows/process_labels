@@ -38,8 +38,17 @@ def main():
     if (matrix):
         new_df.to_csv(matrix, sep='\t', index=False)
 
+    # get unique values for column=Column
+    values = new_df['Column'].unique()
+
+    # define filter substrings
+    substrs = ['This Sprint','In Progress','Ready for Review','In Review']
+
+    # create filter
+    filter = plu.create_sprint_filter('Column', values, substrs)
+
     # summarize a subset of the processed snapshot
-    output_df = plu.summarize_processed_sized_snapshot(new_df, filter={})
+    output_df = plu.summarize_processed_sized_snapshot(new_df, filter=filter)
 
     # write summary to files
     output_df.to_csv(outfile, sep='\t',index=False)

@@ -210,4 +210,45 @@ def summarize_processed_sized_snapshot(df, filter={}):
     ret_df = pd.DataFrame(ret_df.sum(numeric_only=True)).transpose()
     return ret_df
 
+def create_sprint_filter(column, column_values, substrs):
+    """
+    Create the list of column values to filter on. Useful for column 
+    labels and values that contain unprintable utf-8 characters.
+
+    Parameters
+    ----------
+    column : str
+        Name of column
+    column_values : list
+        List of actual column values
+    substrs : list
+        List of substrings to find in list of column values
+
+    Raise
+    -----
+    ValueError
+        column, column_values, or substrings are empty
+
+    Return
+    ------
+    dict
+        Dictionary of form: {column : [val1, val2...val_n]}
+    """
+    if ((not(column)) or
+        (len(column_values)<1) or
+        (len(substrs) <1)):
+        raise ValueError('Invalid parameter value')
+    
+    # eliminate duplicates in list
+    column_vals = set(column_values)
+    # create list of full-string filtered labels (substring matches)
+    filtered = []
+    # for each substring
+    for substr in substrs:
+        for val in column_vals:
+            if substr in val:
+                filtered.append(val)
+
+    return {column : filtered}
+
 # end document
