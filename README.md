@@ -1,3 +1,24 @@
+# Directory Structure
+This example is based on Mike's setup.
+
+I'm working on an ubuntu VM on my windows machine.
+There is a shared folder between the two machines.
+This same folder is shared via microsoft one drive on the windows machine.
+/mnt/hgfs/iq_reporting_collab
+C:\Users\user1\OneDrive - Harvard University\iq_reporting_collab
+
+The ubuntu directory structure under the shared folder still needs some cleanup as of this writing.
+However this is the standard that I'll be using going forward.
+
+| directory       | example                   | description                                                                                            |
+|-----------------|---------------------------|--------------------------------------------------------------------------------------------------------|     
+| ./SPRINT_NAME  | ./sprint_2023_05_03       | created by the tool based on the YAML file entry for the sprint name. <br/>All runs are deposited here |
+| ./SPRINT_NAME/bin  | ./sprint_2023_05_03/bin   | manually created. The setup scripts live here. e.g. setvars-sprint_2023_05_10-snapshot-api.sh          |
+| ./SPRINT_NAME/start   | ./sprint_2023_05_03/start | manually created. The first data collected is manually selected and moved from ../ to here             |
+| ./SPRINT_NAME/start   | ./sprint_2023_05_03/end   | manually created. The last  data collected is manually selected and moved from ../ to here             |
+
+
+
 # File Names
 Example generated output directory base for src_type = api
 
