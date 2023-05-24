@@ -5,6 +5,7 @@ from iqss_gh_reporting import legacy as pdio
 from iqss_gh_reporting import pdata as ghpdata
 from iqss_gh_reporting import transformer as xfmr
 from iqss_gh_reporting import utils as utils
+import pandas as pd
 
 import argparse
 import os
@@ -111,13 +112,38 @@ def main():
     new_df.to_csv(matrix_out, sep='\t', index=False)
 
     # summarize a subset of the processed snapshot
-    output_df = plu.summarize_processed_sized_snapshot(new_df, filter={})
+    values = new_df['Column'].unique()
+
+    # define filter substrings
+    substrs = ['This Sprint','In Progress','Ready for Review','In Review']
+
+    # create filter
+    filter = plu.create_sprint_filter('Column', values, substrs)
+    output_df = plu.summarize_processed_sized_snapshot(new_df, filter=filter)
 
     # write summary to files
     one_line_summary = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-1line-matrix.tsv"
     print("Saving results to file.")
     print(one_line_summary)
     output_df.to_csv(one_line_summary, sep='\t', index=False)
+
+    # write summary to files
+    one_line_summary = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-1line-matrix.tsv"
+    print("Saving results to file.")
+    print(one_line_summary)
+    output_df.to_csv(one_line_summary, sep='\t', index=False)
+
+    # tack the two 1 line summaries together
+    final_df = pd.concat([summarized_data.df_summary, output_df], axis=1)
+
+    # write summary to files
+    final_summary = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-1line-long-matrix.tsv"
+    print("Saving results to file.")
+    print(final_summary)
+    final_df.to_csv(final_summary, sep='\t', index=False)
+
+
+
 
 
 if __name__ == "__main__":
