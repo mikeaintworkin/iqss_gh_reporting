@@ -74,7 +74,7 @@ class GHProjectData:
             'organization_name': str(organization_name),
             'project_name': str(project_name),
             'collection_flag': str(collection_flag),
-            'data_collected_time': pd.Timestamp.now().strftime("%Y%m%d%H%M%S"),
+            'data_collected_time': pd.Timestamp.now().strftime("%Y_%m_%d_%H%M%S"),
             'sprint_name': str(sprint_name),
             'in_dir': sanitize_filepath(src_dir_name, platform="auto"),
             'in_file': sanitize_filename(src_file_name, platform="auto"),
