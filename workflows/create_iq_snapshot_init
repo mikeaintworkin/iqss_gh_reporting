@@ -28,7 +28,7 @@ def default_yaml_contents(how_do_you_want_it: str = "string"):
         },
         'output_base_dir': {
             'v': '/mnt/hgfs/iq_reporting_collab/run/out',
-            'h': "str: /mnt/hgfs/iq_reporting_collab/run/out;no[ ,.-special_char] ok:'_'.Always required"
+            'h': "str: /mnt/hgfs/iq_reporting_collab/run/out;no[ ,.-special_char] ok:'_'. No trailing /. api=ignored. file=Optional"
         },
         'project_name': {
             'v': 'IQSS/dataverse',
@@ -52,7 +52,7 @@ def default_yaml_contents(how_do_you_want_it: str = "string"):
         },
         'src_dir_name': {
             'v': '',
-            'h': "str: e.g: ~/iqss_gh_reporting/run/in . api=ignored. file=required."
+            'h': "str: e.g: ~/iqss_gh_reporting/run/in no[ ,.-special_char] ok:'_' no trailing /. api=ignored. file=required."
         }
     }
     if how_do_you_want_it == "string":
