@@ -53,6 +53,10 @@ def default_yaml_contents(how_do_you_want_it: str = "string"):
         'src_dir_name': {
             'v': '',
             'h': "str: e.g: ~/iqss_gh_reporting/run/in no[ ,.-special_char] ok:'_' no trailing /. api=ignored. file=required."
+        },
+        'data_collected_time': {
+            'v': '',
+            'h': "str: When working with file input,use this.-special_char] ok:'_' no trailing /. api=ignored. file=reccomended."
         }
     }
     if how_do_you_want_it == "string":
@@ -129,6 +133,12 @@ def main():
                         help=data['output_file_base_name']['h'],
                         type=str)
 
+    parser.add_argument('--data_collected_time', dest='data_collected_time',
+                        default=data['data_collected_time']['v'],
+                        help=data['data_collected_time']['h'],
+                        type=str)
+
+
     args = parser.parse_args()
 
     # TODO: add a test here to make sure that the same exact keys are present in args and data as in the default
@@ -143,6 +153,8 @@ def main():
     data['output_base_dir']['v'] = args.output_base_dir
     data['workflow_name']['v'] = args.workflow_name
     data['output_file_base_name']['v'] = args.output_file_base_name
+    data['data_collected_time']['v'] = args.data_collected_time
+
     yaml_str = yaml.dump(data, default_flow_style=False, indent=8)
     with open(yaml_file, 'w') as f:
         f.write(yaml_str)
