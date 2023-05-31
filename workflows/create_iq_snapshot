@@ -52,7 +52,8 @@ def main():
         dest_dir_name=ydata['output_base_dir']['v'],
         organization_name=ydata['organization_name']['v'],
         project_name=ydata['project_name']['v'],
-        output_file_base_name=ydata['output_file_base_name']['v']
+        output_file_base_name=ydata['output_file_base_name']['v'],
+        data_collected_time=ydata['data_collected_time']['v']
         )
 
     if ydata['src_type']['v'] == "file":
@@ -82,9 +83,11 @@ def main():
     xfmrd_df = xfmr.SprintCardSizer(sprint_data).df
     sprint_data.df = xfmrd_df
     sprint_data.write(postfix="sized")
-    with open("runlog.sh", 'a') as f:
-        f.write(f"DEST_DIR_NAME={sprint_data.dest_dir_name}\n")
-        f.write(f"DEST_FILE_SIZED={sprint_data.dest_file_name}-sized.tsv\n")
+
+    # This was part of a temporary solution to gluing Ceilyn's code to mine with a bash script
+    # with open("runlog.sh", 'a') as f:
+    #     f.write(f"DEST_DIR_NAME={sprint_data.dest_dir_name}\n")
+    #     f.write(f"DEST_FILE_SIZED={sprint_data.dest_file_name}-sized.tsv\n")
 
     # prs = transformer.PrPointsFetcher(sprint_data)
     # utils.write_dataframe(df=prs.df_zero_rows())
@@ -106,12 +109,12 @@ def main():
     new_df = plu.process_sized_snapshot(df, labels='Labels', key='CardURL')
 
     # write to matrix file
-    matrix_out = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-matrix.tsv"
-    print("Saving results to file.")
-    print(matrix_out)
-    new_df.to_csv(matrix_out, sep='\t', index=False)
+    output_file_name = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-matrix.tsv"
+    print(f"Saving results to file.\n{output_file_name}")
+    print(output_file_name)
+    new_df.to_csv(output_file_name, sep='\t', index=False)
 
-    # summarize a subset of the processed snapshot
+    # get unique values for column=Column
     values = new_df['Column'].unique()
 
     # define filter substrings
@@ -119,30 +122,43 @@ def main():
 
     # create filter
     filter = plu.create_sprint_filter('Column', values, substrs)
+
+    # summarize a subset of the processed snapshot
     output_df = plu.summarize_processed_sized_snapshot(new_df, filter=filter)
 
-    # write summary to files
-    one_line_summary = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-1line-matrix.tsv"
-    print("Saving results to file.")
-    print(one_line_summary)
-    output_df.to_csv(one_line_summary, sep='\t', index=False)
+    # 1 write summary to files
+    output_file_name = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-1line_matrix.tsv"
+    print(f"Saving results to file.\n{output_file_name}")
+    output_df.to_csv(output_file_name, sep='\t', index=False)
 
-    # write summary to files
-    one_line_summary = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-1line-matrix.tsv"
-    print("Saving results to file.")
-    print(one_line_summary)
-    output_df.to_csv(one_line_summary, sep='\t', index=False)
+    # create size summary
+    # exclude some fields when modifying values to create the special matrix of sizes
+    excluded = ['CardURL','Project','Column','Card',
+                'Type','Number','Labels','Repo','State',
+                'CreatedAt','UpdatedAt','ClosedAt','LinkedPRIssues',
+                'card','Size']
+    # create a matrix dataframe using issue size values
+    new_matrix_df = plu.create_label_sized_matrix(new_df, size='Size', exclude=excluded)
+
+    output_file_name = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-new_matrix_sized.tsv"
+    print(f"Saving results to file.\n{output_file_name}")
+    new_matrix_df.to_csv(output_file_name,sep='\t')
+
+    # summarize the matrix
+    summarized_matrix = plu.summarize_processed_sized_snapshot(new_matrix_df, filter=filter)
+
+    # write summary to file
+    output_file_name = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-1line_matrix_sized.tsv"
+    print(f"Saving results to file.\n{output_file_name}")
+    summarized_matrix.to_csv(output_file_name,sep='\t')
 
     # tack the two 1 line summaries together
-    final_df = pd.concat([summarized_data.df_summary, output_df], axis=1)
+    final_df = pd.concat([summarized_data.df_summary, summarized_matrix], axis=1)
 
     # write summary to files
-    final_summary = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-1line-long-matrix.tsv"
-    print("Saving results to file.")
-    print(final_summary)
-    final_df.to_csv(final_summary, sep='\t', index=False)
-
-
+    output_file_name = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-1line_long_matrix.tsv"
+    print(f"Saving results to file.\n{output_file_name}")
+    final_df.to_csv(output_file_name, sep='\t', index=False)
 
 
 
