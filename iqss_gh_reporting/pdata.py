@@ -66,6 +66,7 @@ class GHProjectData:
                  src_file_name: str = None,
                  organization_name: str = None,
                  project_name: str = None,
+                 data_collected_time= None,
                  output_file_base_name=None
                  ):
         self._df = None
@@ -74,7 +75,7 @@ class GHProjectData:
             'organization_name': str(organization_name),
             'project_name': str(project_name),
             'collection_flag': str(collection_flag),
-            'data_collected_time': pd.Timestamp.now().strftime("%Y_%m_%d_%H%M%S"),
+            'data_collected_time': data_collected_time,
             'sprint_name': str(sprint_name),
             'in_dir': sanitize_filepath(src_dir_name, platform="auto"),
             'in_file': sanitize_filename(src_file_name, platform="auto"),
@@ -88,17 +89,26 @@ class GHProjectData:
         if src_type not in "api" and src_type not in "file":
             raise ValueError(f"Error: src_type: must be one of 'file', 'api', 'unknown'")
 
+        # Optionally, the data_collected_time can be set in the yaml file.
+        # If it's not set, or if src_type is api then set it to the current time
+        # Todo: reimplement this logic elsewhere to fully support it
         if src_type == "file":
+            if data_collected_time is None or len(data_collected_time) == 0:
+                self._v['data_collected_time'] = pd.Timestamp.now().strftime("%Y_%m_%d_%H%M%S")
+
             self._v['output_file_base_name'] = self._set_output_file_base_name_4file()
             # if we're reprocessing a file, we need to make sure that the output file goes back where it came from
             # above this, I default to assuming src_type is set to api
             self._v['out_dir'] = dest_dir_name
             if self._v['out_dir'] is None or len(self._v['out_dir']) == 0:
                 self._v['out_dir'] = self._v['in_dir']
+
         else:
             self._v['output_file_base_name'] = self._set_output_file_base_name_4api()
             if self._v['collection_flag'] not in ["start", "snapshot", "end", "unknown"]:
                 raise ValueError(f"Error: sprint_snap_status must be one of: 'start', 'snapshot', 'end', 'unknown'")
+            self._v['data_collected_time'] = pd.Timestamp.now().strftime("%Y_%m_%d_%H%M%S")
+
 
         os.makedirs(str(self._v['out_dir']), exist_ok=True)
         print(f"directory exists or was created now: {self._v['out_dir']}")
