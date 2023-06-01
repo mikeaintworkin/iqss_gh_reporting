@@ -36,7 +36,7 @@ def default_yaml_contents(how_do_you_want_it: str = "string"):
         },
         'sprint_name': {
             'v': 'sprint2023_05_03',
-            'h': "str: e.g. sprint_2023_04_26;no[ ,.-special_char] ok:'_'; api=required.file=Ignored."
+            'h': "str: e.g. sprint_2023_04_26;no[ ,.-special_char] ok:'_'; api=required.file=required."
         },
         'src_file_name': {
             'v': 'sprint_2023_05_03-snapshot-2023_05_22_11_00-api-000-orig.tsv',
@@ -56,7 +56,7 @@ def default_yaml_contents(how_do_you_want_it: str = "string"):
         },
         'data_collected_time': {
             'v': '',
-            'h': "str: When working with file input,use this.-special_char] ok:'_' no trailing /. api=ignored. file=reccomended."
+            'h': "str: When working with file input,use this.-special_char] ok:'_' no trailing /. api=ignored. file=required."
         }
     }
     if how_do_you_want_it == "string":
