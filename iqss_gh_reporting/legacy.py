@@ -144,7 +144,7 @@ class LegacyProjectCards:
                         RequiredDfColumnHeaderNames.value("CardURL"): card_content.html_url,
                         RequiredDfColumnHeaderNames.value("type"): card_type,
                         RequiredDfColumnHeaderNames.value("number"): card_content.number,
-                        RequiredDfColumnHeaderNames.value("labels"): card_content.labels,
+                        RequiredDfColumnHeaderNames.value("labels"): str(card_content.labels),
                         RequiredDfColumnHeaderNames.value("repo"): card_content.repository.name,
                         RequiredDfColumnHeaderNames.value("state"): card_content.state,
                         RequiredDfColumnHeaderNames.value("CreatedAt"): card_content.created_at,
