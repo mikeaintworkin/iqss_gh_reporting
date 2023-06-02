@@ -25,36 +25,6 @@ from pathvalidate import sanitize_filepath
 class GHProjectData:
     # ===================================================================================================================
     # Represents the dataframe and supporting metadata for a workflow that processes sprint data
-    # collected in init:
-    #                  src_type: str,
-    #                  sprint_snap_status: str,
-    #                  workflow_name: str,
-    #                  src_dir_name: str,
-    #                  src_file_name: str,
-    #                  dest_dir_name: str,
-    #                  sprint_name: str = "no sprint name"
-    # df - data frame containing data to be processed
-    # sprint_snap_status - Expected to be one of: Start, snapshot, End, unknown. Not enforced.
-    # timestamp= - timestamp of the data collection. This is used to mark the time that the data was collected.
-    #    in the case where the data is of type 'api' it is ignored.
-    #    in the case where the data is of type 'file' it is the only way we know when the data was collected.
-    #    (note this logic can likely be automated in some way)
-    # src_type=
-    # sprint_name= - name of the sprint. This is used to help mark when the data was collected.
-    # dest_dir  - where are we directing output
-    # workflow_name - intended to be the name of the python file that is running the workflow.
-    #
-    # example of things that I expect to put in the log:
-    # DateTime,CurrentContext,Comment
-    # 2023_04_27-18_12_36,GHProjectData,initializing data object.| workflow timestamp:2023_04_26-17_32_18
-    # 2023_04_27-18_12_36,GHProjectData,initializing data object.| sprint name:No Sprint Name
-    # 2023_04_27-18_12_36,GHProjectData,initializing data object.| workflow name: Workflow: 2023_04_26-17_32_18-No Sprint Name-mn-snapshot_sprint_from_file
-    # 2023_04_27-18_12_36,GHProjectData,initializing data object.| Destination: /home/perftest/DevCode/github-com-mreekie/iqss_gh_reporting/run/results/2023_04_26-17_32_18-No Sprint Name-mn-snapshot_sprint_from_file-log.txt
-    # 2023_04_27-18_12_36,GHProjectData,initializing data object.| workflow file name: mn-snapshot_sprint_from_file
-    # 2023_04_27-18_12_36,GHProjectData,initializing data object.| source type file
-    # 2023_04_27-18_12_36,DFFromFile,Created dataframe from file: /home/perftest/DevCode/github-com-mreekie/iqss_gh_reporting/run/wrk//2023_04_26-17_32_18-output.tsv.
-    # 2023_04_27-18_12_36,SprintCardSizer,Added the size column. 
-    # 2023_04_27-18_12_36,SprintSizeSummarizer,Summarize the sprint
     # ===================================================================================================================
     def __init__(self,
                  src_type: str = None,
@@ -82,7 +52,7 @@ class GHProjectData:
             'workflow_name': str(workflow_name),
             'src_type': str(src_type),
 
-            'out_dir':  transformer.string_cleaned(sanitize_filepath(dest_dir_name + '/' + sprint_name, platform="auto")),
+            'out_dir':  sanitize_filepath(dest_dir_name + '/' + sprint_name, platform="auto"),
             'output_file_base_name': str(output_file_base_name)
         }
 
@@ -95,20 +65,17 @@ class GHProjectData:
         if src_type == "file":
             if data_collected_time is None or len(data_collected_time) == 0:
                 self._v['data_collected_time'] = pd.Timestamp.now().strftime("%Y_%m_%d_%H%M%S")
-
-            self._v['output_file_base_name'] = self._set_output_file_base_name_4file()
             # if we're reprocessing a file, we need to make sure that the output file goes back where it came from
             # above this, I default to assuming src_type is set to api
             self._v['out_dir'] = dest_dir_name
             if self._v['out_dir'] is None or len(self._v['out_dir']) == 0:
                 self._v['out_dir'] = self._v['in_dir']
-
+            self._v['output_file_base_name'] = self._set_output_file_base_name_4file()
         else:
-            self._v['output_file_base_name'] = self._set_output_file_base_name_4api()
+            self._v['data_collected_time'] = pd.Timestamp.now().strftime("%Y_%m_%d_%H%M%S")
             if self._v['collection_flag'] not in ["start", "snapshot", "end", "unknown"]:
                 raise ValueError(f"Error: sprint_snap_status must be one of: 'start', 'snapshot', 'end', 'unknown'")
-            self._v['data_collected_time'] = pd.Timestamp.now().strftime("%Y_%m_%d_%H%M%S")
-
+            self._v['output_file_base_name'] = self._set_output_file_base_name_4api()
 
         os.makedirs(str(self._v['out_dir']), exist_ok=True)
         print(f"directory exists or was created now: {self._v['out_dir']}")
@@ -152,9 +119,10 @@ class GHProjectData:
         if wfn is not None and len(wfn) > 0:
             f = f + "-" + transformer.string_cleaned(wfn)
 
-        f = f  + "-" + transformer.string_cleaned(self._v['src_type']) \
+        f = f + "-" + transformer.string_cleaned(self._v['src_type']) \
             + "-" + self._v['data_collected_time']
         f = sanitize_filename(f, platform="auto")
+        print(f"output_file_base_name 4api: {f}")
         return f
 
     def _initialize_log(self):
