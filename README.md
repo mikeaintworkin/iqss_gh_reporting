@@ -41,11 +41,13 @@ Underneath BASEDATADIR, create the sprint_name directory: SPRINTNAME
 BASEDATADIR/SPRINTNAME
 e.g.: BASEDATADIR/sprint_2023_05_24 
 - All results of the data collection tagged with this sprint name will be deposited in this directory.
-- It is **important** that the name of this directory match [the sprint_name in the setup](docs/sample_create_iq_snapshot_init_with_api_input.md).
+- It is **important** that the name of this directory match [the sprint_name in the setup](./docs/example_yaml_file_configuration.md).
 - If they don't match the tool will create a new directory with the sprint_name and deposit the results there. This can lead to confusion.
 
-Finally underneath the sprint directory, create the ./bin directory
+Finally underneath the sprint directory, create the ./bin directory:
+
 BASEDATADIR/SPRINTNAME/bin.
+
 e.g.: BASEDATADIR/sprint_2023_05_24/bin
 - The ./bin directory is where you will store the shell scripts that you use to run the tool for this particular sprint
 
@@ -80,14 +82,14 @@ For this example we are going to pretend that we created this BASEDATADIR:
 
 **BASEDATADIR/sprint_2023_05_24/bin**
 
-| File Name                             | Description                                                          |
-|---------------------------------------|----------------------------------------------------------------------|
-| sprint_2023_05_24-api-example.sh      | Example script to create the yaml file to collect data from the api  |
-| sprint_2023_05_24-file-example.sh     | Example script to create the yaml file to reprocess an existing file |
-| input_file.yaml                       | Example yaml file created by the above scripts                            |
+| File Name                                                                                                      | Description                                                          |
+|----------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------|
+| [sprint_2023_05_24-api-example.sh](./scripts/example/sprint_2023_05_24/bin/sprint_2023_05_24-api-example.sh)   | Example script to create the yaml file to collect data from the api  |
+| [sprint_2023_05_24-file-example.sh](./scripts/example/sprint_2023_05_24/bin/sprint_2023_05_24-file-example.sh) | Example script to create the yaml file to reprocess an existing file |
+| [input_file.yaml](./docs/example_yaml_file_configuration.md)                                                                                     | Example yaml file created by the above scripts                            |
 
-Notes:
-- the output_base_dir ends in  "sample". As indicated below in the description of the yaml file, this is because the tool will create a subdirectory matching the _sprint_name_  if it doesn't already exist.
+Notes on using the setup shell scripts.
+- the BASEDATADIR here corresponds to the _output_base_dir_ command line variable. Note that it ends in  "example". This is because the tool will create a subdirectory matching the command line variable _sprint_name_  if it doesn't already exist.
 - Be careful when editing to include the ending '\' on all the lines in the command except the last. Not doing this will result in the file only partially modifying the parameters.
 
 Modify the bash path if required. This example was written on ubuntu. 
