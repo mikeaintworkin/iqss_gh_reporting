@@ -15,11 +15,11 @@ def default_yaml_contents(how_do_you_want_it: str = "string"):
     # ----------------------------------------------------------------------------------------------------------------
     data = {
         'src_type': {
-            'v': 'api',
+            'v': '',
             'h': "str: valid values: api | file. Always required."
         },
         'collection_flag': {
-            'v': 'snapshot',
+            'v': '',
             'h': "str: valid values: start | snapshot | end. api=required. file=Ignored."
         },
         'organization_name': {
@@ -27,7 +27,7 @@ def default_yaml_contents(how_do_you_want_it: str = "string"):
             'h': "str: e.g: IQSS. Always required."
         },
         'output_base_dir': {
-            'v': '/mnt/hgfs/iq_reporting_collab/run/out',
+            'v': '',
             'h': "str: /mnt/hgfs/iq_reporting_collab/run/out;no[ ,.-special_char] ok:'_'. No trailing /. api=ignored. file=Optional"
         },
         'project_name': {
@@ -35,7 +35,7 @@ def default_yaml_contents(how_do_you_want_it: str = "string"):
             'h': "str: e.g: IQSS/dataverse. Always required."
         },
         'sprint_name': {
-            'v': 'sprint2023_05_03',
+            'v': '',
             'h': "str: e.g. sprint_2023_04_26;no[ ,.-special_char] ok:'_'; api=required.file=required."
         },
         'src_file_name': {
@@ -43,11 +43,11 @@ def default_yaml_contents(how_do_you_want_it: str = "string"):
             'h': "str: e.g: sprint_2023_05_03-snapshot-2023_05_22_11_00-api-000-orig.tsv .api=ignored. file=required."
         },
         'output_file_base_name': {
-            'v': 'sprint_2023_05_03-snapshot-2023_05_22_11_00-api-000-orig',
+            'v': '',
             'h': "str: e.g. sprint_2023_05_03-snapshot-2023_05_22_11_00-api-000-orig  .api=ignored. file=not required."
         },
         'workflow_name': {
-            'v': '000',
+            'v': '',
             'h': "very short description or code.no[ ,.-special_char] ok:'_' Optional."
         },
         'src_dir_name': {
