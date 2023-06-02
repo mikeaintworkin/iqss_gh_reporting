@@ -76,9 +76,9 @@ def main():
     else:
         raise ValueError("src_type must be 'file' or 'api'")
 
-    sprint_data.add_log_entry(context="pdio", comment=summary_of_this_run)
-    sprint_data.write_log()
-    sprint_data.write(postfix="orig")
+    # sprint_data.add_log_entry(context="pdio", comment=summary_of_this_run)
+    # sprint_data.write_log()
+    # sprint_data.write(postfix="orig")
 
     xfmrd_df = xfmr.SprintCardSizer(sprint_data).df
     sprint_data.df = xfmrd_df
@@ -94,7 +94,7 @@ def main():
 
     # SprintSizeSummarizer creates a new dataframe so I need create a variable that I can reference to get the results
     summarized_data = xfmr.SprintSizeSummarizer(sprint_data)
-    summarized_data.write(postfix="summary")
+    # summarized_data.write(postfix="summary")
 
     # create a matrix of the data
     # communicate what is needed using a Yaml file
@@ -102,11 +102,12 @@ def main():
     # epilog='Usage: python process_labels.py --input <infile> --output <ofile> --matrix <matrixfile>')
 
     # read the input file
-    snapshot_file = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-sized.tsv"
-    df = plu.read_sized_snapshot(snapshot_file)
+    # snapshot_file = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-sized.tsv"
+    # df = plu.read_sized_snapshot(snapshot_file)
 
     # process the labels in the file
-    new_df = plu.process_sized_snapshot(df, labels='Labels', key='CardURL')
+    # new_df = plu.process_sized_snapshot(df, labels='Labels', key='CardURL')
+    new_df = plu.process_sized_snapshot(sprint_data.df, labels='Labels', key='CardURL')
 
     # write to matrix file
     output_file_name = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-matrix.tsv"
@@ -127,9 +128,9 @@ def main():
     output_df = plu.summarize_processed_sized_snapshot(new_df, filter=filter)
 
     # 1 write summary to files
-    output_file_name = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-1line_matrix.tsv"
-    print(f"Saving results to file.\n{output_file_name}")
-    output_df.to_csv(output_file_name, sep='\t', index=False)
+    # output_file_name = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-1line_matrix.tsv"
+    # print(f"Saving results to file.\n{output_file_name}")
+    # output_df.to_csv(output_file_name, sep='\t', index=False)
 
     # create size summary
     # exclude some fields when modifying values to create the special matrix of sizes
@@ -140,23 +141,23 @@ def main():
     # create a matrix dataframe using issue size values
     new_matrix_df = plu.create_label_sized_matrix(new_df, size='Size', exclude=excluded)
 
-    output_file_name = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-new_matrix_sized.tsv"
-    print(f"Saving results to file.\n{output_file_name}")
-    new_matrix_df.to_csv(output_file_name,sep='\t')
+    # output_file_name = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-new_matrix_sized.tsv"
+    # print(f"Saving results to file.\n{output_file_name}")
+    # new_matrix_df.to_csv(output_file_name,sep='\t')
 
     # summarize the matrix
     summarized_matrix = plu.summarize_processed_sized_snapshot(new_matrix_df, filter=filter)
 
     # write summary to file
-    output_file_name = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-1line_matrix_sized.tsv"
-    print(f"Saving results to file.\n{output_file_name}")
-    summarized_matrix.to_csv(output_file_name,sep='\t')
+    # output_file_name = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-1line_matrix_sized.tsv"
+    # print(f"Saving results to file.\n{output_file_name}")
+    # summarized_matrix.to_csv(output_file_name,sep='\t')
 
     # tack the two 1 line summaries together
     final_df = pd.concat([summarized_data.df_summary, summarized_matrix], axis=1)
 
     # write summary to files
-    output_file_name = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-1line_long_matrix.tsv"
+    output_file_name = sprint_data.dest_dir_name + "/" + sprint_data.dest_file_name + "-snapshot_summary.tsv"
     print(f"Saving results to file.\n{output_file_name}")
     final_df.to_csv(output_file_name, sep='\t', index=False)
 
