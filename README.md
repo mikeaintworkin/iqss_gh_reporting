@@ -71,14 +71,14 @@ For this example we are going to pretend that we created this BASEDATADIR:
 
 **BASEDATADIR/sprint_2023_05_24**
 
-| File Name                                                                                                          | Description                                                                             |
-|--------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
-| [sprint_2023_05_24-snapshot-example-api-2023_06_02_172814-sized.tsv](./scripts/example/sprint_2023_05_24)          | The original data collected from the API                                                |
-| sprint_2023_05_24-snapshot-example-api-2023_06_02_172814-matrix.tsv                                                | The original data collected from the API with the addition of the label data            |
-| sprint_2023_05_24-snapshot-example-api-2023_06_02_172814-snapshot_summary.tsv                                      | A original data collectedd from the API as a single row of data representing the sprint |
-| sprint_2023_05_24_snapshot_example_api_2023_06_02_172814_sized-example-file-2023_06_02_172814-sized.tsv            | The original data re-processed.                                                         |
-| sprint_2023_05_24_snapshot_example_api_2023_06_02_172814_sized-example-file-2023_06_02_172814-matrix.tsv           | The original data re-processed.                                                                                        |
-| sprint_2023_05_24_snapshot_example_api_2023_06_02_172814_sized-example-file-2023_06_02_172814-snapshot_summary.tsv | The original data re-processed.                                                                                        |
+| File Name                                                                                                                                                 | Description                                                                             |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
+| [sprint_2023_05_24-snapshot-example-api-2023_06_02_172814-sized.tsv](./scripts/example/sprint_2023_05_24)                                                 | The original data collected from the API                                                |
+| [sprint_2023_05_24-snapshot-example-api-2023_06_02_172814-matrix.tsv](./scripts/example/sprint_2023_05_24)                                                | The original data collected from the API with the addition of the label data            |
+| [sprint_2023_05_24-snapshot-example-api-2023_06_02_172814-snapshot_summary.tsv](./scripts/example/sprint_2023_05_24)                                      | A original data collectedd from the API as a single row of data representing the sprint |
+| [sprint_2023_05_24_snapshot_example_api_2023_06_02_172814_sized-example-file-2023_06_02_172814-sized.tsv](./scripts/example/sprint_2023_05_24)            | The original data re-processed.                                                         |
+| [sprint_2023_05_24_snapshot_example_api_2023_06_02_172814_sized-example-file-2023_06_02_172814-matrix.tsv](./scripts/example/sprint_2023_05_24)           | The original data re-processed.                                                                                        |
+| [sprint_2023_05_24_snapshot_example_api_2023_06_02_172814_sized-example-file-2023_06_02_172814-snapshot_summary.tsv](./scripts/example/sprint_2023_05_24) | The original data re-processed.                                                                                        |
 
 **BASEDATADIR/sprint_2023_05_24/bin**
 
