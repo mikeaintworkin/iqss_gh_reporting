@@ -35,7 +35,6 @@ api:
 organization_name: IQSS
 project_name: IQSS/dataverse
 collection_flag: unknown
-collection_timestamp: test
 dest_dir_name: ~/iqss_gh_reporting/run/out
 file:
 src_dir_name: ~/iqss_gh_reporting/run/in
@@ -65,7 +64,7 @@ GitHub metadata
 
 
 """
-\
+
 
 src_file_name: test.tsv
 sprint_name: test
