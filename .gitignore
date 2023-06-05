@@ -11,6 +11,8 @@
 /dist
 /.pytest_cache
 /.idea
+/scripts/scaffolding/*.json
+/scripts/scaffolding/*.yaml
 
 # OS generated files #
 ######################
