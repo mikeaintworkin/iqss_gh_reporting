@@ -168,3 +168,30 @@ def fragment_issue_fields_on_issue():
     }
     """
     return fragment_string
+
+
+queries = {
+    # -----------------------------------------------------------------
+    # This is a global dictionary of the queries that are available.
+    # Each query comes along with a data structure.
+    # These are all required values.
+    # The top level keys are defined within the query itself and the paired calling code GraphQLFetcher knows
+    #  how to use them.  e.g. from fetch_from_repository import GraphQLFetcher
+    # The query_vars entries are the external variables that are required to be set correctly for the query to run
+    # here is an example:
+    #     qry = {
+    #     "query_str": query_string,
+    #     "has_next_page_path": ["repository", "pullRequests", "pageInfo", "hasNextPage"],
+    #     "start_with_path": ["repository", "pullRequests", "pageInfo", "endCursor"],
+    #     "query_vars": {
+    #         "loginOrg": "IQSS",
+    #         "repo": "dataverse",
+    #         "firstFew": 100,
+    #         "startWith": ""
+    #     }
+    # }
+    # -----------------------------------------------------------------
+    'query_get_one_pr': query_get_one_pr,
+    'query_get_all_prs': query_get_all_prs
+
+}

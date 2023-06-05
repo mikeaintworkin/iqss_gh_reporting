@@ -56,7 +56,7 @@ class GraphQLFetcher:
             self._results_dict.update(data)
             has_next_page = self._get_value_by_path(data, self._has_next_page_path)
             self._query_input_params["startWith"] = self._get_value_by_path(data, self._start_with_path)
-            print(f"Records Retrieved: {counter}. Retrieve more? {has_next_page}")
+            # print(f"Records Retrieved: {counter}. Retrieve more? {has_next_page}")
 
         self.results_json = json.dumps(self._results_dict, indent=4)
         return self.results_json
