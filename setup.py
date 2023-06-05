@@ -21,7 +21,8 @@ setup(
         'pathvalidate',
         'pandas',
         'pyyaml',
-        'graphql-py'
+        'graphql-py',
+        'aiohttp'
     ],
     scripts=['workflows/create_iq_snapshot_init',
              'workflows/create_iq_snapshot',
