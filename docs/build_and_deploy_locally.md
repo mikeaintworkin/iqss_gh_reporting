@@ -1,4 +1,4 @@
-[[June 2, 2023 MVP Readme]] 
+
 ```
 perftest@ubuntu:~/DevCode/github-com-mreekie/iqss_gh_reporting/scripts$ ./build_and_deploy_local.sh 
 ============================
