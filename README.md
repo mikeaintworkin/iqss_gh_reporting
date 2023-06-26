@@ -2,6 +2,8 @@
 
 This is our first MVP.  There is no deployment process. To use the software, you can follow these instructions.
 
+We have started discussions on the next generation of this tool: [IQSS Automated Github PM and Reporting Tools](https://docs.google.com/document/d/1EpC4kw-FAFlBvfEduxL1YxrGLKJ_l7m0kUviHTOGOiE/edit?usp=sharing)
+
 ## Summary
 
 - Check out the latest code.
