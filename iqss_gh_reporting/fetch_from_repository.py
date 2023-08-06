@@ -1,7 +1,6 @@
 
-from gql import Client
+from gql import Client, gql
 from gql.transport.aiohttp import AIOHTTPTransport
-from graphql import parse
 import json
 
 
@@ -27,9 +26,10 @@ class GraphQLFetcher:
         # }
         
         # TODO: add a check to make sure that the vars_in are correct for the query
+        # TODO: add more sophisticated error handling See: #50
         self._start_with_path = query_dict["start_with_path"]
         self._has_next_page_path = query_dict["has_next_page_path"]
-        self._query = parse(query_dict["query_str"])
+        self._query = gql(query_dict["query_str"])
         self._query_input_params = query_dict["query_vars"]
         self._auth_token_val = auth_token_val
         self._results_json = None
@@ -46,12 +46,20 @@ class GraphQLFetcher:
         has_next_page = True
         headers = {"Authorization": "Bearer " + self._auth_token_val}
         transport = AIOHTTPTransport(url='https://api.github.com/graphql', headers=headers)
-        client = Client(transport=transport)
+        client = Client(transport=transport, fetch_schema_from_transport=True)
 
         # for each page of results, get the data and add it to the results_dict
         counter = 0
         while has_next_page:
-            data = client.execute(self._query, variable_values=self._query_input_params)
+            # gql will raise an exception when it encounters a GraphQL error.
+            # so that something not found will return an exception
+            try:
+                data = client.execute(self._query, variable_values=self._query_input_params)
+
+            except Exception as e:  # Catching all exceptions. Change this to more specific exceptions if needed.
+                print(f"Exception: {e}")
+                return {}
+
             counter += 1
             self._results_dict.update(data)
             has_next_page = self._get_value_by_path(data, self._has_next_page_path)
@@ -61,13 +69,20 @@ class GraphQLFetcher:
         self.results_json = json.dumps(self._results_dict, indent=4)
         return self.results_json
 
-    def save_result_to_file(self):
-        print(f"Saving result to file:")
+    def save_result_to_file(self, file_path: str = None, output_file_name: str = 'output.json'):
+        outfile = file_path + "/" + output_file_name
+        print(f"Saving result to file:\n{outfile}")
         if self._results_dict is None:
             raise ValueError("No result to write")
 
-        with open('output.json', 'w') as file:
+        with open(outfile, 'w') as file:
             json.dump(self._results_dict, file, indent=4)
+
+    def print_results(self):
+        if self._results_dict is None:
+            raise ValueError("No result to write")
+        print(f" results: \n ---- \n {json.dumps(self._results_dict, indent=4)} \n ---- \n")
+
 
     @property
     def json(self):
