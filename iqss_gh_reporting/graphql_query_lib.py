@@ -4,26 +4,88 @@ import os
 import json
 
 
-def query_get_one_pr():
+def query_get_one_pr_malformed():
     # =================================================================
-    # get a list of all prs for a given repository
+    # get the associated issue information: number, labels, title for a single pull request
     # =================================================================
+    # return values. These are hardcoded by you when you create the query.
+    #
     # "query_str": query_string
     # "has_next_page_path": This is the check for the next page of data formatted specifically for this query
     # "start_with_path": This is the path for the next page of data formatted specifically for this query
     #  "query_vars": These are the variables that are required internally for the query to run
-    #       "loginOrg": "IQSS",
-    #       "repo": "dataverse",
-    #       "firstFew": 100,
-    #       "startWith" - this is not used initially it's an interim variable that is used to store the cursor
+    #       "loginOrg": "IQSS"
+    #       "repo": "dataverse"
+    #       "number": 1234 - Pull request number. Required.
+    #       "firstFew": 100 - count of prs per page.  Required. Leave as 100.
+    #       "startWith" - An interim variable that is used to store the cursor. Required. set to ""
+    #
+    # Expected results of this query:
     #
     # ---------------------------------------------------------------
     query_string = \
     """
-    query ($loginOrg: String!, $repo: String!, $firstFew: Int, $startWith: String) {
+    query ($loginOrg: String!, $repo: String!, $firstFew: Int!, $startWith: String, $number: Int!) {
         repository(followRenames:false, owner: $loginOrg, name: $repo) {
                 pullRequest (number: $number) {
-                    closingIssuesReferences(first: 100) {
+                    closingIssuesReferences(first: $firstFew, after: $startWith) {
+                        totalCount
+                        pageInfo {
+                            hasNextPage
+                            hasPreviousPage
+                            endCursor
+                            startCursor
+                        }
+                        nodes {
+                           # ...issueFields - malformed on purpose so that the query will fail
+                            ...issueField
+                        }
+
+                    }
+                }
+        }
+    }
+        """
+    query_string = query_string + fragment_issue_fields_on_issue()
+    qry = {
+        "query_str": query_string,
+        "has_next_page_path": ["repository", "pullRequest", "closingIssuesReferences", "pageInfo", "hasNextPage"],
+        "start_with_path": ["repository", "pullRequest", "closingIssuesReferences", "pageInfo", "endCursor"],
+        "query_vars": {
+            "loginOrg": "IQSS",
+            "repo": "dataverse",
+            "number": '',
+            "firstFew": 100,
+            "startWith": ""
+            }
+        }
+    return qry
+
+def query_get_one_pr():
+    # =================================================================
+    # get the associated issue information: number, labels, title for a single pull request
+    # =================================================================
+    # return values. These are hardcoded by you when you create the query.
+    #
+    # "query_str": query_string
+    # "has_next_page_path": This is the check for the next page of data formatted specifically for this query
+    # "start_with_path": This is the path for the next page of data formatted specifically for this query
+    #  "query_vars": These are the variables that are required internally for the query to run
+    #       "loginOrg": "IQSS"
+    #       "repo": "dataverse"
+    #       "number": 1234 - Pull request number. Required.
+    #       "firstFew": 100 - count of prs per page.  Required. Leave as 100.
+    #       "startWith" - An interim variable that is used to store the cursor. Required. set to ""
+    #
+    # Expected results of this query:
+    #
+    # ---------------------------------------------------------------
+    query_string = \
+    """
+    query ($loginOrg: String!, $repo: String!, $firstFew: Int!, $startWith: String, $number: Int!) {
+        repository(followRenames:false, owner: $loginOrg, name: $repo) {
+                pullRequest (number: $number) {
+                    closingIssuesReferences(first: $firstFew, after: $startWith) {
                         totalCount
                         pageInfo {
                             hasNextPage
@@ -40,14 +102,15 @@ def query_get_one_pr():
         }
     }
         """
-    query_string = query_string + fragment_pr_fields_on_pullrequest()
+    query_string = query_string + fragment_issue_fields_on_issue()
     qry = {
         "query_str": query_string,
-        "has_next_page_path": ["repository", "pullRequests", "pageInfo", "hasNextPage"],
-        "start_with_path": ["repository", "pullRequests", "pageInfo", "endCursor"],
+        "has_next_page_path": ["repository", "pullRequest", "closingIssuesReferences", "pageInfo", "hasNextPage"],
+        "start_with_path": ["repository", "pullRequest", "closingIssuesReferences", "pageInfo", "endCursor"],
         "query_vars": {
             "loginOrg": "IQSS",
             "repo": "dataverse",
+            "number": '',
             "firstFew": 100,
             "startWith": ""
             }
@@ -159,7 +222,7 @@ def fragment_issue_fields_on_issue():
         url
         closed
         closedAt
-        labels (first: 10) {
+        labels (first: 100) {
           totalCount
             nodes {
                 name
@@ -192,6 +255,7 @@ queries = {
     # }
     # -----------------------------------------------------------------
     'query_get_one_pr': query_get_one_pr,
-    'query_get_all_prs': query_get_all_prs
+    'query_get_all_prs': query_get_all_prs,
+    'query_get_one_pr_malformed': query_get_one_pr_malformed
 
 }
