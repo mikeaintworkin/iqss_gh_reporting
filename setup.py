@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='iqss_gh_reporting',
-    version='0.1',
+    version='0.5',
     description='collects raw data from github and transforms it into a format that can be used for reporting',
     author='Mike Reekie',
     author_email='mike@reekie.us',
@@ -22,7 +22,8 @@ setup(
         'pandas',
         'pyyaml',
         'graphql-py',
-        'aiohttp'
+        'aiohttp',
+        'numpy'
     ],
     scripts=['workflows/create_iq_snapshot_init',
              'workflows/create_iq_snapshot',
