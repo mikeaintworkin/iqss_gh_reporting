@@ -10,10 +10,17 @@ DEVHOME="../"
 
 cat<<EOF
 ============================
+$0
+$(pwd)
 
 This assumes that you are running the from the ./scripts directory in the project tree.
 That would make the directory above it the root of the project
 The script is going to to build the sources and then deploy it with pip to your local environment.
+
+
+It seems that since I got more careful about using venv when setting up my dev environment, that at least on my environment,
+I also have to invoke the venv.
+
 
 press <enter> to continue
 ============================
@@ -29,6 +36,8 @@ Building the code here:
 ${DEVHOME}
 
 EOF
+
+source ./venv/bin/activate
 
 cat<<EOF
 
