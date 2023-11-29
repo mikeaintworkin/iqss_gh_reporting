@@ -76,6 +76,8 @@ create_iq_snapshot_init --help
 
 () Follow the rest of the instructions in the readme
 
+press <enter> to continue
 ============================
 
 EOF
+read line

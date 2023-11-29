@@ -74,7 +74,7 @@ class GHProjectData:
         else:
             self._v['data_collected_time'] = pd.Timestamp.now().strftime("%Y_%m_%d_%H%M%S")
             if self._v['collection_flag'] not in ["start", "snapshot", "end", "unknown"]:
-                raise ValueError(f"Error: sprint_snap_status must be one of: 'start', 'snapshot', 'end', 'unknown'")
+                raise ValueError(f"Error: collection_flag must be one of: 'start', 'snapshot', 'end', 'unknown'")
             self._v['output_file_base_name'] = self._set_output_file_base_name_4api()
 
         os.makedirs(str(self._v['out_dir']), exist_ok=True)

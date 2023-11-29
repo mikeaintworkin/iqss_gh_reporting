@@ -19,11 +19,11 @@ def default_yaml_contents(how_do_you_want_it: str = "string"):
             'h': "str: valid values: api | file. Always required."
         },
         'collection_flag': {
-            'v': '',
+            'v': "snapshot",
             'h': "str: valid values: start | snapshot | end. api=required. file=Ignored."
         },
         'organization_name': {
-            'v': 'IQSS',
+            'v': "IQSS",
             'h': "str: e.g: IQSS. Always required."
         },
         'output_base_dir': {
@@ -31,7 +31,7 @@ def default_yaml_contents(how_do_you_want_it: str = "string"):
             'h': "str: /mnt/hgfs/iq_reporting_collab/run/out;no[ ,.-special_char] ok:'_'. No trailing /. api=ignored. file=Optional"
         },
         'project_name': {
-            'v': 'IQSS/dataverse',
+            'v': "IQSS/dataverse",
             'h': "str: e.g: IQSS/dataverse. Always required."
         },
         'sprint_name': {
@@ -71,9 +71,13 @@ def main():
     # read the input.yaml file from cwd
     # set the parser arguments defaults from the input.yaml file
     # ================================================================================================================
+
     yaml_file = os.path.expanduser(os.getcwd() + '/' + 'input_file.yaml')
+    print("Yaml file path:", yaml_file)
+
     data = utils.read_yaml(yaml_file)
     if data is None:
+        print("No yaml file found. Setting defaults")
         with open(yaml_file, 'w') as f:
             f.write(default_yaml_contents("string"))
         data = utils.read_yaml(yaml_file)
@@ -154,6 +158,7 @@ def main():
     data['workflow_name']['v'] = args.workflow_name
     data['output_file_base_name']['v'] = args.output_file_base_name
     data['data_collected_time']['v'] = args.data_collected_time
+
 
     yaml_str = yaml.dump(data, default_flow_style=False, indent=8)
     with open(yaml_file, 'w') as f:
