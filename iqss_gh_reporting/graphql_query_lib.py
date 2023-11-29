@@ -171,6 +171,51 @@ def query_get_all_prs():
         }
     return qry
 
+def query_get_all_issues():
+    # =================================================================
+    # get a list of all issuesfor a given repository
+    # =================================================================
+    # "query_str": query_string
+    # "has_next_page_path": This is the check for the next page of data formatted specifically for this query
+    # "start_with_path": This is the path for the next page of data formatted specifically for this query
+    #  "query_vars": These are the variables that are required internally for the query to run
+    #       "loginOrg": "IQSS",
+    #       "repo": "dataverse",
+    #       "firstFew": 100,
+    #       "startWith" - this is not used initially it's an interim variable that is used to store the cursor
+    #
+    # ---------------------------------------------------------------
+    query_string = \
+    """
+    query ($loginOrg: String!, $repo: String!, $firstFew: Int, $startWith: String) {
+        repository(followRenames:false, owner: $loginOrg, name: $repo) {
+                id
+                name
+                url
+                owner {
+                    login
+                }
+                ... issueParentFields
+                }
+        }
+    }
+        """
+    query_string = query_string + fragment_pr_fields_on_pullrequest()
+    qry = {
+        "query_str": query_string,
+        "has_next_page_path": ["repository", "pullRequests", "pageInfo", "hasNextPage"],
+        "start_with_path": ["repository", "pullRequests", "pageInfo", "endCursor"],
+        "query_vars": {
+            "loginOrg": "IQSS",
+            "repo": "dataverse",
+            "firstFew": 100,
+            "startWith": ""
+            }
+        }
+    return qry
+
+
+
 def fragment_pr_fields_on_pullrequest():
     # =================================================================
     # this is a query fragment used within other queries
@@ -205,6 +250,8 @@ def fragment_pr_fields_on_pullrequest():
     """
     return fragment_string
 
+
+
 def fragment_issue_fields_on_issue():
     # =================================================================
     # this is a query fragment used within other queries
@@ -233,29 +280,78 @@ def fragment_issue_fields_on_issue():
     return fragment_string
 
 
-queries = {
-    # -----------------------------------------------------------------
-    # This is a global dictionary of the queries that are available.
-    # Each query comes along with a data structure.
-    # These are all required values.
-    # The top level keys are defined within the query itself and the paired calling code GraphQLFetcher knows
-    #  how to use them.  e.g. from fetch_from_repository import GraphQLFetcher
-    # The query_vars entries are the external variables that are required to be set correctly for the query to run
-    # here is an example:
-    #     qry = {
-    #     "query_str": query_string,
-    #     "has_next_page_path": ["repository", "pullRequests", "pageInfo", "hasNextPage"],
-    #     "start_with_path": ["repository", "pullRequests", "pageInfo", "endCursor"],
-    #     "query_vars": {
-    #         "loginOrg": "IQSS",
-    #         "repo": "dataverse",
-    #         "firstFew": 100,
-    #         "startWith": ""
-    #     }
-    # }
-    # -----------------------------------------------------------------
-    'query_get_one_pr': query_get_one_pr,
-    'query_get_all_prs': query_get_all_prs,
-    'query_get_one_pr_malformed': query_get_one_pr_malformed
+def fragment_pullrequest_parent():
+    # =================================================================
+    # this is a query fragment used within other queries
+    # =================================================================
+    fragment_string = \
+        """
+        fragment issueParentFields on repository {
+            issues(first: $firstFew, after: $startWith) {
+               totalCount
+               pageInfo
+                {
+                    hasNextPage
+                    hasPreviousPage
+                    endCursor
+                    startCursor
+                }
+                    nodes
+                {
+                    ...prFields
+                }
+            }
+        """
 
-}
+
+def fragment_pullrequest_parent():
+    # =================================================================
+    # this is a query fragment used within other queries
+    # =================================================================
+    fragment_string = \
+        """
+        fragment prParentFields on repository {
+            pullRequests(first: $firstFew, after: $startWith) {
+               totalCount
+               pageInfo
+                {
+                    hasNextPage
+                    hasPreviousPage
+                    endCursor
+                    startCursor
+                }
+                    nodes
+                {
+                    ...prFields
+                }
+            }
+        """
+
+
+    queries = {
+        # -----------------------------------------------------------------
+        # This is a global dictionary of the queries that are available.
+        # Each query comes along with a data structure.
+        # These are all required values.
+        # The top level keys are defined within the query itself and the paired calling code GraphQLFetcher knows
+        #  how to use them.  e.g. from fetch_from_repository import GraphQLFetcher
+        # The query_vars entries are the external variables that are required to be set correctly for the query to run
+        # here is an example:
+        #     qry = {
+        #     "query_str": query_string,
+        #     "has_next_page_path": ["repository", "pullRequests", "pageInfo", "hasNextPage"],
+        #     "start_with_path": ["repository", "pullRequests", "pageInfo", "endCursor"],
+        #     "query_vars": {
+        #         "loginOrg": "IQSS",
+        #         "repo": "dataverse",
+        #         "firstFew": 100,
+        #         "startWith": ""
+        #     }
+        # }
+        # -----------------------------------------------------------------
+        'query_get_one_pr': query_get_one_pr,
+        'query_get_all_prs': query_get_all_prs,
+        'query_get_one_pr_malformed': query_get_one_pr_malformed,
+        'query_get_all_issues': query_get_all_issues
+
+    }
