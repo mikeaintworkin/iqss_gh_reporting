@@ -106,7 +106,7 @@ class LegacyProjectCards:
 
     # return true if we are successful
     def _get_project_cards_api_obj(self):
-
+        print(f"Pandas version:{pd.__version__}")
         # return the legacy project columns names
         # check to make sure that they contain the critical columns we care about.
         columns = self._project_object.get_columns()
