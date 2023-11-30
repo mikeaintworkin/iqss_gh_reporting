@@ -2,7 +2,9 @@
 
 # ================================================================================================================
 # The objective of this script is to build the current code and deploy it locally.
-#
+# MUST be run from the ./iqss_gh_reporting/scripts directory
+# e.g /home/barry/PycharmProjects/iqss_gh_reporting/scripts
+# where /home/barry/PycharmProjects/iqss_gh_reporting is the root of the project
 # ================================================================================================================
 
 DEVHOME="../"
@@ -10,17 +12,15 @@ DEVHOME="../"
 
 cat<<EOF
 ============================
-$0
-$(pwd)
+Current file: $0
+pwd: $(pwd)
+venv: <>$(env |grep VIRTUAL_ENV)</>
 
-This assumes that you are running the from the ./scripts directory in the project tree.
-That would make the directory above it the root of the project
-The script is going to to build the sources and then deploy it with pip to your local environment.
+The script is going to to build the sources and then deploy it with pip
 
-
-It seems that since I got more careful about using venv when setting up my dev environment, that at least on my environment,
-I also have to invoke the venv.
-
+MUST be run from the ./scripts directory in the project tree.
+e.g /home/barry/PycharmProjects/iqss_gh_reporting/scripts
+where /home/barry/PycharmProjects/iqss_gh_reporting is the root of the project
 
 press <enter> to continue
 ============================
@@ -37,7 +37,8 @@ ${DEVHOME}
 
 EOF
 
-source ./venv/bin/activate
+
+
 
 cat<<EOF
 
@@ -60,7 +61,10 @@ popd
 cat<<EOF
 
 ============================
+current file: $0
 pwd: $(pwd)
+venv: <>$(env |grep VIRTUAL_ENV)</>
+
 
 Build and install complete.
 The build will put these files and their associated libraries in your path. 
@@ -78,6 +82,5 @@ create_iq_snapshot_init --help
 
 press <enter> to continue
 ============================
-
 EOF
 read line

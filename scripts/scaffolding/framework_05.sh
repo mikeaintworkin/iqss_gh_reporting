@@ -1,97 +1,122 @@
 #!/usr/bin/bash
+# exec 3>&1 4>&2
+# trap 'exec 2>&4 1>&3' 0 1 2 3
+# exec 1>log.out 2>&1
+
 # ================================================================================================================
 # The objective of this frame:
 # - reproduce the test run that Ceilyn can't run on her newly installed macbook
 # - tracked via: Figure out why Ceilyn scripts are not working
 # - https://github.com/thisaintwork/iqss_gh_reporting/issues/56
+# see also #57.  This is the first of the framework scripts that moves the venv call out of the builld and deploy script
+#
+#   Example of executing this script:
+#  pwd: /home/barry/Documents/github_reporting
+#  cmd: /home/barry/PycharmProjects/iqss_gh_reporting/scripts/scaffolding/framework_04.sh \
+#      -s "/home/barry/PycharmProjects/iqss_gh_reporting/scripts" \
+#      -v "/home/barry/PycharmProjects/iqss_gh_reporting/venv/bin/activate"
 # ================================================================================================================
+
+function get_cli_options() {
+  echo "processing command line"
+  OPTIND=1
+  while getopts 's:w:v:h' opt; do
+  echo "processing command line option: $opt"
+  case "$opt" in
+    w)
+      echo "Processing option 'w' with '${OPTARG}' argument"
+      echo "Setting WRK_DIR_RT: ${OPTARG}"
+      WRK_DIR_RT=${OPTARG}
+      ;;
+    s)
+      echo "Processing option 's' with '${OPTARG}' argument"
+      echo "Setting SCRIPT_DIR: ${OPTARG}"
+      SCRIPT_DIR=${OPTARG}
+      ;;
+    v)
+      echo "Processing option 'v' with '${OPTARG}' argument"
+      echo "Activating virtual environment: ${OPTARG}"
+      . ${OPTARG}
+      RTN=$?
+      [[ "$RTN" != "0" ]] && echo "Error when attemtpting to active the environment"
+      if [[ "$(env |grep VIRTUAL_ENV | wc -l)" = "0" ]]; then
+        echo "There is no virtual environment active"
+      else
+        echo "Virtual environment active"
+        env |grep VIRTUAL_ENV
+      fi
+      ;;
+    :)
+      echo -e "option requires an argument.\nUsage: $(basename $0) [-v arg][-s arg]"
+      echo " use -h for help"
+      exit 1
+      ;;
+    h)
+      echo "Usage: $(basename $0), with args"
+      echo "[-v command to invoke virtual environment]"
+      echo "example arg: /home/barry/PycharmProjects/iqss_gh_reporting/venv/bin/activate"
+      echo ""
+      echo "[-s scripts directory in checked out project]"
+      echo "Required arg"
+      echo "example arg: /home/barry/PycharmProjects/iqss_gh_reporting/scripts"
+      echo ""
+      echo "[-w working directory]"
+      echo "Required arg"
+      echo "example arg: /home/barry/PycharmProjects/iqss_gh_reporting/scripts"
+      exit 0
+      ;;
+    ?)
+      echo -e "Invalid command option.\nUsage: $(basename $0) [-v arg]"
+      exit 1
+      ;;
+  esac
+  done
+  shift "$(($OPTIND -1))"
+  THIS_FILE=$0
+}
+
+echo_basic_info() {
 cat<<EOF
-< info >
-executing: $0
+-
+--
+executing file: $1
 pwd:  $(pwd)
-  < find . -type f >
+venv: <>$(env |grep VIRTUAL_ENV)</>
+--
+find . -type f
 $(find . -type f)
-  </find . -type f >
-
-  < Example of executing this script:>
-  pwd: /home/barry/Documents/github_reporting
-  cmd: /home/barry/PycharmProjects/iqss_gh_reporting/scripts/scaffolding/framework_04.sh
-  </Example of executing this script:>
-
-next: launching the build and deploy script
--------------------------------
-</info >
-
-press <enter> to continue
-============================
+--
+Next step: $2
+--
+-
+  press <enter> to continue
+  ============================
 EOF
-read line
+  read line
+}
 
-pushd "/home/barry/PycharmProjects/iqss_gh_reporting/scripts"
+get_cli_options "$@"
+if [ ! -f "${SCRIPT_DIR}/build_and_deploy_local.sh" ]; then
+  echo "${SCRIPT_DIR}/build_and_deploy_local.sh does not exist"
+  echo "Missing -s CLI option or -s CLI option is not correct"
+  exit 1
+fi
+#  echo "${WRK_DIR_RT} does not exist"
+#  echo "Missing -s CLI option or -s CLI option is not correct"
+#  exit 1
+#fi
+
+echo_basic_info ${THIS_FILE} "build_and_deploy_local.sh"
+
+#run this script from the scripts directory
+pushd ${SCRIPT_DIR} || exit 1
 ./build_and_deploy_local.sh
-popd
-
-cat<<EOF
-< info >
---------------------------------
-executing: $0
-pwd:  $(pwd)
-  < find . -type f >
-  $(find . -type f)
-  </find . -type f >  $(pwd)
-Next: invoking local environment & setting directories for this run
--------------------------------
-</info >
-press <enter> to continue
-============================
-EOF
-read line
+popd || exit 1
 
 
-# Invoke the local environment
-# TODO: this is hardcoded to barry's environment. It should not be.
-source /home/barry/PycharmProjects/iqss_gh_reporting/venv/bin/activate
+echo_basic_info ${THIS_FILE}  "setting directories for this run"
 
-
-# TODO: this is hardcoded to barry's environment. It should not be.
-SCRIPT_DIR="/home/barry/PycharmProjects/iqss_gh_reporting/scripts"
-# TODO: this is hardcoded to barry's environment. It should not be.
-WRK_DIR_RT="/home/barry/Documents/github_reporting/framework_05"
 DATESTAMP=$(date +"%Y%m%d_%H%M%S")
-TESTNUM=0
-cat<<EOF
-< info >
---------------------------------
-executing: $0
-pwd:  $(pwd)
-  < find . -type f >
-  $(find . -type f)
-  </find . -type f >  $(pwd)
-Next: invoking local environment & setting directories for this run
-
-  < dir info >
-    Time Stamp: ${DATESTAMP}
-    Directories:
-    SCRIPT_DIR: "${SCRIPT_DIR}"
-    WRK_DIR_RT: "${WRK_DIR_RT}"
-    INDIR: "${WRK_DIR_RT}/in"
-    WRKDIR: "${WRK_DIR_RT}/wrk"
-    OUTDIR: "${WRK_DIR_RT}/out"
-
-    input file:
-    ${WRK_DIR_RT}/in/${WRK_FILE}
-
-    Note: This test is using the API so WRK_FILE will not be defined.
-
-  </dir info >
-
--------------------------------
-</info >
-press <enter> to continue
-============================
-EOF
-read line
-
 
 mkdir -p ${WRK_DIR_RT}/in || exit 1
 mkdir -p ${WRK_DIR_RT}/wrk || exit 1
@@ -100,60 +125,38 @@ mkdir -p ${WRK_DIR_RT}/out || exit 1
 # This command should not exit if it fail
 rm ${WRK_DIR_RT}/out/*.json
 
-
 cat<<EOF
-< info >
---------------------------------
-executing: $0
-pwd:  $(pwd)
-  < find . -type f >
-  $(find . -type f)
-  </find . -type f >  $(pwd)
-
-  < ${WRK_DIR_RT} Directories Contents: >
-  $(find "${WRK_DIR_RT}" -type f)
-  </${WRK_DIR_RT} Directories Contents: >
-
------
-Next: kickoff the Test
-
-</info >
-press <enter> to continue
-============================
+-
+--
+    Time Stamp: ${DATESTAMP}
+    Directories:
+      SCRIPT_DIR: "${SCRIPT_DIR}"
+      WRK_DIR_RT: "${WRK_DIR_RT}"
+      INDIR: "${WRK_DIR_RT}/in"
+      WRKDIR: "${WRK_DIR_RT}/wrk"
+      OUTDIR: "${WRK_DIR_RT}/out"
+--
+  Current Directory Contents: ${WRK_DIR_RT}
+<>
+  $(find ${WRK_DIR_RT} -type f)
+</>
+--
+#    input file:
+#    ${WRK_DIR_RT}/in/${WRK_FILE}
+#    Note: This test is using the API so WRK_FILE will not be defined.
+--
+-
 EOF
-read line
 
-########################################################################################################################
-TESTNUM=$(( TESTNUM + 1 ))
-# This is a simplistic on/off switch.
-# If false means this does not run
-if true; then
+echo_basic_info ${THIS_FILE} "kickoff the Test"
 
+# #####################################################################################################################
+# Test: Run the example api query from ./scripts/example/sprint_2023_05_24/bin/sprint_2023_05_24-api-example.sh
+# #####################################################################################################################
 # Remove any existing input file
 # This should not exit if it fails
 rm ./input_file.yaml
 
-cat<<EOF
-< info >
---------------------------------
-executing: $0
-pwd:  $(pwd)
-  < find . -type f >
-  $(find . -type f)
-  </find . -type f >  $(pwd)
-
-
-Next: Execute Test number ${TESTNUM}
-
-Test: Run the example api query from ./scripts/example/sprint_2023_05_24/bin/sprint_2023_05_24-api-example.sh
-
---------------------------------
-</info >
-
-press <enter> to continue
-============================
-EOF
-read line
 
 #     --collection_flag "" \
 #     --data_collected_time "" \
@@ -171,27 +174,16 @@ create_iq_snapshot_init \
      --workflow_name "000"
 
 
-cat<<EOF
-==========================================================================
-You have set the run parameters.
-
-Summary:
-$(cat ./input_file.yaml | grep : | grep -v h:)
-
-==========================================================================
-
-
-To actually run the analysis or collection and analysis run
+#   $(cat ./input_file.yaml | grep : | grep -v h:)
+# cat<<EOF
+# ==========================================================================
+# You have configured the parameters for this data analysis or  collection.
+# To actually run the analysis or collection and analysis:
+#   - remain in this directory.
+#   - execute create_iq_snapshot
+#
+#   press <enter> to continue
+#   ============================
+# EOF
 
 create_iq_snapshot
-
-from this same directory.
-
-
-press <enter> to continue
-============================
-EOF
-read line
-
-
-fi
