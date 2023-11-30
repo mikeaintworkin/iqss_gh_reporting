@@ -99,12 +99,15 @@ get_cli_options "$@"
 if [ ! -f "${SCRIPT_DIR}/build_and_deploy_local.sh" ]; then
   echo "${SCRIPT_DIR}/build_and_deploy_local.sh does not exist"
   echo "Missing -s CLI option or -s CLI option is not correct"
+  echo " use -h for help on the CLI"
   exit 1
 fi
-#  echo "${WRK_DIR_RT} does not exist"
-#  echo "Missing -s CLI option or -s CLI option is not correct"
-#  exit 1
-#fi
+if [ -z "${WRK_DIR_RT}" ]; then
+  echo "WRK_DIR_RT was not defined"
+  echo "Missing -w CLI option."
+  echo " use -h for help on the CLI"
+  exit 1
+fi
 
 echo_basic_info ${THIS_FILE} "build_and_deploy_local.sh"
 
