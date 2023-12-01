@@ -17,6 +17,30 @@
 #      -v "/home/barry/PycharmProjects/iqss_gh_reporting/venv/bin/activate"
 # ================================================================================================================
 
+function print_help_message(){
+cat<<EOF
+  Usage: $(basename $0), with args
+    [-v command to invoke virtual environment]
+     example arg: \"/home/barry/PycharmProjects/iqss_gh_reporting/venv/bin/activate\"
+
+    \"[-s scripts directory in checked out project]\"
+    This is a required arg
+    example arg: \"/home/barry/PycharmProjects/iqss_gh_reporting/scripts\"
+
+    \"[-w working directory]\"
+    This is a required arg
+    example arg: \"/home/barry/PycharmProjects/iqss_gh_reporting/scripts\"
+
+  Notes:
+  () enclose all strings in quotes. In particular, enclose directory names in double quotes.
+    e.g. "my directory" instead of my\ directory
+  () include only fully qualified directory names.
+    e.g. do not use the tilde \"~\" shortcut
+EOF
+
+}
+
+
 function get_cli_options() {
   echo "processing command line"
   OPTIND=1
@@ -26,18 +50,18 @@ function get_cli_options() {
     w)
       echo "Processing option 'w' with '${OPTARG}' argument"
       echo "Setting WRK_DIR_RT: ${OPTARG}"
-      WRK_DIR_RT=${OPTARG}
+      WRK_DIR_RT="${OPTARG}"
       ;;
     s)
       echo "Processing option 's' with '${OPTARG}' argument"
       echo "Setting SCRIPT_DIR: ${OPTARG}"
-      SCRIPT_DIR=${OPTARG}
+      SCRIPT_DIR="${OPTARG}"
       ;;
     v)
       echo "Processing option 'v' with '${OPTARG}' argument"
       echo "Activating virtual environment: ${OPTARG}"
-      . ${OPTARG}
-      RTN=$?
+      . "${OPTARG}"
+      RTN="$?"
       [[ "$RTN" != "0" ]] && echo "Error when attemtpting to active the environment"
       if [[ "$(env |grep VIRTUAL_ENV | wc -l)" = "0" ]]; then
         echo "There is no virtual environment active"
@@ -52,17 +76,7 @@ function get_cli_options() {
       exit 1
       ;;
     h)
-      echo "Usage: $(basename $0), with args"
-      echo "[-v command to invoke virtual environment]"
-      echo "example arg: /home/barry/PycharmProjects/iqss_gh_reporting/venv/bin/activate"
-      echo ""
-      echo "[-s scripts directory in checked out project]"
-      echo "Required arg"
-      echo "example arg: /home/barry/PycharmProjects/iqss_gh_reporting/scripts"
-      echo ""
-      echo "[-w working directory]"
-      echo "Required arg"
-      echo "example arg: /home/barry/PycharmProjects/iqss_gh_reporting/scripts"
+      print_help_message
       exit 0
       ;;
     ?)
@@ -72,7 +86,7 @@ function get_cli_options() {
   esac
   done
   shift "$(($OPTIND -1))"
-  THIS_FILE=$0
+  THIS_FILE="$0"
 }
 
 echo_basic_info() {
@@ -83,19 +97,25 @@ executing file: $1
 pwd:  $(pwd)
 venv: <>$(env |grep VIRTUAL_ENV)</>
 --
-find . -type f
-$(find . -type f)
+---
+find . -type f (first 5 entries)
+$(find . -type f | tail -5)
+---
 --
 Next step: $2
 --
+++ press <enter> to continue ++
+--
 -
-  press <enter> to continue
-  ============================
 EOF
   read line
 }
 
 get_cli_options "$@"
+echo ">> ${SCRIPT_DIR}"
+echo ">> ${SCRIPT_DIR}/build_and_deploy_local.sh"
+ls "${SCRIPT_DIR}/build_and_deploy_local.sh"
+
 if [ ! -f "${SCRIPT_DIR}/build_and_deploy_local.sh" ]; then
   echo "${SCRIPT_DIR}/build_and_deploy_local.sh does not exist"
   echo "Missing -s CLI option or -s CLI option is not correct"
@@ -109,49 +129,42 @@ if [ -z "${WRK_DIR_RT}" ]; then
   exit 1
 fi
 
-echo_basic_info ${THIS_FILE} "build_and_deploy_local.sh"
+
+echo_basic_info "${THIS_FILE}" "build_and_deploy_local.sh"
 
 #run this script from the scripts directory
-pushd ${SCRIPT_DIR} || exit 1
+echo "pushd to ${SCRIPT_DIR}"
+pushd "${SCRIPT_DIR}" || exit 1
 ./build_and_deploy_local.sh
+echo "popd"
 popd || exit 1
 
 
-echo_basic_info ${THIS_FILE}  "setting directories for this run"
+echo_basic_info "${THIS_FILE}" "setting directories and timestamp for this run"
 
-DATESTAMP=$(date +"%Y%m%d_%H%M%S")
-
-mkdir -p ${WRK_DIR_RT}/in || exit 1
-mkdir -p ${WRK_DIR_RT}/wrk || exit 1
-mkdir -p ${WRK_DIR_RT}/out || exit 1
-
-# This command should not exit if it fail
-rm ${WRK_DIR_RT}/out/*.json
+DATESTAMP="$(date +"%Y%m%d_%H%M%S")"
+mkdir -p "${WRK_DIR_RT}/in "|| exit 1
+mkdir -p "${WRK_DIR_RT}/wrk" || exit 1
+mkdir -p "${WRK_DIR_RT}/out" || exit 1
 
 cat<<EOF
 -
 --
-    Time Stamp: ${DATESTAMP}
-    Directories:
-      SCRIPT_DIR: "${SCRIPT_DIR}"
-      WRK_DIR_RT: "${WRK_DIR_RT}"
-      INDIR: "${WRK_DIR_RT}/in"
-      WRKDIR: "${WRK_DIR_RT}/wrk"
-      OUTDIR: "${WRK_DIR_RT}/out"
+Time Stamp: "${DATESTAMP}"
 --
-  Current Directory Contents: ${WRK_DIR_RT}
-<>
-  $(find ${WRK_DIR_RT} -type f)
-</>
---
-#    input file:
-#    ${WRK_DIR_RT}/in/${WRK_FILE}
-#    Note: This test is using the API so WRK_FILE will not be defined.
+---
+Directories:
+SCRIPT_DIR: "${SCRIPT_DIR}"
+WRK_DIR_RT: "${WRK_DIR_RT}"
+INDIR: "${WRK_DIR_RT}/in"
+WRKDIR: "${WRK_DIR_RT}/wrk"
+OUTDIR: "${WRK_DIR_RT}/out"
+---
 --
 -
 EOF
 
-echo_basic_info ${THIS_FILE} "kickoff the Test"
+echo_basic_info "${THIS_FILE}" "create_iq_snapshot_init"
 
 # #####################################################################################################################
 # Test: Run the example api query from ./scripts/example/sprint_2023_05_24/bin/sprint_2023_05_24-api-example.sh
@@ -170,7 +183,7 @@ rm ./input_file.yaml
 
 create_iq_snapshot_init \
      --organization_name "IQSS" \
-     --output_base_dir  ${WRK_DIR_RT}/out/ \
+     --output_base_dir  "${WRK_DIR_RT}/out/" \
      --project_name "IQSS/dataverse" \
      --sprint_name "snaps_collection" \
      --src_type "api" \
@@ -188,5 +201,6 @@ create_iq_snapshot_init \
 #   press <enter> to continue
 #   ============================
 # EOF
+echo_basic_info "${THIS_FILE}" "create_iq_snapshot"
 
 create_iq_snapshot

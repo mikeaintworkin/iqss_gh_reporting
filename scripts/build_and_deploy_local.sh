@@ -11,19 +11,20 @@ DEVHOME="../"
 
 
 cat<<EOF
-============================
+-
+--
 Current file: $0
 pwd: $(pwd)
 venv: <>$(env |grep VIRTUAL_ENV)</>
-
+__
 The script is going to to build the sources and then deploy it with pip
-
-MUST be run from the ./scripts directory in the project tree.
+__
+This script MUST be run from the ./scripts directory in the project tree.
 e.g /home/barry/PycharmProjects/iqss_gh_reporting/scripts
 where /home/barry/PycharmProjects/iqss_gh_reporting is the root of the project
-
-press <enter> to continue
-============================
+__
+++ press <enter> to continue ++
+-
 EOF
 
 read line
@@ -59,19 +60,17 @@ popd
 
 
 cat<<EOF
-
-============================
+_
+__
 current file: $0
 pwd: $(pwd)
 venv: <>$(env |grep VIRTUAL_ENV)</>
-
-
+__
 Build and install complete.
 The build will put these files and their associated libraries in your path. 
 create_iq_snapshot_init
 create_iq_snapshot
-
-
+__
 Next Steps:
 () Check that the build actually completed succesfully by reviewing the output.
 () Test out the create_iq_snapshot_init build correctly using 
@@ -79,8 +78,9 @@ Next Steps:
 create_iq_snapshot_init --help
 
 () Follow the rest of the instructions in the readme
-
-press <enter> to continue
-============================
+__
+++ press <enter> to continue ++
+__
+-
 EOF
 read line
