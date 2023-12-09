@@ -85,7 +85,7 @@ function get_cli_options() {
       ;;
   esac
   done
-  shift "$(($OPTIND -1))"
+  shift $(($OPTIND -1))
   THIS_FILE="$0"
 }
 
