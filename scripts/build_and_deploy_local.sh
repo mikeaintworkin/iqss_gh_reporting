@@ -47,7 +47,7 @@ Building....
 
 EOF
 
-bash -cl "/usr/bin/python3.10 ./setup.py bdist_wheel"  || exit 1
+bash -cl "python3 ./setup.py bdist_wheel"  || exit 1
 
 cat<<EOF
 
