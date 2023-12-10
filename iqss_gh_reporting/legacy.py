@@ -70,8 +70,8 @@ class LegacyProjectCards:
                 RequiredDfColumnHeaderNames.value("UpdatedAt"),
                 RequiredDfColumnHeaderNames.value("ClosedAt"),
                 RequiredDfColumnHeaderNames.value("ClosedBy")
-                ]
-            )
+            ]
+        )
         # external init
         self._client = Github(access_token, per_page=100)
         self._project_name = project_name
@@ -131,7 +131,7 @@ class LegacyProjectCards:
 
         self._card_count = 0
         for column in columns:
-            column_name = column.name
+
             # https://pygithub.readthedocs.io/en/stable/github_objects/ProjectColumn.html?highlight=project
             cards = column.get_cards(archived_state="not_archived")
             print(f"start: {self._card_count} cards processed: {self._project_object.name}, Column {column.name}")
@@ -149,7 +149,7 @@ class LegacyProjectCards:
                 # if card_content is not None and card.updated_at >= three_months_ago:
                 if card_content is not None:
                     regex1 = re.compile(r"(/issues/|/pull/)")
-                    sub_string = regex1.search(card_content.html_url).group(0).replace("/", "")
+                    sub_string = regex1.search(str(card_content.html_url)).group(0).replace("/", "")
                     card_type = "Issue"
                     if sub_string == "pull":
                         card_type = "PullRequest"
@@ -159,24 +159,28 @@ class LegacyProjectCards:
                     if self._card_count % 50 == 0:
                         print(f">>>>>> {self._card_count} # cards {self._project_object.name}: {column.name} \
                         ,{card_type} ,{card_content.number},{card_content.repository.name} ,{card_content.title}")
+
                     new_row = {
-                        RequiredDfColumnHeaderNames.value("project"): self._project_object.name,
-                        RequiredDfColumnHeaderNames.value("column"): column_name,
-                        RequiredDfColumnHeaderNames.value("card"): card_content.title,
-                        RequiredDfColumnHeaderNames.value("CardURL"): card_content.html_url,
-                        RequiredDfColumnHeaderNames.value("type"): card_type,
+                        # '' if XXXX is None else str(XXXX),
+                        RequiredDfColumnHeaderNames.value("project"): '' if self._project_object.name is None else str(self._project_object.name),
+                        RequiredDfColumnHeaderNames.value("column"):  '' if column.name is None else str(column.name),
+                        RequiredDfColumnHeaderNames.value("card"): '' if card_content.title is None else str(card_content.title),
+                        RequiredDfColumnHeaderNames.value("CardURL"): '' if card_content.html_url is None else str(card_content.html_url),
+                        RequiredDfColumnHeaderNames.value("type"): '' if card_type is None else str(card_type),
                         RequiredDfColumnHeaderNames.value("number"): card_content.number,
-                        RequiredDfColumnHeaderNames.value("labels"): str(card_content.labels),
-                        RequiredDfColumnHeaderNames.value("repo"): card_content.repository.name,
-                        RequiredDfColumnHeaderNames.value("state"): card_content.state,
-                        RequiredDfColumnHeaderNames.value("CreatedAt"): card_content.created_at,
-                        RequiredDfColumnHeaderNames.value("UpdatedAt"): card_content.updated_at,
-                        RequiredDfColumnHeaderNames.value("ClosedAt"): card_content.closed_at,
-                        RequiredDfColumnHeaderNames.value("ClosedBy"): ""
+                        RequiredDfColumnHeaderNames.value("labels"): '' if card_content.labels is None else str(card_content.labels),
+                        RequiredDfColumnHeaderNames.value("repo"): '' if card_content.repository.name is None else str(card_content.repository.name),
+                        RequiredDfColumnHeaderNames.value("state"):  '' if card_content.state is None else str(card_content.state),
+                        RequiredDfColumnHeaderNames.value("CreatedAt"): '' if card_content.created_at is None else str(card_content.created_at),
+                        RequiredDfColumnHeaderNames.value("UpdatedAt"): '' if card_content.updated_at is None else str(card_content.updated_at),
+                        RequiredDfColumnHeaderNames.value("ClosedAt"): '' if card_content.closed_at is None else str(card_content.closed_at),
+                        RequiredDfColumnHeaderNames.value("ClosedBy"): '' if card_content.closed_by is None else str(card_content.closed_by)
+
                     }
-                    print (f"{new_row}\n====\n")
-                    print (f"{pd.DataFrame([new_row])}\n====\n")
-                    print (f"{self._project_cards}\n====\n")
+
+                    print(f"{new_row}\n====\n")
+                    print(f"{pd.DataFrame([new_row])}\n====\n")
+                    print(f"{self._project_cards}\n====\n")
                     self._project_cards = pd.concat([self._project_cards, pd.DataFrame([new_row])], ignore_index=True)
             print(f"  end: {self._card_count} cards processed: {self._project_object.name}, Column {column.name}")
         return True
