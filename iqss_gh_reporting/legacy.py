@@ -59,7 +59,7 @@ class LegacyProjectCards:
             columns=[
                 RequiredDfColumnHeaderNames.value("project"),
                 RequiredDfColumnHeaderNames.value("column"),
-                RequiredDfColumnHeaderNames.value("Card"),
+                RequiredDfColumnHeaderNames.value("card"),
                 RequiredDfColumnHeaderNames.value("CardURL"),
                 RequiredDfColumnHeaderNames.value("type"),
                 RequiredDfColumnHeaderNames.value("number"),
