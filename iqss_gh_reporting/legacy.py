@@ -145,6 +145,7 @@ class LegacyProjectCards:
                 # the API doesn't make it clear which you are dealing with.
 
                 card_content = card.get_content()
+                print(card_content)
                 # if card_content is not None and card.updated_at >= three_months_ago:
                 if card_content is not None:
                     regex1 = re.compile(r"(/issues/|/pull/)")
