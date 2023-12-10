@@ -3,6 +3,10 @@ from datetime import timedelta
 # from argparse import ArgumentParser
 # from dict2xml import dict2xml
 # from argparse import ArgumentParser
+# github library: https://github.com/PyGithub/PyGithub
+#                 https://pygithub.readthedocs.io/en/stable/introduction.html
+#                 2023_09_29 V2.1.1
+#
 from github import Github
 # from gql import gql, Client
 # from gql.transport.aiohttp import AIOHTTPTransport
@@ -28,9 +32,11 @@ class LegacyProjectCards:
     # you can:
     # - get the dataframe
     # - get the number of cards
+    # this makes use of the
+
     # ===================================================================================================================
     #
-    #    input: see inti line#
+    #    input:
     #         : The out_dir is where any files are written out to
     #   output: The outputfile name is generated based on the project name and the date/time
     #  precond: The query and output are specific to this project configuration
@@ -75,6 +81,11 @@ class LegacyProjectCards:
 
     def _fetch_data(self):
 
+        # The documentation seems wrong here.
+        # https://pygithub.readthedocs.io/en/stable/github.html?highlight=get_organization#github.MainClass.Github.get_organization
+        #  get_organization(login: str) → Organization
+        #       Calls:	GET /orgs/{org}
+        # The actual parameter is the organization name. My code is correct.
         self._organization_api_object = self._client.get_organization(self._organization_name)
         if not self._organization_api_object:
             print(f"Cannot populate organization Objecct")
@@ -85,6 +96,11 @@ class LegacyProjectCards:
             print(f"Cannot populate project we care about")
             return False
 
+        # TODO: I think the logic here is bad.
+        # #56 I've got code failing inside this call.
+        # I think there is some sort of chicken/egg thing happening. Like - I'm testing to see if something is empty
+        # but the test to see if it's empty is failing when it's empty
+        # I think this may be where I need to be catching an exception?
         if not self._get_project_cards_api_obj():
             print(f"Cannot populate project cards")
             return False
@@ -109,13 +125,15 @@ class LegacyProjectCards:
         print(f"Pandas version:{pd.__version__}")
         # return the legacy project columns names
         # check to make sure that they contain the critical columns we care about.
+        # https://pygithub.readthedocs.io/en/stable/github_objects/ProjectColumn.html
         columns = self._project_object.get_columns()
         # three_months_ago = datetime.datetime.utcnow() - timedelta(days=90)
 
         self._card_count = 0
         for column in columns:
             column_name = column.name
-            cards = column.get_cards(archived_state='not_archived')
+            # https://pygithub.readthedocs.io/en/stable/github_objects/ProjectColumn.html?highlight=project
+            cards = column.get_cards(archived_state="not_archived")
             print(f"start: {self._card_count} cards processed: {self._project_object.name}, Column {column.name}")
             for card in cards:
                 self._card_count += 1
@@ -134,6 +152,9 @@ class LegacyProjectCards:
                     card_type = "Issue"
                     if sub_string == "pull":
                         card_type = "PullRequest"
+                    # debug
+                    print(f">>>>>> {self._card_count} # cards {self._project_object.name}: {column.name} \
+                    ,{card_type} ,{card_content.number},{card_content.repository.name} ,{card_content.title}")
                     if self._card_count % 50 == 0:
                         print(f">>>>>> {self._card_count} # cards {self._project_object.name}: {column.name} \
                         ,{card_type} ,{card_content.number},{card_content.repository.name} ,{card_content.title}")
