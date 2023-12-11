@@ -54,7 +54,7 @@ Installing....
 
 EOF
 
-pip install .  || exit 1
+pip3 install .  || exit 1
 popd 
 
 
