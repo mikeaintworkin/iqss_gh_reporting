@@ -130,11 +130,12 @@ class LegacyProjectCards:
         # three_months_ago = datetime.datetime.utcnow() - timedelta(days=90)
 
         self._card_count = 0
+        self._card_count_used = 0
         for column in columns:
 
             # https://pygithub.readthedocs.io/en/stable/github_objects/ProjectColumn.html?highlight=project
             cards = column.get_cards(archived_state="not_archived")
-            print(f"start: {self._card_count} cards processed: {self._project_object.name}, Column {column.name}")
+            print(f"start: {self._card_count_used}, {self._card_count} cards processed: {self._project_object.name}, Column {column.name}")
             for card in cards:
                 self._card_count += 1
                 # get_content() can take "PullRequest" or "Issue" as an argument
@@ -145,19 +146,20 @@ class LegacyProjectCards:
                 # the API doesn't make it clear which you are dealing with.
 
                 card_content = card.get_content()
-                print(card_content)
+                # debug: print(card_content)
                 # if card_content is not None and card.updated_at >= three_months_ago:
                 if card_content is not None:
+                    self._card_count_used +=1
                     regex1 = re.compile(r"(/issues/|/pull/)")
                     sub_string = regex1.search(str(card_content.html_url)).group(0).replace("/", "")
                     card_type = "Issue"
                     if sub_string == "pull":
                         card_type = "PullRequest"
                     # debug
-                    print(f">>>>>> {self._card_count} # cards {self._project_object.name}: {column.name} \
-                    ,{card_type} ,{card_content.number},{card_content.repository.name} ,{card_content.title}")
+                    # print(f">>>>>> {self._card_count} # cards {self._project_object.name}: {column.name} \
+                    # ,{card_type} ,{card_content.number},{card_content.repository.name} ,{card_content.title}")
                     if self._card_count % 50 == 0:
-                        print(f">>>>>> {self._card_count} # cards {self._project_object.name}: {column.name} \
+                        print(f">>>>>> {self._card_count_used}, {self._card_count} vcards processed: {self._project_object.name}: {column.name} \
                         ,{card_type} ,{card_content.number},{card_content.repository.name} ,{card_content.title}")
 
                     new_row = {
@@ -177,12 +179,12 @@ class LegacyProjectCards:
                         RequiredDfColumnHeaderNames.value("ClosedBy"): '' if card_content.closed_by is None else str(card_content.closed_by)
 
                     }
-
-                    print(f"{new_row}\n====\n")
-                    print(f"{pd.DataFrame([new_row])}\n====\n")
-                    print(f"{self._project_cards}\n====\n")
+                    # debug:
+                    # print(f"{new_row}\n====\n")
+                    # print(f"{pd.DataFrame([new_row])}\n====\n")
+                    # print(f"{self._project_cards}\n====\n")
                     self._project_cards = pd.concat([self._project_cards, pd.DataFrame([new_row])], ignore_index=True)
-            print(f"  end: {self._card_count} cards processed: {self._project_object.name}, Column {column.name}")
+            print(f"  end: {self._card_count_used}, {self._card_count} cards processed: {self._project_object.name}, Column {column.name}")
         return True
 
     @property
