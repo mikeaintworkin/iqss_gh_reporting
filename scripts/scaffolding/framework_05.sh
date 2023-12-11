@@ -1,4 +1,4 @@
-#!bash
+
 # exec 3>&1 4>&2
 # trap 'exec 2>&4 1>&3' 0 1 2 3
 # exec 1>log.out 2>&1
@@ -135,7 +135,7 @@ echo_basic_info "${THIS_FILE}" "build_and_deploy_local.sh"
 #run this script from the scripts directory
 echo "pushd to ${SCRIPT_DIR}"
 pushd "${SCRIPT_DIR}" || exit 1
-./build_and_deploy_local.sh
+bash ./build_and_deploy_local.sh
 echo "popd"
 popd || exit 1
 
