@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!bash
 
 # ================================================================================================================
 # The objective of this script is to build the current code and deploy it locally.
