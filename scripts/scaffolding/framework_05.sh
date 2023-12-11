@@ -58,6 +58,8 @@ function get_cli_options() {
       SCRIPT_DIR="${OPTARG}"
       ;;
     v)
+      #TODO remove items related to virtual environment.
+      # Bash and virtual environments are not taken into account in this script.
       echo "Processing option 'v' with '${OPTARG}' argument"
       echo "Activating virtual environment: ${OPTARG}"
       . "${OPTARG}"
