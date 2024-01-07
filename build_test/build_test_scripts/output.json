@@ -1,0 +1,2361 @@
+{
+    "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxNDA1MTAwNA==",
+        "name": "dataverse",
+        "url": "https://github.com/IQSS/dataverse",
+        "owner": {
+            "login": "IQSS"
+        },
+        "pullRequests": {
+            "totalCount": 2588,
+            "pageInfo": {
+                "hasNextPage": false,
+                "hasPreviousPage": true,
+                "endCursor": "Y3Vyc29yOnYyOpHOUc8FIw==",
+                "startCursor": "Y3Vyc29yOnYyOpHOSneyDw=="
+            },
+            "nodes": [
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Iqss/9150 handle fundreg reqs for ext cvv",
+                    "number": 9402,
+                    "id": "PR_kwDOANZmvM5Kd7IP",
+                    "url": "https://github.com/IQSS/dataverse/pull/9402",
+                    "closed": true,
+                    "closedAt": "2023-04-24T16:03:24Z",
+                    "labels": {
+                        "totalCount": 4,
+                        "nodes": [
+                            {
+                                "name": "NIH OTA: 1.2.1"
+                            },
+                            {
+                                "name": "Size: 10"
+                            },
+                            {
+                                "name": "D: 5 Core PIDs"
+                            },
+                            {
+                                "name": "pm.GREI-d-1.2.1"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 2,
+                        "nodes": [
+                            {
+                                "number": 9150
+                            },
+                            {
+                                "number": 9498
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "#9404 Added Harvesting key to customize facet label",
+                    "number": 9406,
+                    "id": "PR_kwDOANZmvM5Knjxz",
+                    "url": "https://github.com/IQSS/dataverse/pull/9406",
+                    "closed": true,
+                    "closedAt": "2023-05-31T19:52:09Z",
+                    "labels": {
+                        "totalCount": 3,
+                        "nodes": [
+                            {
+                                "name": "Feature: Search/Browse"
+                            },
+                            {
+                                "name": "Feature: Internationalization"
+                            },
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9404
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "9361 storage quotas",
+                    "number": 9409,
+                    "id": "PR_kwDOANZmvM5KvQpA",
+                    "url": "https://github.com/IQSS/dataverse/pull/9409",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 2,
+                        "nodes": [
+                            {
+                                "name": "Size: 10"
+                            },
+                            {
+                                "name": "D: FixRateLimitingBehaviors"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9361
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Add JProfile acknowledgement for free license",
+                    "number": 9413,
+                    "id": "PR_kwDOANZmvM5K5y3c",
+                    "url": "https://github.com/IQSS/dataverse/pull/9413",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "name": "Feature: Developer Guide"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 0,
+                        "nodes": []
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "9414 - Add containerized Dataverse service dependencies for development",
+                    "number": 9417,
+                    "id": "PR_kwDOANZmvM5LHVaK",
+                    "url": "https://github.com/IQSS/dataverse/pull/9417",
+                    "closed": true,
+                    "closedAt": "2023-03-09T05:03:09Z",
+                    "labels": {
+                        "totalCount": 5,
+                        "nodes": [
+                            {
+                                "name": "Feature: Code Infrastructure"
+                            },
+                            {
+                                "name": "Feature: Developer Guide"
+                            },
+                            {
+                                "name": "Containers & Cloud"
+                            },
+                            {
+                                "name": "NIH OTA: 1.7.1 (reArchitecture)"
+                            },
+                            {
+                                "name": "pm.GREI-d-1.7.1"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9414
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "9415 containers",
+                    "number": 9424,
+                    "id": "PR_kwDOANZmvM5LRBbP",
+                    "url": "https://github.com/IQSS/dataverse/pull/9424",
+                    "closed": true,
+                    "closedAt": "2023-03-13T16:13:11Z",
+                    "labels": {
+                        "totalCount": 5,
+                        "nodes": [
+                            {
+                                "name": "Feature: Developer Guide"
+                            },
+                            {
+                                "name": "Feature: Installation Guide"
+                            },
+                            {
+                                "name": "User Role: Sysadmin"
+                            },
+                            {
+                                "name": "Containers & Cloud"
+                            },
+                            {
+                                "name": "D: DataverseInDocker"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9415
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Payara 6 testing",
+                    "number": 9426,
+                    "id": "PR_kwDOANZmvM5LYWK8",
+                    "url": "https://github.com/IQSS/dataverse/pull/9426",
+                    "closed": true,
+                    "closedAt": "2023-03-24T13:23:16Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 0,
+                        "nodes": []
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Handles software upgrades, a short release note",
+                    "number": 9435,
+                    "id": "PR_kwDOANZmvM5LzBV0",
+                    "url": "https://github.com/IQSS/dataverse/pull/9435",
+                    "closed": true,
+                    "closedAt": "2023-03-14T13:40:57Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 0,
+                        "nodes": []
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "update link in harvestserver.rst",
+                    "number": 9436,
+                    "id": "PR_kwDOANZmvM5L1k8_",
+                    "url": "https://github.com/IQSS/dataverse/pull/9436",
+                    "closed": true,
+                    "closedAt": "2023-03-13T02:18:46Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9168
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "update link in harvestserver.rst",
+                    "number": 9437,
+                    "id": "PR_kwDOANZmvM5L1v-E",
+                    "url": "https://github.com/IQSS/dataverse/pull/9437",
+                    "closed": true,
+                    "closedAt": "2023-03-14T13:41:48Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9168
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "9434 app container for dev",
+                    "number": 9439,
+                    "id": "PR_kwDOANZmvM5L6Rj-",
+                    "url": "https://github.com/IQSS/dataverse/pull/9439",
+                    "closed": true,
+                    "closedAt": "2023-03-20T19:17:09Z",
+                    "labels": {
+                        "totalCount": 5,
+                        "nodes": [
+                            {
+                                "name": "Feature: Installation Guide"
+                            },
+                            {
+                                "name": "User Role: Sysadmin"
+                            },
+                            {
+                                "name": "Containers & Cloud"
+                            },
+                            {
+                                "name": "Size: 10"
+                            },
+                            {
+                                "name": "D: DataverseInDocker"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9434
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "make Alternative Title repeatable",
+                    "number": 9440,
+                    "id": "PR_kwDOANZmvM5L6xxa",
+                    "url": "https://github.com/IQSS/dataverse/pull/9440",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 2,
+                        "nodes": [
+                            {
+                                "name": "Feature: Metadata"
+                            },
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9428
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Add Pooch to the list of Python clients",
+                    "number": 9445,
+                    "id": "PR_kwDOANZmvM5MA0c5",
+                    "url": "https://github.com/IQSS/dataverse/pull/9445",
+                    "closed": true,
+                    "closedAt": "2023-03-20T21:01:39Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9433
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "9444 push images",
+                    "number": 9447,
+                    "id": "PR_kwDOANZmvM5MGIGB",
+                    "url": "https://github.com/IQSS/dataverse/pull/9447",
+                    "closed": true,
+                    "closedAt": "2023-04-25T10:47:56Z",
+                    "labels": {
+                        "totalCount": 5,
+                        "nodes": [
+                            {
+                                "name": "Feature: Installation Guide"
+                            },
+                            {
+                                "name": "User Role: Sysadmin"
+                            },
+                            {
+                                "name": "Containers & Cloud"
+                            },
+                            {
+                                "name": "Size: 3"
+                            },
+                            {
+                                "name": "D: DataverseInDocker"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 2,
+                        "nodes": [
+                            {
+                                "number": 9444
+                            },
+                            {
+                                "number": 9539
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Added EasyDataverse to docs",
+                    "number": 9448,
+                    "id": "PR_kwDOANZmvM5MGM2R",
+                    "url": "https://github.com/IQSS/dataverse/pull/9448",
+                    "closed": true,
+                    "closedAt": "2023-03-21T12:54:01Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 0,
+                        "nodes": []
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Replaced hard coded strings in File Access button by new Bundle properties",
+                    "number": 9451,
+                    "id": "PR_kwDOANZmvM5MN7f_",
+                    "url": "https://github.com/IQSS/dataverse/pull/9451",
+                    "closed": true,
+                    "closedAt": "2023-05-26T17:35:54Z",
+                    "labels": {
+                        "totalCount": 2,
+                        "nodes": [
+                            {
+                                "name": "Feature: Internationalization"
+                            },
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9394
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "External tools fix",
+                    "number": 9454,
+                    "id": "PR_kwDOANZmvM5MUR4-",
+                    "url": "https://github.com/IQSS/dataverse/pull/9454",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 2,
+                        "nodes": [
+                            {
+                                "name": "Size: 3"
+                            },
+                            {
+                                "name": "Community"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9453
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Correct the regex that strips ZIP entry to shortname",
+                    "number": 9456,
+                    "id": "PR_kwDOANZmvM5MeWM3",
+                    "url": "https://github.com/IQSS/dataverse/pull/9456",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 0,
+                        "nodes": []
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "issue 9277 basics",
+                    "number": 9458,
+                    "id": "PR_kwDOANZmvM5Mfmuz",
+                    "url": "https://github.com/IQSS/dataverse/pull/9458",
+                    "closed": true,
+                    "closedAt": "2023-03-24T20:19:15Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9277
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Add EasyDataverse to docs",
+                    "number": 9459,
+                    "id": "PR_kwDOANZmvM5Mi3i5",
+                    "url": "https://github.com/IQSS/dataverse/pull/9459",
+                    "closed": true,
+                    "closedAt": "2023-03-21T14:56:01Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 0,
+                        "nodes": []
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Harvesting Clients guide updates per #8289.",
+                    "number": 9460,
+                    "id": "PR_kwDOANZmvM5MkTUF",
+                    "url": "https://github.com/IQSS/dataverse/pull/9460",
+                    "closed": true,
+                    "closedAt": "2023-03-21T21:21:44Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 8289
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "8573 Add Shib attribute characterset conversion to getValueFromAssertion",
+                    "number": 9461,
+                    "id": "PR_kwDOANZmvM5MpdUQ",
+                    "url": "https://github.com/IQSS/dataverse/pull/9461",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 2,
+                        "nodes": [
+                            {
+                                "name": "Feature: Account & User Info"
+                            },
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 8573
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "4499 - dataset version pids",
+                    "number": 9462,
+                    "id": "PR_kwDOANZmvM5Mp7JD",
+                    "url": "https://github.com/IQSS/dataverse/pull/9462",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 10,
+                        "nodes": [
+                            {
+                                "name": "Feature: API"
+                            },
+                            {
+                                "name": "Feature: Publishing & Versions"
+                            },
+                            {
+                                "name": "Feature: API Guide"
+                            },
+                            {
+                                "name": "User Role: Curator"
+                            },
+                            {
+                                "name": "User Role: API User"
+                            },
+                            {
+                                "name": "User Role: Sysadmin"
+                            },
+                            {
+                                "name": "User Role: Depositor"
+                            },
+                            {
+                                "name": "HERMES"
+                            },
+                            {
+                                "name": "NIH OTA: 1.3.1"
+                            },
+                            {
+                                "name": "Size: 33"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 4499
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Fix for handling storageidentifiers in harvested files (dataverse_json)",
+                    "number": 9467,
+                    "id": "PR_kwDOANZmvM5MrR6i",
+                    "url": "https://github.com/IQSS/dataverse/pull/9467",
+                    "closed": true,
+                    "closedAt": "2023-03-24T16:31:28Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 7736
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "IQSS/9471- support delayed setting of :DoiProvider",
+                    "number": 9472,
+                    "id": "PR_kwDOANZmvM5M24Fn",
+                    "url": "https://github.com/IQSS/dataverse/pull/9472",
+                    "closed": true,
+                    "closedAt": "2023-03-28T21:08:31Z",
+                    "labels": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9471
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "use nonstopmode to build guides PDF, link to preview #9277",
+                    "number": 9474,
+                    "id": "PR_kwDOANZmvM5M3TqV",
+                    "url": "https://github.com/IQSS/dataverse/pull/9474",
+                    "closed": true,
+                    "closedAt": "2023-03-28T14:12:19Z",
+                    "labels": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "name": "Feature: User Guide"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9277
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "add range headers to S3 CORS example",
+                    "number": 9475,
+                    "id": "PR_kwDOANZmvM5M4DFa",
+                    "url": "https://github.com/IQSS/dataverse/pull/9475",
+                    "closed": true,
+                    "closedAt": "2023-04-10T17:49:04Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9473
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Opens Payara Admin Console port in the dev containerized setup",
+                    "number": 9478,
+                    "id": "PR_kwDOANZmvM5M9xtW",
+                    "url": "https://github.com/IQSS/dataverse/pull/9478",
+                    "closed": true,
+                    "closedAt": "2023-03-27T23:48:02Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9476
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "IQSS/9431-support checksum alg in direct uploads",
+                    "number": 9482,
+                    "id": "PR_kwDOANZmvM5NEg85",
+                    "url": "https://github.com/IQSS/dataverse/pull/9482",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 2,
+                        "nodes": [
+                            {
+                                "name": "QDR"
+                            },
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9431
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Binder: files are now downloaded in original format (e.g. .dta instead of .tab)",
+                    "number": 9483,
+                    "id": "PR_kwDOANZmvM5NLTTY",
+                    "url": "https://github.com/IQSS/dataverse/pull/9483",
+                    "closed": true,
+                    "closedAt": "2023-03-29T17:53:58Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9374
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Make Dataverse produce valid DDI 3648",
+                    "number": 9484,
+                    "id": "PR_kwDOANZmvM5NLTwi",
+                    "url": "https://github.com/IQSS/dataverse/pull/9484",
+                    "closed": true,
+                    "closedAt": "2023-04-24T14:49:33Z",
+                    "labels": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "name": "Size: 10"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 3648
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "IQSS/9486- fix EZID NPE when doi.baseurlstring is not defined",
+                    "number": 9487,
+                    "id": "PR_kwDOANZmvM5NMChF",
+                    "url": "https://github.com/IQSS/dataverse/pull/9487",
+                    "closed": true,
+                    "closedAt": "2023-03-29T22:46:46Z",
+                    "labels": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9486
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Makes previewers work on files in deaccessioned datasets. #9455",
+                    "number": 9491,
+                    "id": "PR_kwDOANZmvM5NY-gR",
+                    "url": "https://github.com/IQSS/dataverse/pull/9491",
+                    "closed": true,
+                    "closedAt": "2023-04-04T19:21:57Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9455
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "9488 internationalization issues",
+                    "number": 9493,
+                    "id": "PR_kwDOANZmvM5NnlJI",
+                    "url": "https://github.com/IQSS/dataverse/pull/9493",
+                    "closed": true,
+                    "closedAt": "2023-06-02T18:54:45Z",
+                    "labels": {
+                        "totalCount": 2,
+                        "nodes": [
+                            {
+                                "name": "Feature: Internationalization"
+                            },
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9488
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "IQSS/9496: restore legacy behavior including an empty persistentID",
+                    "number": 9497,
+                    "id": "PR_kwDOANZmvM5Nrqqu",
+                    "url": "https://github.com/IQSS/dataverse/pull/9497",
+                    "closed": true,
+                    "closedAt": "2023-04-06T14:23:00Z",
+                    "labels": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9496
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "#9498 - fixing issue while searching for TermUri field that is a compound field",
+                    "number": 9499,
+                    "id": "PR_kwDOANZmvM5NsDNY",
+                    "url": "https://github.com/IQSS/dataverse/pull/9499",
+                    "closed": true,
+                    "closedAt": "2023-04-05T16:43:09Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9498
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Change log level from info to fine to suppress noise from netcdf",
+                    "number": 9500,
+                    "id": "PR_kwDOANZmvM5Ny4Jm",
+                    "url": "https://github.com/IQSS/dataverse/pull/9500",
+                    "closed": true,
+                    "closedAt": "2023-04-13T17:30:45Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9441
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "6723 unzip optimizations",
+                    "number": 9503,
+                    "id": "PR_kwDOANZmvM5NzvbC",
+                    "url": "https://github.com/IQSS/dataverse/pull/9503",
+                    "closed": true,
+                    "closedAt": "2023-04-24T20:32:08Z",
+                    "labels": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 6723
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "expand sslmode=require blurb to note required config change",
+                    "number": 9505,
+                    "id": "PR_kwDOANZmvM5N8MiH",
+                    "url": "https://github.com/IQSS/dataverse/pull/9505",
+                    "closed": true,
+                    "closedAt": "2023-04-10T17:47:46Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9504
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "removed copyFile method as it is not being used anywhere; used try-wi\u2026",
+                    "number": 9509,
+                    "id": "PR_kwDOANZmvM5OBckx",
+                    "url": "https://github.com/IQSS/dataverse/pull/9509",
+                    "closed": true,
+                    "closedAt": "2023-04-13T20:14:13Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9312
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "only run extractMetadataNcml on NetCDF or HDF5 files #9441",
+                    "number": 9510,
+                    "id": "PR_kwDOANZmvM5OCER4",
+                    "url": "https://github.com/IQSS/dataverse/pull/9510",
+                    "closed": true,
+                    "closedAt": "2023-04-13T17:24:23Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9441
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "modified getCurationLabels() to use try-with-resources",
+                    "number": 9511,
+                    "id": "PR_kwDOANZmvM5OCHaI",
+                    "url": "https://github.com/IQSS/dataverse/pull/9511",
+                    "closed": true,
+                    "closedAt": "2023-04-13T20:06:15Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9311
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "add convertLongitude (WIP)",
+                    "number": 9514,
+                    "id": "PR_kwDOANZmvM5OD5Y0",
+                    "url": "https://github.com/IQSS/dataverse/pull/9514",
+                    "closed": true,
+                    "closedAt": "2023-04-11T20:41:15Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 0,
+                        "nodes": []
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "intermittent harvest tests failures #9240",
+                    "number": 9520,
+                    "id": "PR_kwDOANZmvM5OKYaX",
+                    "url": "https://github.com/IQSS/dataverse/pull/9520",
+                    "closed": true,
+                    "closedAt": "2023-04-13T20:20:38Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9240
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "9441 netcdf",
+                    "number": 9521,
+                    "id": "PR_kwDOANZmvM5OK1nS",
+                    "url": "https://github.com/IQSS/dataverse/pull/9521",
+                    "closed": true,
+                    "closedAt": "2023-04-13T17:28:27Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9441
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "extract bounding box from netcdf/hdf5 files and insert into the geospatial metadata block",
+                    "number": 9523,
+                    "id": "PR_kwDOANZmvM5OP0EW",
+                    "url": "https://github.com/IQSS/dataverse/pull/9523",
+                    "closed": true,
+                    "closedAt": "2023-04-19T20:59:27Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9331
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "add curl example for configuring WebloaderUrl",
+                    "number": 9527,
+                    "id": "PR_kwDOANZmvM5OWUbD",
+                    "url": "https://github.com/IQSS/dataverse/pull/9527",
+                    "closed": true,
+                    "closedAt": "2023-04-14T17:59:30Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9526
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "update oauth2-oidc-sdk",
+                    "number": 9528,
+                    "id": "PR_kwDOANZmvM5OWf50",
+                    "url": "https://github.com/IQSS/dataverse/pull/9528",
+                    "closed": true,
+                    "closedAt": "2023-04-24T18:01:18Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 0,
+                        "nodes": []
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "9229 - Add bearer token auth mechanism with feature flag",
+                    "number": 9532,
+                    "id": "PR_kwDOANZmvM5Okjkd",
+                    "url": "https://github.com/IQSS/dataverse/pull/9532",
+                    "closed": true,
+                    "closedAt": "2023-05-15T12:13:24Z",
+                    "labels": {
+                        "totalCount": 2,
+                        "nodes": [
+                            {
+                                "name": "Feature: Account & User Info"
+                            },
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9229
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "9531 - Add a Log Out endpoint available when the session API auth feature flag is enabled",
+                    "number": 9533,
+                    "id": "PR_kwDOANZmvM5OlDo6",
+                    "url": "https://github.com/IQSS/dataverse/pull/9533",
+                    "closed": true,
+                    "closedAt": "2023-05-10T19:22:21Z",
+                    "labels": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9531
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Bugfix for /api/metrics/downloads/toMonth/{yyyymm} endpoint: add parenthesis to condition SQL Query",
+                    "number": 9538,
+                    "id": "PR_kwDOANZmvM5OsLsu",
+                    "url": "https://github.com/IQSS/dataverse/pull/9538",
+                    "closed": true,
+                    "closedAt": "2023-04-24T19:37:29Z",
+                    "labels": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9536
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "extract bounding box from NetCDF/HDF5 files and insert into the geospatial metadata block ",
+                    "number": 9541,
+                    "id": "PR_kwDOANZmvM5Oterw",
+                    "url": "https://github.com/IQSS/dataverse/pull/9541",
+                    "closed": true,
+                    "closedAt": "2023-05-09T18:58:39Z",
+                    "labels": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9331
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Remove duplicate entry api/info/metrics/filedownloads/monthly",
+                    "number": 9543,
+                    "id": "PR_kwDOANZmvM5Ow33z",
+                    "url": "https://github.com/IQSS/dataverse/pull/9543",
+                    "closed": true,
+                    "closedAt": "2023-05-26T17:25:15Z",
+                    "labels": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9542
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "IQSS/9544 - Migrate API fixes",
+                    "number": 9545,
+                    "id": "PR_kwDOANZmvM5OywaM",
+                    "url": "https://github.com/IQSS/dataverse/pull/9545",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 2,
+                        "nodes": [
+                            {
+                                "name": "DANS"
+                            },
+                            {
+                                "name": "Size: 10"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9544
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "allow war files to be deployed by the base image",
+                    "number": 9548,
+                    "id": "PR_kwDOANZmvM5O7DSr",
+                    "url": "https://github.com/IQSS/dataverse/pull/9548",
+                    "closed": true,
+                    "closedAt": "2023-04-24T13:17:30Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 0,
+                        "nodes": []
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "IQSS/9555 update list curation states api call",
+                    "number": 9556,
+                    "id": "PR_kwDOANZmvM5PDFz1",
+                    "url": "https://github.com/IQSS/dataverse/pull/9556",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 3,
+                        "nodes": [
+                            {
+                                "name": "QDR"
+                            },
+                            {
+                                "name": "DataverseNO"
+                            },
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9555
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "async indexing after update command",
+                    "number": 9558,
+                    "id": "PR_kwDOANZmvM5PFkfA",
+                    "url": "https://github.com/IQSS/dataverse/pull/9558",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "name": "Size: 10"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9557
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "#9561 - Fix : Internationalized metadata block names in the summary cell of the versions tab of a dataset",
+                    "number": 9562,
+                    "id": "PR_kwDOANZmvM5PLQHt",
+                    "url": "https://github.com/IQSS/dataverse/pull/9562",
+                    "closed": true,
+                    "closedAt": "2023-05-31T16:19:05Z",
+                    "labels": {
+                        "totalCount": 2,
+                        "nodes": [
+                            {
+                                "name": "Feature: Internationalization"
+                            },
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9561
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "constrain description display",
+                    "number": 9564,
+                    "id": "PR_kwDOANZmvM5PODoc",
+                    "url": "https://github.com/IQSS/dataverse/pull/9564",
+                    "closed": true,
+                    "closedAt": "2023-05-01T14:07:57Z",
+                    "labels": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 0,
+                        "nodes": []
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Iqss/9566 fix update hash values",
+                    "number": 9567,
+                    "id": "PR_kwDOANZmvM5PUTpd",
+                    "url": "https://github.com/IQSS/dataverse/pull/9567",
+                    "closed": true,
+                    "closedAt": "2023-05-03T14:23:02Z",
+                    "labels": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9566
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "9148 Ensure that license/terms are set via API (create/update/publish)",
+                    "number": 9568,
+                    "id": "PR_kwDOANZmvM5PalbB",
+                    "url": "https://github.com/IQSS/dataverse/pull/9568",
+                    "closed": true,
+                    "closedAt": "2023-05-08T20:13:22Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 3,
+                        "nodes": [
+                            {
+                                "number": 9148
+                            },
+                            {
+                                "number": 9155
+                            },
+                            {
+                                "number": 9364
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Fix #9346 clear single metrics api",
+                    "number": 9569,
+                    "id": "PR_kwDOANZmvM5Pg3Ek",
+                    "url": "https://github.com/IQSS/dataverse/pull/9569",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 2,
+                        "nodes": [
+                            {
+                                "name": "QDR"
+                            },
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9346
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Internationalization of ingest messages",
+                    "number": 9571,
+                    "id": "PR_kwDOANZmvM5PrGbJ",
+                    "url": "https://github.com/IQSS/dataverse/pull/9571",
+                    "closed": true,
+                    "closedAt": "2023-05-26T19:32:21Z",
+                    "labels": {
+                        "totalCount": 2,
+                        "nodes": [
+                            {
+                                "name": "Feature: Internationalization"
+                            },
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9570
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "configbaker container",
+                    "number": 9574,
+                    "id": "PR_kwDOANZmvM5P0TQE",
+                    "url": "https://github.com/IQSS/dataverse/pull/9574",
+                    "closed": true,
+                    "closedAt": "2023-06-01T16:14:17Z",
+                    "labels": {
+                        "totalCount": 2,
+                        "nodes": [
+                            {
+                                "name": "Containers & Cloud"
+                            },
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9573
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "9575 fix CI for app images pushing",
+                    "number": 9576,
+                    "id": "PR_kwDOANZmvM5P9w6b",
+                    "url": "https://github.com/IQSS/dataverse/pull/9576",
+                    "closed": true,
+                    "closedAt": "2023-05-08T12:22:20Z",
+                    "labels": {
+                        "totalCount": 4,
+                        "nodes": [
+                            {
+                                "name": "Feature: Developer Guide"
+                            },
+                            {
+                                "name": "Containers & Cloud"
+                            },
+                            {
+                                "name": "Size: 3"
+                            },
+                            {
+                                "name": "Feature: Container Guide"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9575
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "TEST - 9575 - but from upstream branch",
+                    "number": 9577,
+                    "id": "PR_kwDOANZmvM5P9yML",
+                    "url": "https://github.com/IQSS/dataverse/pull/9577",
+                    "closed": true,
+                    "closedAt": "2023-05-08T12:22:22Z",
+                    "labels": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "name": "Containers & Cloud"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 0,
+                        "nodes": []
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "9578 - fix RTFD build by adding a config file for it",
+                    "number": 9579,
+                    "id": "PR_kwDOANZmvM5P_d72",
+                    "url": "https://github.com/IQSS/dataverse/pull/9579",
+                    "closed": true,
+                    "closedAt": "2023-05-08T11:57:49Z",
+                    "labels": {
+                        "totalCount": 8,
+                        "nodes": [
+                            {
+                                "name": "Feature: Developer Guide"
+                            },
+                            {
+                                "name": "Feature: API Guide"
+                            },
+                            {
+                                "name": "Feature: Installation Guide"
+                            },
+                            {
+                                "name": "Feature: Admin Guide"
+                            },
+                            {
+                                "name": "Feature: User Guide"
+                            },
+                            {
+                                "name": "Feature: Style Guide"
+                            },
+                            {
+                                "name": "Containers & Cloud"
+                            },
+                            {
+                                "name": "Feature: Container Guide"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9578
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "fix: NullPointerExceptions in /api/mydata/retrieve",
+                    "number": 9581,
+                    "id": "PR_kwDOANZmvM5QA419",
+                    "url": "https://github.com/IQSS/dataverse/pull/9581",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 0,
+                        "nodes": []
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "9469 accented letters and other utf8 characters in Stata ingest",
+                    "number": 9582,
+                    "id": "PR_kwDOANZmvM5QHrKB",
+                    "url": "https://github.com/IQSS/dataverse/pull/9582",
+                    "closed": true,
+                    "closedAt": "2023-05-12T16:20:57Z",
+                    "labels": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9469
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "9540 - more docs for container usage",
+                    "number": 9584,
+                    "id": "PR_kwDOANZmvM5QMNeu",
+                    "url": "https://github.com/IQSS/dataverse/pull/9584",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 3,
+                        "nodes": [
+                            {
+                                "name": "Containers & Cloud"
+                            },
+                            {
+                                "name": "Size: 3"
+                            },
+                            {
+                                "name": "Feature: Container Guide"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9540
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Update microprofile-config.properties",
+                    "number": 9585,
+                    "id": "PR_kwDOANZmvM5QNBFh",
+                    "url": "https://github.com/IQSS/dataverse/pull/9585",
+                    "closed": true,
+                    "closedAt": "2023-05-10T14:50:49Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 0,
+                        "nodes": []
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "#9565 Fix metrics API \"file/byType/monthly\" by using specific key cache",
+                    "number": 9586,
+                    "id": "PR_kwDOANZmvM5QNGjR",
+                    "url": "https://github.com/IQSS/dataverse/pull/9586",
+                    "closed": true,
+                    "closedAt": "2023-05-12T18:46:16Z",
+                    "labels": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9565
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "9229 - Add bearer token auth mechanism for OIDC user with feature flag",
+                    "number": 9591,
+                    "id": "PR_kwDOANZmvM5QfUsj",
+                    "url": "https://github.com/IQSS/dataverse/pull/9591",
+                    "closed": true,
+                    "closedAt": "2023-05-18T19:00:52Z",
+                    "labels": {
+                        "totalCount": 2,
+                        "nodes": [
+                            {
+                                "name": "Feature: Account & User Info"
+                            },
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9229
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Datasets API extension for the SPA",
+                    "number": 9592,
+                    "id": "PR_kwDOANZmvM5QgU7x",
+                    "url": "https://github.com/IQSS/dataverse/pull/9592",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9588
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "add displayFormat (NAME) to bounding box #9593",
+                    "number": 9595,
+                    "id": "PR_kwDOANZmvM5QhhiJ",
+                    "url": "https://github.com/IQSS/dataverse/pull/9595",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9593
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "add MyData API to dataverse documentaion",
+                    "number": 9596,
+                    "id": "PR_kwDOANZmvM5QlZw6",
+                    "url": "https://github.com/IQSS/dataverse/pull/9596",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 2,
+                        "nodes": [
+                            {
+                                "name": "Feature: API Guide"
+                            },
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 5042
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "9369 Shib groups (and other custom groups), as subgroups of an explicit group",
+                    "number": 9597,
+                    "id": "PR_kwDOANZmvM5Qpujp",
+                    "url": "https://github.com/IQSS/dataverse/pull/9597",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9369
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "ADA/Guestbook-at-request",
+                    "number": 9599,
+                    "id": "PR_kwDOANZmvM5Q5IzY",
+                    "url": "https://github.com/IQSS/dataverse/pull/9599",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 2043
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "add H5Web to guides",
+                    "number": 9600,
+                    "id": "PR_kwDOANZmvM5Q5N1G",
+                    "url": "https://github.com/IQSS/dataverse/pull/9600",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9480
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Fix Flyway script name",
+                    "number": 9602,
+                    "id": "PR_kwDOANZmvM5Q6HGG",
+                    "url": "https://github.com/IQSS/dataverse/pull/9602",
+                    "closed": true,
+                    "closedAt": "2023-05-22T15:45:11Z",
+                    "labels": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 0,
+                        "nodes": []
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "add citation.cff file",
+                    "number": 9607,
+                    "id": "PR_kwDOANZmvM5RC0_w",
+                    "url": "https://github.com/IQSS/dataverse/pull/9607",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9605
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "disable NetCDF/HDF5 metadata extraction for S3 direct upload",
+                    "number": 9609,
+                    "id": "PR_kwDOANZmvM5RJ_Jh",
+                    "url": "https://github.com/IQSS/dataverse/pull/9609",
+                    "closed": true,
+                    "closedAt": "2023-05-25T19:56:13Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9601
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "fix S3 direct upload NPE and NetCDF/HDF5 and keep geospatial metadata extraction",
+                    "number": 9611,
+                    "id": "PR_kwDOANZmvM5RL16F",
+                    "url": "https://github.com/IQSS/dataverse/pull/9611",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9601
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "8889 file-level PIDs configuration in individual collections",
+                    "number": 9614,
+                    "id": "PR_kwDOANZmvM5RQkJG",
+                    "url": "https://github.com/IQSS/dataverse/pull/9614",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 8889
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "Make DDIExportTest XML validation non-flaky",
+                    "number": 9618,
+                    "id": "PR_kwDOANZmvM5RYpvq",
+                    "url": "https://github.com/IQSS/dataverse/pull/9618",
+                    "closed": true,
+                    "closedAt": "2023-05-26T13:57:00Z",
+                    "labels": {
+                        "totalCount": 2,
+                        "nodes": [
+                            {
+                                "name": "Testing: API"
+                            },
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9617
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "build spi",
+                    "number": 9621,
+                    "id": "PR_kwDOANZmvM5RdHYh",
+                    "url": "https://github.com/IQSS/dataverse/pull/9621",
+                    "closed": true,
+                    "closedAt": "2023-05-31T13:20:48Z",
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 0,
+                        "nodes": []
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "9338 Fixes Roles behavior in the UI and API",
+                    "number": 9629,
+                    "id": "PR_kwDOANZmvM5Rtr7d",
+                    "url": "https://github.com/IQSS/dataverse/pull/9629",
+                    "closed": false,
+                    "closedAt": null,
+                    "labels": {
+                        "totalCount": 0,
+                        "nodes": []
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "number": 9338
+                            }
+                        ]
+                    }
+                },
+                {
+                    "repository": {
+                        "name": "dataverse"
+                    },
+                    "title": "External Exporters bug fix",
+                    "number": 9632,
+                    "id": "PR_kwDOANZmvM5RzwUj",
+                    "url": "https://github.com/IQSS/dataverse/pull/9632",
+                    "closed": true,
+                    "closedAt": "2023-06-01T20:50:12Z",
+                    "labels": {
+                        "totalCount": 1,
+                        "nodes": [
+                            {
+                                "name": "Size: 3"
+                            }
+                        ]
+                    },
+                    "closingIssuesReferences": {
+                        "totalCount": 0,
+                        "nodes": []
+                    }
+                }
+            ]
+        }
+    }
+}
