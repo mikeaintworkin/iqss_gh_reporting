@@ -96,11 +96,7 @@ class LegacyProjectCards:
             print(f"Cannot populate project we care about")
             return False
 
-        # TODO: I think the logic here is bad.
-        # #56 I've got code failing inside this call.
-        # I think there is some sort of chicken/egg thing happening. Like - I'm testing to see if something is empty
-        # but the test to see if it's empty is failing when it's empty
-        # I think this may be where I need to be catching an exception?
+        # TODO: I need to be catching an exception here?
         if not self._get_project_cards_api_obj():
             print(f"Cannot populate project cards")
             return False
