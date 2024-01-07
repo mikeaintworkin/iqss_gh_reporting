@@ -27,8 +27,12 @@ class GraphQLFetcher:
         
         # TODO: add a check to make sure that the vars_in are correct for the query
         # TODO: add more sophisticated error handling See: #50
-        self._start_with_path = query_dict["start_with_path"]
-        self._has_next_page_path = query_dict["has_next_page_path"]
+        self._has_next_page_path = []
+        self._start_with_path = []
+        if query_dict["has_next_page_path"]:
+            self._has_next_page_path = query_dict["has_next_page_path"]
+            self._start_with_path = query_dict["start_with_path"]
+
         self._query = gql(query_dict["query_str"])
         self._query_input_params = query_dict["query_vars"]
         self._auth_token_val = auth_token_val
@@ -43,14 +47,13 @@ class GraphQLFetcher:
         return value
 
     def _fetch_items(self):
-        has_next_page = True
         headers = {"Authorization": "Bearer " + self._auth_token_val}
         transport = AIOHTTPTransport(url='https://api.github.com/graphql', headers=headers)
         client = Client(transport=transport, fetch_schema_from_transport=True)
 
         # for each page of results, get the data and add it to the results_dict
         counter = 0
-        while has_next_page:
+        while True:
             # gql will raise an exception when it encounters a GraphQL error.
             # so that something not found will return an exception
             try:
@@ -62,7 +65,10 @@ class GraphQLFetcher:
 
             counter += 1
             self._results_dict.update(data)
-            has_next_page = self._get_value_by_path(data, self._has_next_page_path)
+
+            if not self._has_next_page_path:
+                break
+
             self._query_input_params["startWith"] = self._get_value_by_path(data, self._start_with_path)
             # print(f"Records Retrieved: {counter}. Retrieve more? {has_next_page}")
 

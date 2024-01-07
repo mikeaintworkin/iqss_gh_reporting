@@ -27,6 +27,7 @@ setup(
     ],
     scripts=['workflows/create_iq_snapshot_init',
              'workflows/create_iq_snapshot',
-             'workflows/process_labels'
+             'workflows/process_labels',
+             'workflows/run_a_gql_query'
              ],
 )

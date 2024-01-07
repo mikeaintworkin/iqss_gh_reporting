@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+
+from datetime import datetime
+from iqss_gh_reporting import legacy as pdio
+from iqss_gh_reporting import pdata as ghpdata
+from iqss_gh_reporting import transformer as xfmr
+from iqss_gh_reporting import graphql_query_lib
+from iqss_gh_reporting import fetch_from_repository as fetch
+from iqss_gh_reporting import utils as utils
+import pandas as pd
+
+import argparse
+import os
+import re
+import yaml
+from pathvalidate import sanitize_filename
+from pathvalidate import sanitize_filepath
+from iqss_gh_reporting import process_labels_util as plu
+
+
+def main():
+    summary_of_this_run = """
+        This workflow is used to test out new queries.
+        The queries are defined in graphql_query_lib.py
+        The queries are run from fetch_from_repository.py
+        """
+
+    print(f"Running {__file__} as the main program")
+    yaml_file = os.path.expanduser(os.getcwd() + '/' + 'input_file.yaml')
+    data = utils.read_yaml(yaml_file)
+    if data is None:
+        raise ValueError(f"Error: there must be a valid input.yaml file in the current working dir: {os.getcwd()}")
+
+    with open(yaml_file) as file:
+        ydata = yaml.load(file, Loader=yaml.FullLoader)
+    yaml_string = yaml.dump(ydata, default_flow_style=False)
+    print(f"input arguments:\n\n{yaml_string}")
+
+
+    # get OAUTH token
+    auth_token_val = os.getenv('GITHUB_TOKEN', "novalue")
+    if auth_token_val == "novalue":
+        print("You must set the GITHUB_TOKEN environment variable to run with 'api' flag for this program")
+        exit(1)
+
+
+    results = fetch.GraphQLFetcher(auth_token_val, graphql_query_lib.queries['query_get_project_basics']())
+    results.print_results()
+
+
+
+if __name__ == "__main__":
+    main()
