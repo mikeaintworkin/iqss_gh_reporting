@@ -28,7 +28,7 @@ def default_yaml_contents(how_do_you_want_it: str = "string"):
         },
         'output_base_dir': {
             'v': '',
-            'h': "str: /mnt/hgfs/iq_reporting_collab/run/out;no[ ,.-special_char] ok:'_'. No trailing /. api=ignored. file=Optional"
+            'h': "str: /mnt/hgfs/iq_reporting_collab/run/out;no[ ,.-special_char] ok:'_'. No trailing /. api=required. file=Optional"
         },
         'project_name': {
             'v': "IQSS/dataverse",
@@ -71,6 +71,10 @@ def main():
     # read the input.yaml file from cwd
     # set the parser arguments defaults from the input.yaml file
     # ================================================================================================================
+
+    # Print the current date and time
+    current_date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(current_date_time)
 
     yaml_file = os.path.expanduser(os.getcwd() + '/' + 'input_file.yaml')
     print("Yaml file path:", yaml_file)
