@@ -27,49 +27,70 @@ class GraphQLFetcher:
         
         # TODO: add a check to make sure that the vars_in are correct for the query
         # TODO: add more sophisticated error handling See: #50
-        self._has_next_page_path = []
-        self._start_with_path = []
-        if query_dict["has_next_page_path"]:
-            self._has_next_page_path = query_dict["has_next_page_path"]
-            self._start_with_path = query_dict["start_with_path"]
 
-        self._query = gql(query_dict["query_str"])
-        self._query_input_params = query_dict["query_vars"]
         self._auth_token_val = auth_token_val
+        self._query = gql(query_dict["query_str"])
+        self._query_vars = query_dict["query_vars"]
+        self._next_page_start = query_dict["next_page_start"]
+        self._next_page_exists = query_dict["next_page_exists"]
+        self._url = query_dict["url"]
         self._results_json = None
         self._results_dict = {}
+        self.record_count=0
+        self.page_count=0
         self._fetch_items()
 
     def _get_value_by_path(self, data, path):
+        # This is really inefficent to do.
         value = data
         for key in path:
             value = value[key]
+            x = 1
         return value
 
-    def _fetch_items(self):
+    def _fetch_one_set_of_pages(self, start_with=None, ):
+        # input: self._auth_token_val
+        # i/o: self._query_vars
+        # input: self._query
+        # i/o: self.record_count
+
         headers = {"Authorization": "Bearer " + self._auth_token_val}
-        transport = AIOHTTPTransport(url='https://api.github.com/graphql', headers=headers)
+        transport = AIOHTTPTransport(url=self._url, headers=headers)
         client = Client(transport=transport, fetch_schema_from_transport=True)
 
+        # Update the query variables for pagination
+        # The first time throught this must be None.
+        # After that it will be the cursor starting place for this set of pages
+        # startsWith Key is assumed to exist, and whatever value it had is overwritten
+        self._query_vars['startWith'] = start_with
+
+        # Execute the query
+        # gql will raise an exception when it encounters a GraphQL error.
+        # e.g something not found will return an exception
+        try:
+            data = client.execute(document=self._query, variable_values=self._query_vars)
+            self.record_count  += 1
+
+        except Exception as e:  # Catching all exceptions. Change this to more specific exceptions if needed.
+            print(f"Exception: {e}")
+            return {}
+
+        self._results_dict.update(data)
+
+    def _fetch_items(self):
         # for each page of results, get the data and add it to the results_dict
         counter = 0
+        start_with = None
         while True:
-            # gql will raise an exception when it encounters a GraphQL error.
-            # so that something not found will return an exception
-            try:
-                data = client.execute(self._query, variable_values=self._query_input_params)
+            self._fetch_one_set_of_pages( start_with)
 
-            except Exception as e:  # Catching all exceptions. Change this to more specific exceptions if needed.
-                print(f"Exception: {e}")
-                return {}
+            self.page_count += 1
 
-            counter += 1
-            self._results_dict.update(data)
-
-            if not self._has_next_page_path:
+            if self._get_value_by_path(self._results_dict, self._next_page_exists):
+                start_with = self._get_value_by_path(self._results_dict, self._next_page_start)
+            else:
                 break
 
-            self._query_input_params["startWith"] = self._get_value_by_path(data, self._start_with_path)
             # print(f"Records Retrieved: {counter}. Retrieve more? {has_next_page}")
 
         self.results_json = json.dumps(self._results_dict, indent=4)
