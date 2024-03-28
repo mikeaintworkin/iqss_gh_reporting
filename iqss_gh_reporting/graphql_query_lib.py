@@ -4,7 +4,7 @@ import os
 import json
 
 
-def query_get_project_basics(login_org: str = "IQSS", project_num: int = 34):
+def query_get_project_basics(login_org: str = "hmdc", project_num: int = 33):
     """
     This function returns a query string that returns simple data from a project.
 
@@ -245,7 +245,7 @@ def query_get_all_prs():
 
 def query_get_all_issues():
     # =================================================================
-    # get a list of all issuesfor a given repository
+    # get a list of all issues for a given repository
     # =================================================================
     # "query_str": query_string
     # "has_next_page_path": This is the check for the next page of data formatted specifically for this query
@@ -261,27 +261,41 @@ def query_get_all_issues():
         """
         query ($loginOrg: String!, $repo: String!, $firstFew: Int, $startWith: String) {
             repository(followRenames:false, owner: $loginOrg, name: $repo) {
-                    id
-                    name
-                    url
-                    owner {
-                        login
+                id
+                name
+                url
+                owner {
+                    login
+                }
+                issues(first: $firstFew, after: $startWith, states: [ OPEN ]) {
+                    # IssueConnection properties
+                    totalCount
+                    nodes 
+                    {
+                        number
                     }
-                    ... issueParentFields
+                    pageInfo # PageInfo properties
+                    {
+                        hasNextPage
+                        endCursor
                     }
+
+                }
             }
         }
         """
-    query_string = query_string + fragment_pr_fields_on_pullrequest()
+    # query_string = query_string + fragment_pr_fields_on_pullrequest() + fragment_pullrequest_parent()
+    query_string = query_string
     qry = {
         "query_str": query_string,
-        "has_next_page_path": ["repository", "pullRequests", "pageInfo", "hasNextPage"],
-        "start_with_path": ["repository", "pullRequests", "pageInfo", "endCursor"],
+        "url": "https://api.github.com/graphql",
+        "next_page_exists": ["repository", "issues", "pageInfo", "hasNextPage"],
+        "next_page_start": ["repository", "issues", "pageInfo", "endCursor"],
         "query_vars": {
-            "loginOrg": "IQSS",
-            "repo": "dataverse",
+            "loginOrg": "hmdc",
+            "repo": "DevOpsProjects",
             "firstFew": 100,
-            "startWith": ""
+            "$startWith": "Any value here will be ignored"
             }
         }
     return qry
@@ -373,6 +387,7 @@ def fragment_pullrequest_parent():
                     ...prFields
                 }
             }
+        }
         """
     return fragment_string
 
